@@ -35,6 +35,7 @@ android {
     }
     buildFeatures {
         compose true
+        viewBinding true
     }
     composeOptions {
         kotlinCompilerExtensionVersion '1.5.1'
@@ -48,12 +49,22 @@ android {
 
 dependencies {
 
-    //Firebase
+    def nav_version = "2.5.0"
 
+    //Firebase
     implementation libs.firebase.firestore
     implementation libs.firebase.auth
     apply plugin: 'com.google.gms.google-services'
 
+    // Android
+    implementation libs.androidx.core.ktx.v170
+    implementation libs.androidx.appcompat
+    implementation libs.material
+    implementation libs.androidx.constraintlayout
+
+    // Navigation
+    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
 
     implementation libs.androidx.core.ktx
     implementation libs.androidx.lifecycle.runtime.ktx
