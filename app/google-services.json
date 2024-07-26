@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "712072017741",
+    "project_id": "e-commerce-application-b891f",
+    "storage_bucket": "e-commerce-application-b891f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:712072017741:android:78f29557e36e1a80f9e904",
+        "android_client_info": {
+          "package_name": "com.icmen.ecommerceapplication"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAnJxVIULXbNy18dmZWFxF_K56MtCOgGLk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
