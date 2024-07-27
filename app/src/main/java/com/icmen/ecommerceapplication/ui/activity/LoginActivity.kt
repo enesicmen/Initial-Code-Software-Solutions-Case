@@ -3,11 +3,10 @@ package com.icmen.ecommerceapplication.ui.activity
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.icmen.ecommerceapplication.R
 import com.icmen.ecommerceapplication.databinding.ActivityLoginBinding
-import com.icmen.ecommerceapplication.ui.common.BaseActivity
+import com.icmen.ecommerceapplication.ui.base.BaseActivity
 
 class LoginActivity : BaseActivity<ActivityLoginBinding>() {
     private lateinit var auth: FirebaseAuth

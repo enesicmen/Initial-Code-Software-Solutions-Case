@@ -14,6 +14,7 @@
     <string name="please_select_image">Lütfen resim seçiniz</string>
     <string name="profile">Profil</string>
     <string name="home">Anasayfa</string>
+    <string name="basket">Sepet</string>
     <string name="splash">Splash</string>
     <string name="login">Giriş yap</string>
     <string name="login_success">Giriş Başarılı</string>

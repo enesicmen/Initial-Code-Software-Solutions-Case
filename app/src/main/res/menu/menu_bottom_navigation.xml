@@ -2,13 +2,17 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/menu_item_post"
+        android:id="@+id/menu_item_home"
         android:icon="@drawable/ic_image_home_svg"
         android:title="@string/home" />
+
+    <item
+        android:id="@+id/menu_item_basket"
+        android:icon="@drawable/ic_basket"
+        android:title="@string/basket"/>
 
     <item
         android:id="@+id/menu_item_profile"
         android:icon="@drawable/ic_image_profile_svg"
         android:title="@string/profile"/>
-
 </menu>

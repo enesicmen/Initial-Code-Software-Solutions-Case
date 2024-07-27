@@ -1,4 +1,4 @@
-package com.icmen.ecommerceapplication.ui.common
+package com.icmen.ecommerceapplication.ui.base
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

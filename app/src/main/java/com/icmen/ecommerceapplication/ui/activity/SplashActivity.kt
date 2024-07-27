@@ -5,11 +5,11 @@ import android.content.Intent
 import android.os.Bundle
 import com.google.firebase.auth.FirebaseAuth
 import com.icmen.ecommerceapplication.databinding.ActivitySplashBinding
-import com.icmen.ecommerceapplication.ui.common.BaseActivity
+import com.icmen.ecommerceapplication.ui.base.BaseActivity
 
 
 @SuppressLint("CustomSplashScreen")
-class SplashActivity:BaseActivity<ActivitySplashBinding> (){
+class SplashActivity: BaseActivity<ActivitySplashBinding>(){
     override fun initView(savedInstanceState: Bundle?) {
         redirect()
     }

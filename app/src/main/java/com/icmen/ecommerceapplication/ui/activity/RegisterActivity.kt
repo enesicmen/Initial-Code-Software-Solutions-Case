@@ -12,7 +12,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.icmen.ecommerceapplication.R
 import com.icmen.ecommerceapplication.databinding.ActivityRegisterBinding
-import com.icmen.ecommerceapplication.ui.common.BaseActivity
+import com.icmen.ecommerceapplication.ui.base.BaseActivity
 
 class RegisterActivity : BaseActivity<ActivityRegisterBinding>() {
 
