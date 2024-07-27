@@ -1,14 +1,17 @@
 package com.icmen.ecommerceapplication.ui.fragment
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.firebase.firestore.FirebaseFirestore
+import com.icmen.ecommerceapplication.R
 import com.icmen.ecommerceapplication.adapters.ProductsAdapter
 import com.icmen.ecommerceapplication.data.model.Product
 import com.icmen.ecommerceapplication.databinding.FragmentProductsBinding
 import com.icmen.ecommerceapplication.ui.base.BaseFragment
 import com.icmen.ecommerceapplication.ui.common.RecyclerItemClickListener
+import com.icmen.ecommerceapplication.ui.fragment.ProductDetail.ProductDetailFragment
 import com.icmen.ecommerceapplication.ui.fragment.Products.ProductsPageViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -32,17 +35,18 @@ class ProductsPageFragment : BaseFragment<FragmentProductsBinding, ProductsPageV
 
     private fun initProductsAdapter() {
         mProductsAdapter = ProductsAdapter(mProductList, object : RecyclerItemClickListener {
-            /*
-            override fun onItemClick(position: Int) {
-                val productId = mProductList[position].id
-                val action = ProductsPageFragmentDirections.actionProductsFragmentToProductDetailFragment(productId)
-                findNavController().navigate(action)
-            }
-
-             */
-
             override fun invoke(position: Int) {
+                val product = mProductList[position]
+                val productDetailFragment = ProductDetailFragment()
+                val bundle = Bundle().apply {
+                    putParcelable("product", product)
+                }
+                productDetailFragment.arguments = bundle
 
+                requireActivity().supportFragmentManager.beginTransaction()
+                    .replace(R.id.nav_host_fragment, productDetailFragment)
+                    .addToBackStack(null)
+                    .commit()
             }
         })
         getViewBinding()?.rvProducts?.apply {
@@ -51,6 +55,7 @@ class ProductsPageFragment : BaseFragment<FragmentProductsBinding, ProductsPageV
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun fetchProducts() {
         getViewBinding()?.progressBar?.visibility = View.VISIBLE
         db.collection("products")
@@ -66,7 +71,6 @@ class ProductsPageFragment : BaseFragment<FragmentProductsBinding, ProductsPageV
             }
             .addOnFailureListener {
                 getViewBinding()?.progressBar?.visibility = View.GONE
-                // Hata durumunda yapılacak işlemler
             }
     }
 }
