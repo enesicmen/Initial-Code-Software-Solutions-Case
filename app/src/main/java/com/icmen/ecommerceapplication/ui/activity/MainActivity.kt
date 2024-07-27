@@ -7,9 +7,11 @@ import com.icmen.ecommerceapplication.R
 import com.icmen.ecommerceapplication.databinding.ActivityMainBinding
 import com.icmen.ecommerceapplication.ui.base.BaseActivity
 import com.icmen.ecommerceapplication.ui.fragment.Basket.BasketPageFragment
-import com.icmen.ecommerceapplication.ui.fragment.Home.HomePageFragment
+import com.icmen.ecommerceapplication.ui.fragment.ProductsPageFragment
 import com.icmen.ecommerceapplication.ui.fragment.Profile.ProfilePageFragment
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : BaseActivity<ActivityMainBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,7 +36,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         navView.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.menu_item_home -> {
-                    loadFragment(HomePageFragment())
+                    loadFragment(ProductsPageFragment())
                     return@setOnNavigationItemSelectedListener true
                 }
                 R.id.menu_item_basket -> {

@@ -19,4 +19,5 @@
     <string name="login">Giriş yap</string>
     <string name="login_success">Giriş Başarılı</string>
     <string name="login_failed">Giriş Başarısız</string>
+    <string name="price">Price: %.2f %s</string>
 </resources>
