@@ -10,4 +10,6 @@
     <string name="name">Ad</string>
     <string name="surname">Soyad</string>
     <string name="city">Yaşadığın Şehir</string>
+    <string name="image_upload_failed">Resim yüklenemedi</string>
+    <string name="please_select_image">Lütfen resim seçiniz</string>
 </resources>

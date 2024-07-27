@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -52,9 +53,12 @@ dependencies {
     def nav_version = "2.5.0"
 
     //Firebase
+    implementation platform('com.google.firebase:firebase-bom:33.1.2')
     implementation libs.firebase.firestore
     implementation libs.firebase.auth
+    implementation libs.firebase.storage
     apply plugin: 'com.google.gms.google-services'
+
 
     // Android
     implementation libs.androidx.core.ktx.v170
@@ -63,8 +67,12 @@ dependencies {
     implementation libs.androidx.constraintlayout
 
     // Navigation
-    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
+    implementation libs.androidx.navigation.fragment.ktx
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
+
+    //CircleImageView
+    implementation libs.circleimageview
+
 
     implementation libs.androidx.core.ktx
     implementation libs.androidx.lifecycle.runtime.ktx
