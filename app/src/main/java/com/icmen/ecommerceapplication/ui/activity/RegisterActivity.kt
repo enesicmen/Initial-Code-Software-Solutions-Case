@@ -48,9 +48,11 @@ class RegisterActivity : BaseActivity<ActivityRegisterBinding>() {
             } else if (selectedImageUri == null) {
                 Toast.makeText(this, getString(R.string.please_select_image), Toast.LENGTH_SHORT).show()
             } else {
+                getViewBinding()?.fmProgress?.visibility = android.view.View.VISIBLE
                 registerUser(name, surname, email, city, password)
             }
         }
+        goToLoginPage()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -70,9 +72,9 @@ class RegisterActivity : BaseActivity<ActivityRegisterBinding>() {
                         uploadProfileImage(it.uid, name, surname, email, city)
                     }
                 } else {
+                    getViewBinding()?.fmProgress?.visibility = android.view.View.GONE
                     val errorMessage = getString(R.string.registration_failed) + ": " + task.exception?.message
                     Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
-                    updateUI(null)
                 }
             }
     }
@@ -85,6 +87,7 @@ class RegisterActivity : BaseActivity<ActivityRegisterBinding>() {
                     saveUserInfo(userId, name, surname, email, city, uri.toString())
                 }
             }.addOnFailureListener { e ->
+                getViewBinding()?.fmProgress?.visibility = android.view.View.GONE
                 val errorMessage = getString(R.string.image_upload_failed) + ": " + e.message
                 Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
             }
@@ -102,20 +105,31 @@ class RegisterActivity : BaseActivity<ActivityRegisterBinding>() {
         )
         db.collection("users").document(userId).set(userInfo)
             .addOnSuccessListener {
+                getViewBinding()?.fmProgress?.visibility = android.view.View.GONE
                 Toast.makeText(this, getString(R.string.registration_successful), Toast.LENGTH_SHORT).show()
                 updateUI(auth.currentUser)
             }
             .addOnFailureListener { e ->
+                getViewBinding()?.fmProgress?.visibility = android.view.View.GONE
                 val errorMessage = getString(R.string.adding_to_firestore_failed) + ": " + e.message
                 Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
             }
     }
 
     private fun updateUI(user: FirebaseUser?) {
-        // Kullanıcı güncelleme işlemleri burada yapılabilir
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 
     companion object {
         private const val REQUEST_CODE_IMAGE_PICK = 1001
+    }
+
+    private fun goToLoginPage(){
+        getViewBinding()?.tvLogin?.setOnClickListener {
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+        }
     }
 }

@@ -27,11 +27,9 @@
             </intent-filter>
         </activity>
 
-        <!-- MainActivity tanımı -->
         <activity android:name=".ui.activity.MainActivity" />
-
-        <!-- Diğer activity tanımları -->
         <activity android:name=".ui.activity.RegisterActivity" />
+        <activity android:name=".ui.activity.LoginActivity" />
     </application>
 
 </manifest>
