@@ -2,7 +2,7 @@ package com.icmen.ecommerceapplication.ui.fragment
 
 import android.os.Bundle
 import android.view.View
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 import com.google.firebase.firestore.FirebaseFirestore
 import com.icmen.ecommerceapplication.adapters.ProductsAdapter
 import com.icmen.ecommerceapplication.data.model.Product
@@ -32,12 +32,21 @@ class ProductsPageFragment : BaseFragment<FragmentProductsBinding, ProductsPageV
 
     private fun initProductsAdapter() {
         mProductsAdapter = ProductsAdapter(mProductList, object : RecyclerItemClickListener {
+            /*
+            override fun onItemClick(position: Int) {
+                val productId = mProductList[position].id
+                val action = ProductsPageFragmentDirections.actionProductsFragmentToProductDetailFragment(productId)
+                findNavController().navigate(action)
+            }
+
+             */
+
             override fun invoke(position: Int) {
 
             }
         })
         getViewBinding()?.rvProducts?.apply {
-            layoutManager = LinearLayoutManager(context)
+            layoutManager = GridLayoutManager(context, 2)
             adapter = mProductsAdapter
         }
     }

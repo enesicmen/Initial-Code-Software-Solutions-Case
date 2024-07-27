@@ -4,6 +4,7 @@ plugins {
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
     id 'kotlin-parcelize'
+    id 'androidx.navigation.safeargs.kotlin'
     id 'com.google.gms.google-services'
 }
 
@@ -52,7 +53,15 @@ android {
 }
 
 dependencies {
+
     def hilt_version = "2.48"
+    def navVersion = "2.5.0"
+
+
+
+    implementation libs.navigation.fragment.ktx
+    implementation libs.androidx.navigation.ui.ktx
+
 
     //Firebase
     implementation platform(libs.firebase.bom)
@@ -79,6 +88,10 @@ dependencies {
     //Glide
     implementation libs.glide
     kapt 'com.github.bumptech.glide:compiler:4.12.0'
+
+    //Navigation
+    implementation "androidx.navigation:navigation-fragment-ktx:$navVersion"
+    implementation "androidx.navigation:navigation-ui-ktx:$navVersion"
 
     implementation libs.androidx.core.ktx
     implementation libs.androidx.lifecycle.runtime.ktx
