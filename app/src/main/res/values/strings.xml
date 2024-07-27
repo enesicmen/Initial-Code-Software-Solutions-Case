@@ -12,4 +12,7 @@
     <string name="city">Yaşadığın Şehir</string>
     <string name="image_upload_failed">Resim yüklenemedi</string>
     <string name="please_select_image">Lütfen resim seçiniz</string>
+    <string name="profile">Profil</string>
+    <string name="home">Anasayfa</string>
+    <string name="splash">Splash</string>
 </resources>

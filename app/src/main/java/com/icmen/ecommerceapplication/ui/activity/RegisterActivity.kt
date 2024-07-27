@@ -1,4 +1,4 @@
-package com.icmen.ecommerceapplication.ui
+package com.icmen.ecommerceapplication.ui.activity
 
 import android.app.Activity
 import android.content.Intent
