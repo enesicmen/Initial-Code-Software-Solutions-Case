@@ -17,7 +17,7 @@ class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding, Product
     private lateinit var product: Product
     private lateinit var firestore: FirebaseFirestore
     private lateinit var auth: FirebaseAuth
-    private var quantity: Int = 1 // Varsayılan miktar
+    private var quantity: Int = 1
 
     override fun setViewModelClass() = ProductsPageViewModel::class.java
 
@@ -34,7 +34,6 @@ class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding, Product
 
         showProductDetails(product)
 
-        // Eksi butonuna tıklama olayı
         getViewBinding()?.btnDecrease?.setOnClickListener {
             if (quantity > 1) {
                 quantity--
@@ -42,13 +41,13 @@ class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding, Product
             }
         }
 
-        // Artı butonuna tıklama olayı
+
         getViewBinding()?.btnIncrease?.setOnClickListener {
             quantity++
             updateQuantityText()
         }
 
-        // Sepete ekleme butonuna tıklama olayı
+
         getViewBinding()?.btnBasket?.setOnClickListener {
             addToBasket()
         }
@@ -69,11 +68,11 @@ class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding, Product
                 .into(ivImage)
         }
 
-        updateQuantityText() // Miktar metnini güncelle
+        updateQuantityText()
     }
 
     private fun updateQuantityText() {
-        getViewBinding()?.tvQuantity?.text = quantity.toString() // Miktarı güncelle
+        getViewBinding()?.tvQuantity?.text = quantity.toString()
     }
 
     private fun addToBasket() {
@@ -83,7 +82,6 @@ class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding, Product
 
             basketRef.get().addOnSuccessListener { document ->
                 if (document.exists()) {
-                    // Ürün zaten sepette, quantity değerini artır
                     val currentQuantity = document.getLong("quantity") ?: 0
                     basketRef.update("quantity", currentQuantity + quantity)
                         .addOnSuccessListener {
@@ -93,7 +91,6 @@ class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding, Product
                             showToast("Sepete eklenirken hata oluştu: ${e.message}")
                         }
                 } else {
-                    // Ürün sepette yok, yeni belge oluştur
                     val productData = hashMapOf(
                         "productName" to product.productName,
                         "price" to product.price,
