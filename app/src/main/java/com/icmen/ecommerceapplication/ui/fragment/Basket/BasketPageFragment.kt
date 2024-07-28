@@ -19,11 +19,16 @@ class BasketPageFragment : BaseFragment<FragmentBasketBinding, BasketPageViewMod
     private val basketItems: MutableList<Product> = mutableListOf() // Sepet ürünlerini tutacak liste
 
     override fun initView(savedInstanceState: Bundle?) {
+        // Firestore ve FirebaseAuth başlatma
         firestore = FirebaseFirestore.getInstance()
         auth = FirebaseAuth.getInstance()
+
+        // RecyclerView ayarları
         getViewBinding()?.rvBasket?.layoutManager = LinearLayoutManager(requireContext())
-        basketAdapter = BasketPageAdapter(basketItems) { position -> onBasketItemClicked(position) } // Tıklama olayını ekleyin
+        basketAdapter = BasketPageAdapter(basketItems) { position -> onBasketItemClicked(position) }
         getViewBinding()?.rvBasket?.adapter = basketAdapter
+
+        // Kullanıcının sepetini al
         getUserBasket()
     }
 
@@ -33,17 +38,19 @@ class BasketPageFragment : BaseFragment<FragmentBasketBinding, BasketPageViewMod
 
         if (userId != null) {
             firestore.collection("basket")
-                .whereEqualTo("userId", userId)
+                .document(userId)
+                .collection("products")
                 .get()
                 .addOnSuccessListener { querySnapshot ->
                     basketItems.clear()
                     for (document in querySnapshot.documents) {
                         val product = document.toObject(Product::class.java)
                         if (product != null) {
+                            product.quantity = document.getLong("quantity")?.toInt() ?: 0 // Quantity değerini ayarla
                             basketItems.add(product)
                         }
                     }
-                    basketAdapter.notifyDataSetChanged()
+                    basketAdapter.notifyDataSetChanged() // RecyclerView'u güncelle
                 }
                 .addOnFailureListener { e ->
                     showToast("Sepet alınırken hata oluştu: ${e.message}")
@@ -60,7 +67,9 @@ class BasketPageFragment : BaseFragment<FragmentBasketBinding, BasketPageViewMod
     private fun onBasketItemClicked(position: Int) {
         val selectedProduct = basketItems[position]
         showToast("Ürün tıklandı: ${selectedProduct.productName}")
+        // Burada ürün detay sayfasına yönlendirme veya diğer işlemleri yapabilirsiniz.
     }
+
     override fun setViewModelClass() = BasketPageViewModel::class.java
 
     override fun setViewBinding(): FragmentBasketBinding =

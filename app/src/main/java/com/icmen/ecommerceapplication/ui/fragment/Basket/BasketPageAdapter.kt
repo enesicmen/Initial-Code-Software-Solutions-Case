@@ -44,6 +44,7 @@ class BasketPageAdapter(
                 tvProductName.text = item.productName
                 tvDescription.text = item.description
                 tvPrice.text = mContext.getString(R.string.price, item.price, item.currency)
+                tvQuantity.text = "Adet: ${item.quantity}" // Miktarı göster
                 Glide.with(mContext).load(item.productImage).into(ivImage)
             }
         }
