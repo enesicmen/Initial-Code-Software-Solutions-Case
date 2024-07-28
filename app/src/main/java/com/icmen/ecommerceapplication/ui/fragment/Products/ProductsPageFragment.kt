@@ -12,17 +12,15 @@ import com.icmen.ecommerceapplication.databinding.FragmentProductsBinding
 import com.icmen.ecommerceapplication.ui.base.BaseFragment
 import com.icmen.ecommerceapplication.ui.common.RecyclerItemClickListener
 import com.icmen.ecommerceapplication.ui.fragment.ProductDetail.ProductDetailFragment
-import com.icmen.ecommerceapplication.ui.fragment.Products.ProductsPageViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ProductsPageFragment : BaseFragment<FragmentProductsBinding, ProductsPageViewModel>() {
+class ProductsPageFragment : BaseFragment<FragmentProductsBinding>() {
 
     private lateinit var mProductsAdapter: ProductsAdapter
     private var mProductList: MutableList<Product> = mutableListOf()
     private lateinit var db: FirebaseFirestore
 
-    override fun setViewModelClass() = ProductsPageViewModel::class.java
 
     override fun setViewBinding(): FragmentProductsBinding =
         FragmentProductsBinding.inflate(layoutInflater)

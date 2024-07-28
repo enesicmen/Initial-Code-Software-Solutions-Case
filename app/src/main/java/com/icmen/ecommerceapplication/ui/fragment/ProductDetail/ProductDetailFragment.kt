@@ -1,25 +1,21 @@
 package com.icmen.ecommerceapplication.ui.fragment.ProductDetail
 
 import android.os.Bundle
-import android.view.View
 import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.icmen.ecommerceapplication.R
 import com.icmen.ecommerceapplication.data.model.Product
 import com.icmen.ecommerceapplication.databinding.FragmentProductDetailBinding
 import com.icmen.ecommerceapplication.ui.base.BaseFragment
-import com.icmen.ecommerceapplication.ui.fragment.Products.ProductsPageViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
-class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding, ProductsPageViewModel>() {
+class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding>() {
 
     private lateinit var product: Product
     private lateinit var firestore: FirebaseFirestore
     private lateinit var auth: FirebaseAuth
     private var quantity: Int = 1
-
-    override fun setViewModelClass() = ProductsPageViewModel::class.java
 
     override fun setViewBinding(): FragmentProductDetailBinding =
         FragmentProductDetailBinding.inflate(layoutInflater)

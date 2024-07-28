@@ -12,7 +12,7 @@ import com.icmen.ecommerceapplication.data.model.Product
 import com.icmen.ecommerceapplication.databinding.FragmentBasketBinding
 import com.icmen.ecommerceapplication.ui.base.BaseFragment
 
-class BasketPageFragment : BaseFragment<FragmentBasketBinding, BasketPageViewModel>() {
+class BasketPageFragment : BaseFragment<FragmentBasketBinding>() {
 
     private lateinit var firestore: FirebaseFirestore
     private lateinit var auth: FirebaseAuth
@@ -29,9 +29,6 @@ class BasketPageFragment : BaseFragment<FragmentBasketBinding, BasketPageViewMod
 
         getUserBasket()
     }
-
-    override fun setViewModelClass() = BasketPageViewModel::class.java
-
     override fun setViewBinding(): FragmentBasketBinding =
         FragmentBasketBinding.inflate(layoutInflater)
 
