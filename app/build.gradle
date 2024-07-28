@@ -54,6 +54,7 @@ android {
 dependencies {
 
     def hilt_version = "2.48"
+    def room_version = "2.5.0" // En son sürümü kontrol et
 
     //Firebase
     implementation platform(libs.firebase.bom)
@@ -80,6 +81,9 @@ dependencies {
     //Glide
     implementation libs.glide
     kapt 'com.github.bumptech.glide:compiler:4.12.0'
+
+    //Gson
+    implementation 'com.google.code.gson:gson:2.8.9' // Gson kütüphanesini ekleyin
 
 
     implementation libs.androidx.core.ktx
