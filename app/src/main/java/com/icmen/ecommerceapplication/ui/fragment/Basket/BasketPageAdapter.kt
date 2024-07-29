@@ -1,4 +1,4 @@
-package com.icmen.ecommerceapplication.adapters
+package com.icmen.ecommerceapplication.ui.fragment.Basket
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -13,29 +13,48 @@ import com.icmen.ecommerceapplication.ui.common.RecyclerItemClickListener
 
 class BasketPageAdapter(
     private val basketItems: MutableList<Product>,
-    private val onClicked: RecyclerItemClickListener
+    private val onClicked: RecyclerItemClickListener,
+    private val onQuantityChanged: (Int, Int) -> Unit
 ) : RecyclerView.Adapter<BasketPageAdapter.ViewHolder>() {
 
     class ViewHolder(
         private val binding: RowBasketBinding,
         private val onClicked: RecyclerItemClickListener,
+        private val onQuantityChanged: (Int, Int) -> Unit,
         private val mContext: Context
     ) : RecyclerView.ViewHolder(binding.root) {
 
         companion object {
             fun from(
                 viewGroup: ViewGroup,
-                onClicked: RecyclerItemClickListener
+                onClicked: RecyclerItemClickListener,
+                onQuantityChanged: (Int, Int) -> Unit
             ): ViewHolder {
                 val layoutInflater = LayoutInflater.from(viewGroup.context)
                 val context = viewGroup.context
                 val binding = RowBasketBinding.inflate(layoutInflater, viewGroup, false)
-                return ViewHolder(binding = binding, onClicked = onClicked, context)
+                return ViewHolder(binding = binding, onClicked = onClicked, onQuantityChanged = onQuantityChanged, context)
             }
         }
 
         init {
             itemView.setOnClickListener { onClicked(adapterPosition) }
+            binding.btnIncrease.setOnClickListener {
+                val currentQuantity = binding.tvQuantityFor.text.toString().toInt()
+                val newQuantity = currentQuantity + 1
+                binding.tvQuantityFor.text = newQuantity.toString()
+                onQuantityChanged(adapterPosition, newQuantity)
+            }
+            binding.btnDecrease.setOnClickListener {
+                val currentQuantity = binding.tvQuantityFor.text.toString().toInt()
+                if (currentQuantity > 1) {
+                    val newQuantity = currentQuantity - 1
+                    binding.tvQuantityFor.text = newQuantity.toString()
+                    onQuantityChanged(adapterPosition, newQuantity)
+                } else if (currentQuantity == 1) {
+                    onQuantityChanged(adapterPosition, 0)
+                }
+            }
         }
 
         @SuppressLint("StringFormatMatches")
@@ -44,14 +63,14 @@ class BasketPageAdapter(
                 tvProductName.text = item.productName
                 tvDescription.text = item.description
                 tvPrice.text = mContext.getString(R.string.price, item.price, item.currency)
-                tvQuantity.text = "Adet: ${item.quantity}" // Miktarı göster
+                tvQuantityFor.text = item.quantity.toString()
                 Glide.with(mContext).load(item.productImage).into(ivImage)
             }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
-        ViewHolder.from(viewGroup = parent, onClicked = onClicked)
+        ViewHolder.from(viewGroup = parent, onClicked = onClicked, onQuantityChanged = onQuantityChanged)
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) =
         holder.bind(item = basketItems[position])

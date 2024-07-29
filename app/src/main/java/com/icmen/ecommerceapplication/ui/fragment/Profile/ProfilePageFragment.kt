@@ -56,7 +56,6 @@ class ProfilePageFragment : BaseFragment<FragmentProfileBinding>(){
                     }
                 }
                 .addOnFailureListener { exception ->
-                    // Hata durumunda da progress bar'ı gizle
                     progressBar?.visibility = View.GONE
                     Log.w("User Info", "Belge alma hatası", exception)
                 }

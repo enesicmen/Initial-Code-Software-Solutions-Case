@@ -97,16 +97,37 @@
             app:layout_constraintTop_toBottomOf="@+id/tvDescription"
             tools:text="Ürün Adedi: " />
 
-        <Button
-            android:id="@+id/btnRemove"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="5dp"
-            android:backgroundTint="@color/teal_700"
-            android:text="@string/delete"
-            android:textAllCaps="false"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvQuantity" />
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingTop="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvQuantity"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <Button
+                android:id="@+id/btnDecrease"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:text="-" />
+
+            <TextView
+                android:id="@+id/tvQuantityFor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="16dp"
+                android:text="1"
+                android:textSize="16sp" />
+
+            <Button
+                android:id="@+id/btnIncrease"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:text="+" />
+        </LinearLayout>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
