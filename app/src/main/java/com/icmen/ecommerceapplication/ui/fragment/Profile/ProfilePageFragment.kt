@@ -66,6 +66,7 @@ class ProfilePageFragment : BaseFragment<FragmentProfileBinding>(){
         }
         openEditPasswordPage()
         openEditProfilePage()
+        openOrdersPage()
     }
 
     override fun setViewBinding(): FragmentProfileBinding =
@@ -89,6 +90,13 @@ class ProfilePageFragment : BaseFragment<FragmentProfileBinding>(){
     private fun openEditProfilePage(){
         getViewBinding()?.llEditProfile?.setOnClickListener {
             val actionDetail = ProfilePageFragmentDirections.actionProfilePageFragmentToEditProfilePageFragment()
+            findNavController().navigate(actionDetail)
+        }
+    }
+
+    private fun openOrdersPage(){
+        getViewBinding()?.llOrders?.setOnClickListener {
+            val actionDetail = ProfilePageFragmentDirections.actionProfilePageFragmentToOrdersPageFragment()
             findNavController().navigate(actionDetail)
         }
     }

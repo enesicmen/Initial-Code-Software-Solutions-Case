@@ -66,6 +66,9 @@
         <action
             android:id="@+id/action_profilePageFragment_to_editProfilePageFragment"
             app:destination="@id/editProfilePageFragment" />
+        <action
+            android:id="@+id/action_profilePageFragment_to_ordersPageFragment"
+            app:destination="@id/ordersPageFragment" />
     </fragment>
 
     <fragment
@@ -79,5 +82,11 @@
         android:name="com.icmen.ecommerceapplication.ui.fragment.EditProfilePageFragment"
         android:label="Edit Profile Page"
         tools:layout="@layout/fragment_edit_profile" />
+
+    <fragment
+        android:id="@+id/ordersPageFragment"
+        android:name="com.icmen.ecommerceapplication.ui.fragment.orders.OrdersPageFragment"
+        android:label="Orders Page"
+        tools:layout="@layout/fragment_orders" />
 
 </navigation>

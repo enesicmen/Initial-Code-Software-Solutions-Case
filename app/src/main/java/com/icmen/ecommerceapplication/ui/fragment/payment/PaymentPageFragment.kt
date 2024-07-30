@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.Toast
 import com.icmen.PaymentSDK
+import com.icmen.ecommerceapplication.data.model.Order
 import com.icmen.ecommerceapplication.data.model.Product
 import com.icmen.ecommerceapplication.databinding.FragmentPaymentBinding
 import com.icmen.ecommerceapplication.ui.base.BaseFragment
@@ -26,17 +27,13 @@ class PaymentPageFragment : BaseFragment<FragmentPaymentBinding>() {
             val expiryDate = getViewBinding()?.expiryDate?.text.toString()
             val cvv = getViewBinding()?.cvv?.text.toString()
 
-            // Girdi Kontrolü
             if (amount > 0 && cardNumber.isNotEmpty() && expiryDate.isNotEmpty() && cvv.isNotEmpty()) {
                 val cardDetails = PaymentSDK.CardDetails(cardNumber, expiryDate, cvv)
                 paymentSDK.processPayment(amount, cardDetails, object : PaymentSDK.PaymentCallback {
-                    override fun onSuccess(message: String) {
+                    override fun onSuccess(message: String, paymentId: String) {
                         showToast(message)
-                        // Ödeme başarılı olduğunda siparişi kaydet
-                        saveOrderToFirebase()
-                        // Sepeti temizle
+                        saveOrderToFirebase(paymentId)
                         clearBasket()
-                        // İsterseniz başka bir sayfaya yönlendirme yapabilirsiniz
                         navigateToSuccessPage()
                     }
 
@@ -70,18 +67,18 @@ class PaymentPageFragment : BaseFragment<FragmentPaymentBinding>() {
         getViewBinding()?.tvTotalAmount?.text = totalAmount
     }
 
-    private fun saveOrderToFirebase() {
+    private fun saveOrderToFirebase(paymentId: String) {
         val userId = FirebaseAuth.getInstance().currentUser?.uid
         if (userId != null) {
             val ordersRef = FirebaseFirestore.getInstance().collection("orders").document(userId).collection("userOrders")
 
-            // Her sipariş için yeni bir belge oluştur
             val newOrderRef = ordersRef.document()
 
             val orderData = hashMapOf(
                 "products" to mProducts.toList(),
                 "totalAmount" to mTotalAmount,
-                "timestamp" to System.currentTimeMillis()
+                "paymentId" to paymentId,
+                "orderDate" to System.currentTimeMillis()
             )
 
             newOrderRef.set(orderData)
@@ -101,7 +98,6 @@ class PaymentPageFragment : BaseFragment<FragmentPaymentBinding>() {
         if (userId != null) {
             val basketRef = FirebaseFirestore.getInstance().collection("basket").document(userId).collection("products")
 
-            // Sepetteki tüm ürünleri sil
             basketRef.get().addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     for (document in task.result) {
@@ -117,6 +113,6 @@ class PaymentPageFragment : BaseFragment<FragmentPaymentBinding>() {
 
     private fun navigateToSuccessPage() {
         // Başarılı ödeme sonrası yönlendirme işlemini gerçekleştirin
-        // Örneğin, bir başarı sayfasına geçiş yapabilirsiniz
+
     }
 }

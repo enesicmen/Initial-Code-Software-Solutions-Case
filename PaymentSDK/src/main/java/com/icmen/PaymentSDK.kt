@@ -1,12 +1,15 @@
 package com.icmen
 
+import java.util.UUID
+
 class PaymentSDK {
 
     fun processPayment(amount: Double, cardDetails: CardDetails, callback: PaymentCallback) {
         val isSuccess = simulatePaymentProcessing(amount, cardDetails)
 
         if (isSuccess) {
-            callback.onSuccess("Ödeme başarılı!")
+            val paymentId = UUID.randomUUID().toString()
+            callback.onSuccess("Ödeme başarılı!", paymentId)
         } else {
             callback.onError("Ödeme başarısız!")
         }
@@ -19,7 +22,7 @@ class PaymentSDK {
     data class CardDetails(val cardNumber: String, val expiryDate: String, val cvv: String)
 
     interface PaymentCallback {
-        fun onSuccess(message: String)
+        fun onSuccess(message: String, paymentId: String)
         fun onError(errorMessage: String)
     }
 }
