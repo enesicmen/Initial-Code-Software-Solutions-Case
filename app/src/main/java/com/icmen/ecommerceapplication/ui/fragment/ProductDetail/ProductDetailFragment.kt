@@ -25,10 +25,10 @@ class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding>() {
         auth = FirebaseAuth.getInstance()
 
         arguments?.let {
-            product = it.getParcelable("product")!!
+            //product = it.getParcelable("product")!!
         }
 
-        showProductDetails(product)
+        //showProductDetails(product)
 
         getViewBinding()?.btnDecrease?.setOnClickListener {
             if (quantity > 1) {

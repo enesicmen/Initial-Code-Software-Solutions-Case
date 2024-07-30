@@ -3,9 +3,9 @@ package com.icmen.ecommerceapplication.ui.fragment
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.firebase.firestore.FirebaseFirestore
-import com.icmen.ecommerceapplication.R
 import com.icmen.ecommerceapplication.adapters.ProductsAdapter
 import com.icmen.ecommerceapplication.data.model.Product
 import com.icmen.ecommerceapplication.databinding.FragmentProductsBinding
@@ -43,14 +43,8 @@ class ProductsPageFragment : BaseFragment<FragmentProductsBinding>() {
                 }
                 productDetailFragment.arguments = bundle
 
-
-                requireActivity().supportFragmentManager.beginTransaction()
-                    .replace(R.id.nav_host_fragment, productDetailFragment)
-                    .addToBackStack(null)
-                    .commit()
-
-
-
+                val actionDetail = ProductsPageFragmentDirections.actionProductsPageFragmentToProductDetailPageFragment2()
+                findNavController().navigate(actionDetail)
 
             }
         })
