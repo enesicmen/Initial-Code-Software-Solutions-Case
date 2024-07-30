@@ -35,7 +35,8 @@ class ProductsPageFragment : BaseFragment<FragmentProductsBinding>() {
         mProductsAdapter = ProductsAdapter(mProductList, object : RecyclerItemClickListener {
             override fun invoke(position: Int) {
                 val product = mProductList[position]
-                val productDetailFragment = ProductDetailFragment()
+                //val productDetailFragment = ProductDetailFragment()
+                /*
                 val bundle = Bundle().apply {
                     putParcelable("product", product)
 
@@ -43,9 +44,10 @@ class ProductsPageFragment : BaseFragment<FragmentProductsBinding>() {
                 }
                 productDetailFragment.arguments = bundle
 
-                val actionDetail = ProductsPageFragmentDirections.actionProductsPageFragmentToProductDetailPageFragment2()
-                findNavController().navigate(actionDetail)
+                 */
 
+                val actionDetail = ProductsPageFragmentDirections.actionProductsPageFragmentToProductDetailPageFragment2(product = product)
+                findNavController().navigate(actionDetail)
             }
         })
         getViewBinding()?.rvProducts?.apply {

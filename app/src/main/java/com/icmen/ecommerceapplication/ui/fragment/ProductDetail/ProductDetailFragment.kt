@@ -12,7 +12,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 
 class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding>() {
 
-    private lateinit var product: Product
+    private lateinit var mProduct: Product
     private lateinit var firestore: FirebaseFirestore
     private lateinit var auth: FirebaseAuth
     private var quantity: Int = 1
@@ -24,11 +24,9 @@ class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding>() {
         firestore = FirebaseFirestore.getInstance()
         auth = FirebaseAuth.getInstance()
 
-        arguments?.let {
-            //product = it.getParcelable("product")!!
-        }
 
-        //showProductDetails(product)
+
+        showProductDetails(mProduct)
 
         getViewBinding()?.btnDecrease?.setOnClickListener {
             if (quantity > 1) {
@@ -46,6 +44,14 @@ class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding>() {
 
         getViewBinding()?.btnBasket?.setOnClickListener {
             addToBasket()
+        }
+    }
+
+    override fun readDataFromArguments() {
+        super.readDataFromArguments()
+        arguments?.let {
+            val safeArgs = ProductDetailFragmentArgs.fromBundle(it)
+            mProduct = safeArgs.product
         }
     }
 
@@ -74,7 +80,7 @@ class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding>() {
     private fun addToBasket() {
         val userId = auth.currentUser?.uid
         if (userId != null) {
-            val basketRef = firestore.collection("basket").document(userId).collection("products").document(product.productId)
+            val basketRef = firestore.collection("basket").document(userId).collection("products").document(mProduct.productId)
 
             basketRef.get().addOnSuccessListener { document ->
                 if (document.exists()) {
@@ -88,20 +94,20 @@ class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding>() {
                         }
                 } else {
                     val productData = hashMapOf(
-                        "productName" to product.productName,
-                        "price" to product.price,
-                        "currency" to product.currency,
+                        "productName" to mProduct.productName,
+                        "price" to mProduct.price,
+                        "currency" to mProduct.currency,
                         "quantity" to quantity,
-                        "productImage" to product.productImage,
+                        "productImage" to mProduct.productImage,
                         "userId" to userId,
-                        "description" to product.description,
-                        "listiningDate" to product.listiningDate,
-                        "productColor" to product.productColor,
-                        "productId" to product.productId
+                        "description" to mProduct.description,
+                        "listiningDate" to mProduct.listiningDate,
+                        "productColor" to mProduct.productColor,
+                        "productId" to mProduct.productId
                     )
                     basketRef.set(productData)
                         .addOnSuccessListener {
-                            showToast("Ürün sepete eklendi: ${product.productName}")
+                            showToast("Ürün sepete eklendi: ${mProduct.productName}")
                         }
                         .addOnFailureListener { e ->
                             showToast("Sepete eklenirken hata oluştu: ${e.message}")
