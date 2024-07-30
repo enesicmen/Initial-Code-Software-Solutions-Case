@@ -41,13 +41,17 @@
 
     <fragment
         android:id="@+id/paymentPageFragment"
-        android:name="com.icmen.ecommerceapplication.ui.fragment.payment.PaymentFragment"
+        android:name="com.icmen.ecommerceapplication.ui.fragment.payment.PaymentPageFragment"
         android:label="Payment Page"
         tools:layout="@layout/fragment_payment">
 
         <argument
             android:name="amount"
             app:argType="string" />
+
+        <argument
+            android:name="products"
+            app:argType="com.icmen.ecommerceapplication.data.model.Product[]" />
 
     </fragment>
 

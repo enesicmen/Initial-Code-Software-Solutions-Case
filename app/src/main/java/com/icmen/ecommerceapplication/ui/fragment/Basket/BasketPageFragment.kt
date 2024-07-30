@@ -138,10 +138,14 @@ class BasketPageFragment : BaseFragment<FragmentBasketBinding>() {
         showToast("Ürün tıklandı: ${selectedProduct.productName}")
     }
 
-    private fun openPaymentPage(){
+    private fun openPaymentPage() {
         getViewBinding()?.btnBuy?.setOnClickListener {
-            val actionDetail = BasketPageFragmentDirections.actionBasketPageFragmentToPaymentPageFragment(amount = totalAmount.toString())
+            val actionDetail = BasketPageFragmentDirections.actionBasketPageFragmentToPaymentPageFragment(
+                products = basketItems.toTypedArray(),
+                amount = totalAmount.toString()
+            )
             findNavController().navigate(actionDetail)
         }
     }
+
 }
