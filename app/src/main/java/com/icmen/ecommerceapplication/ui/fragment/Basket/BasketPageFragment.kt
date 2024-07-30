@@ -11,7 +11,9 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.icmen.ecommerceapplication.data.model.Product
 import com.icmen.ecommerceapplication.databinding.FragmentBasketBinding
 import com.icmen.ecommerceapplication.ui.base.BaseFragment
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class BasketPageFragment : BaseFragment<FragmentBasketBinding>() {
 
     private lateinit var firestore: FirebaseFirestore

@@ -45,6 +45,8 @@ class ProductsPageFragment : BaseFragment<FragmentProductsBinding>() {
                     .replace(R.id.nav_host_fragment, productDetailFragment)
                     .addToBackStack(null)
                     .commit()
+
+
             }
         })
         getViewBinding()?.rvProducts?.apply {
