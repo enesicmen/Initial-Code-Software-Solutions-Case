@@ -1,24 +1,26 @@
 package com.icmen.ecommerceapplication.ui.activity
-
 import android.os.Bundle
-import androidx.navigation.NavController
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.NavigationUI
+import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.icmen.ecommerceapplication.R
 import com.icmen.ecommerceapplication.databinding.ActivityMainBinding
 import com.icmen.ecommerceapplication.ui.base.BaseActivity
+import com.icmen.ecommerceapplication.ui.fragment.Basket.BasketPageFragment
+import com.icmen.ecommerceapplication.ui.fragment.ProductsPageFragment
+import com.icmen.ecommerceapplication.ui.fragment.Profile.ProfilePageFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : BaseActivity<ActivityMainBinding>() {
 
-    private lateinit var navController: NavController
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setViewBinding()
         initView(savedInstanceState)
+    }
+
+    override fun initView(savedInstanceState: Bundle?) {
+        setBottomNavigation(savedInstanceState)
     }
 
     override fun setViewBinding(): ActivityMainBinding {
@@ -27,38 +29,35 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         return binding
     }
 
-    override fun initView(savedInstanceState: Bundle?) {
-        setBottomNavigation()
-    }
+    private fun setBottomNavigation(savedInstanceState: Bundle?) {
+        val navView: BottomNavigationView = findViewById(R.id.bottom_navigation)
 
-    private fun setBottomNavigation() {
-            val navView: BottomNavigationView = getViewBinding()?.bottomNavigation
-                ?: throw IllegalStateException("BottomNavigationView not found")
-
-            val navHostFragment = supportFragmentManager.findFragmentById(R.id.navHostFragment) as? NavHostFragment
-                ?: throw IllegalStateException("NavHostFragment not found")
-
-            navController = navHostFragment.navController
-            NavigationUI.setupWithNavController(navView, navController)
-
-            // Bu satırı ekleyerek otomatik geçişi kaldırıyoruz
-            navView.setOnNavigationItemSelectedListener { menuItem ->
-                when (menuItem.itemId) {
-                    R.id.menu_item_home -> {
-                        navController.navigate(R.id.productsPageFragment)
-                        true
-                    }
-                    R.id.menu_item_basket -> {
-                        navController.navigate(R.id.basketPageFragment)
-                        true
-                    }
-                    R.id.menu_item_profile -> {
-                        navController.navigate(R.id.profilePageFragment)
-                        true
-                    }
-                    else -> false
+        navView.setOnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.menu_item_home -> {
+                    loadFragment(ProductsPageFragment())
+                    return@setOnNavigationItemSelectedListener true
+                }
+                R.id.menu_item_basket -> {
+                    loadFragment(BasketPageFragment())
+                    return@setOnNavigationItemSelectedListener true
+                }
+                R.id.menu_item_profile -> {
+                    loadFragment(ProfilePageFragment())
+                    return@setOnNavigationItemSelectedListener true
+                }
             }
+            false
         }
 
+        if (savedInstanceState == null) {
+            navView.selectedItemId = R.id.menu_item_home
+        }
+    }
+
+    private fun loadFragment(fragment: Fragment) {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.nav_host_fragment, fragment)
+            .commit()
     }
 }
