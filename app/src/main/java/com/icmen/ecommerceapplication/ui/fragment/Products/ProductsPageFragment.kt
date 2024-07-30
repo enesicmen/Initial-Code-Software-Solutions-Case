@@ -38,13 +38,18 @@ class ProductsPageFragment : BaseFragment<FragmentProductsBinding>() {
                 val productDetailFragment = ProductDetailFragment()
                 val bundle = Bundle().apply {
                     putParcelable("product", product)
+
+
                 }
                 productDetailFragment.arguments = bundle
+
 
                 requireActivity().supportFragmentManager.beginTransaction()
                     .replace(R.id.nav_host_fragment, productDetailFragment)
                     .addToBackStack(null)
                     .commit()
+
+
 
 
             }

@@ -1,0 +1,39 @@
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_graph"
+    app:startDestination="@id/productsPageFragment">
+
+
+    <fragment
+        android:id="@+id/productsPageFragment"
+        android:name="com.icmen.ecommerceapplication.ui.fragment.ProductsPageFragment"
+        android:label="Products Page"
+        tools:layout="@layout/fragment_products">
+
+        <action
+            android:id="@+id/action_productsPageFragment_to_productDetailPageFragment2"
+            app:destination="@id/productDetailPageFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/productDetailPageFragment"
+        android:name="com.icmen.ecommerceapplication.ui.fragment.ProductDetail.ProductDetailFragment"
+        android:label="Product Detail Page"
+        tools:layout="@layout/fragment_product_detail" >
+
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/basketPageFragment"
+        android:name="com.icmen.ecommerceapplication.ui.fragment.Basket.BasketPageFragment"
+        android:label="Basket Page"
+        tools:layout="@layout/fragment_basket" />
+    <fragment
+        android:id="@+id/profilePageFragment"
+        android:name="com.icmen.ecommerceapplication.ui.fragment.Profile.ProfilePageFragment"
+        android:label="Profile Page"
+        tools:layout="@layout/fragment_profile" />
+
+</navigation>
