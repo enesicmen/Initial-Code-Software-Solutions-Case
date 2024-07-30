@@ -5,6 +5,7 @@ import android.app.AlertDialog
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -38,6 +39,7 @@ class BasketPageFragment : BaseFragment<FragmentBasketBinding>() {
         getViewBinding()?.rvBasket?.adapter = basketAdapter
 
         getUserBasket()
+        openPaymentPage()
     }
 
     override fun setViewBinding(): FragmentBasketBinding =
@@ -134,5 +136,12 @@ class BasketPageFragment : BaseFragment<FragmentBasketBinding>() {
     private fun onBasketItemClicked(position: Int) {
         val selectedProduct = basketItems[position]
         showToast("Ürün tıklandı: ${selectedProduct.productName}")
+    }
+
+    private fun openPaymentPage(){
+        getViewBinding()?.btnBuy?.setOnClickListener {
+            val actionDetail = BasketPageFragmentDirections.actionBasketPageFragmentToPaymentPageFragment(amount = totalAmount.toString())
+            findNavController().navigate(actionDetail)
+        }
     }
 }

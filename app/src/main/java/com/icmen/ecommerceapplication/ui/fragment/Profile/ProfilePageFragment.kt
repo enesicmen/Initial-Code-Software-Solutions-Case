@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -63,6 +64,8 @@ class ProfilePageFragment : BaseFragment<FragmentProfileBinding>(){
             progressBar?.visibility = View.GONE
             Log.d("User Info", "Kullanıcı oturum açmamış veya ID bulunamadı.")
         }
+        openEditPasswordPage()
+        openEditProfilePage()
     }
 
     override fun setViewBinding(): FragmentProfileBinding =
@@ -74,5 +77,19 @@ class ProfilePageFragment : BaseFragment<FragmentProfileBinding>(){
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
         startActivity(intent)
         requireActivity().finish()
+    }
+
+    private fun openEditPasswordPage(){
+        getViewBinding()?.llEditPassword?.setOnClickListener {
+            val actionDetail = ProfilePageFragmentDirections.actionProfilePageFragmentToEditPasswordPageFragment()
+            findNavController().navigate(actionDetail)
+        }
+    }
+
+    private fun openEditProfilePage(){
+        getViewBinding()?.llEditProfile?.setOnClickListener {
+            val actionDetail = ProfilePageFragmentDirections.actionProfilePageFragmentToEditProfilePageFragment()
+            findNavController().navigate(actionDetail)
+        }
     }
 }

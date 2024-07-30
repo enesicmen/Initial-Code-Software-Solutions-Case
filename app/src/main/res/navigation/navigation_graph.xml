@@ -33,11 +33,47 @@
         android:id="@+id/basketPageFragment"
         android:name="com.icmen.ecommerceapplication.ui.fragment.Basket.BasketPageFragment"
         android:label="Basket Page"
-        tools:layout="@layout/fragment_basket" />
+        tools:layout="@layout/fragment_basket" >
+        <action
+            android:id="@+id/action_basketPageFragment_to_paymentPageFragment"
+            app:destination="@id/paymentPageFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/paymentPageFragment"
+        android:name="com.icmen.ecommerceapplication.ui.fragment.payment.PaymentFragment"
+        android:label="Payment Page"
+        tools:layout="@layout/fragment_payment">
+
+        <argument
+            android:name="amount"
+            app:argType="string" />
+
+    </fragment>
+
     <fragment
         android:id="@+id/profilePageFragment"
         android:name="com.icmen.ecommerceapplication.ui.fragment.Profile.ProfilePageFragment"
         android:label="Profile Page"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_profilePageFragment_to_editPasswordPageFragment"
+            app:destination="@id/editPasswordPageFragment" />
+        <action
+            android:id="@+id/action_profilePageFragment_to_editProfilePageFragment"
+            app:destination="@id/editProfilePageFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/editPasswordPageFragment"
+        android:name="com.icmen.ecommerceapplication.ui.fragment.EditPasswordFragment"
+        android:label="Edit Password Page"
+        tools:layout="@layout/fragment_edit_password" />
+
+    <fragment
+        android:id="@+id/editProfilePageFragment"
+        android:name="com.icmen.ecommerceapplication.ui.fragment.EditProfilePageFragment"
+        android:label="Edit Profile Page"
+        tools:layout="@layout/fragment_edit_profile" />
 
 </navigation>
