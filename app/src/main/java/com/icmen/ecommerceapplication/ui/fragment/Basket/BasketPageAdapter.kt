@@ -19,7 +19,6 @@ class BasketPageAdapter(
 
     class ViewHolder(
         private val binding: RowBasketBinding,
-        private val onClicked: RecyclerItemClickListener,
         private val onQuantityChanged: (Int, Int) -> Unit,
         private val mContext: Context
     ) : RecyclerView.ViewHolder(binding.root) {
@@ -27,18 +26,16 @@ class BasketPageAdapter(
         companion object {
             fun from(
                 viewGroup: ViewGroup,
-                onClicked: RecyclerItemClickListener,
                 onQuantityChanged: (Int, Int) -> Unit
             ): ViewHolder {
                 val layoutInflater = LayoutInflater.from(viewGroup.context)
                 val context = viewGroup.context
                 val binding = RowBasketBinding.inflate(layoutInflater, viewGroup, false)
-                return ViewHolder(binding = binding, onClicked = onClicked, onQuantityChanged = onQuantityChanged, context)
+                return ViewHolder(binding = binding, onQuantityChanged = onQuantityChanged, context)
             }
         }
 
         init {
-            itemView.setOnClickListener { onClicked(adapterPosition) }
             binding.btnIncrease.setOnClickListener {
                 val currentQuantity = binding.tvQuantityFor.text.toString().toInt()
                 val newQuantity = currentQuantity + 1
@@ -70,7 +67,7 @@ class BasketPageAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
-        ViewHolder.from(viewGroup = parent, onClicked = onClicked, onQuantityChanged = onQuantityChanged)
+        ViewHolder.from(viewGroup = parent, onQuantityChanged = onQuantityChanged)
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) =
         holder.bind(item = basketItems[position])

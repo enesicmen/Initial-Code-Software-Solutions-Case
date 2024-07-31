@@ -11,7 +11,6 @@ import com.icmen.ecommerceapplication.data.model.Product
 import com.icmen.ecommerceapplication.databinding.FragmentProductsBinding
 import com.icmen.ecommerceapplication.ui.base.BaseFragment
 import com.icmen.ecommerceapplication.ui.common.RecyclerItemClickListener
-import com.icmen.ecommerceapplication.ui.fragment.ProductDetail.ProductDetailFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -35,17 +34,6 @@ class ProductsPageFragment : BaseFragment<FragmentProductsBinding>() {
         mProductsAdapter = ProductsAdapter(mProductList, object : RecyclerItemClickListener {
             override fun invoke(position: Int) {
                 val product = mProductList[position]
-                //val productDetailFragment = ProductDetailFragment()
-                /*
-                val bundle = Bundle().apply {
-                    putParcelable("product", product)
-
-
-                }
-                productDetailFragment.arguments = bundle
-
-                 */
-
                 val actionDetail = ProductsPageFragmentDirections.actionProductsPageFragmentToProductDetailPageFragment2(product = product)
                 findNavController().navigate(actionDetail)
             }

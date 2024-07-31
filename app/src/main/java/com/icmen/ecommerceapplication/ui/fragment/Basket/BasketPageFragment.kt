@@ -1,7 +1,6 @@
 package com.icmen.ecommerceapplication.ui.fragment.Basket
 
 import android.annotation.SuppressLint
-import android.app.AlertDialog
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -13,6 +12,8 @@ import com.icmen.ecommerceapplication.data.model.Product
 import com.icmen.ecommerceapplication.data.model.User
 import com.icmen.ecommerceapplication.databinding.FragmentBasketBinding
 import com.icmen.ecommerceapplication.ui.base.BaseFragment
+import com.icmen.ecommerceapplication.ui.dialog.CustomDialogWithOneButtonFragment
+import com.icmen.ecommerceapplication.ui.dialog.CustomDialogWithTwoButtonFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -34,7 +35,7 @@ class BasketPageFragment : BaseFragment<FragmentBasketBinding>() {
         firestore = FirebaseFirestore.getInstance()
 
         getViewBinding()?.rvBasket?.layoutManager = LinearLayoutManager(requireContext())
-        basketAdapter = BasketPageAdapter(basketItems, { position -> onBasketItemClicked(position) }) { position, newQuantity ->
+        basketAdapter = BasketPageAdapter(basketItems, { }) { position, newQuantity ->
             if (newQuantity == 0) {
                 showDeleteConfirmationDialog(position)
             } else {
@@ -74,11 +75,20 @@ class BasketPageFragment : BaseFragment<FragmentBasketBinding>() {
                     getViewBinding()?.progressBar?.visibility = View.GONE
                 }
                 .addOnFailureListener { e ->
-                    showToast("Sepet alınırken hata oluştu: ${e.message}")
+                    val dialog = CustomDialogWithOneButtonFragment.newInstance("HATA", "${e.message}")
+
+                    dialog.onOkClicked = {}
+
+                    dialog.show(requireActivity().supportFragmentManager, "customDialog")
+
                     getViewBinding()?.progressBar?.visibility = View.GONE
                 }
         } else {
-            showToast("Önce giriş yapmalısınız.")
+            val dialog = CustomDialogWithOneButtonFragment.newInstance("HATA", "Önce giriş yapmalısınız ")
+
+            dialog.onOkClicked = {}
+
+            dialog.show(requireActivity().supportFragmentManager, "customDialog")
         }
     }
 
@@ -96,17 +106,17 @@ class BasketPageFragment : BaseFragment<FragmentBasketBinding>() {
     }
 
     private fun showDeleteConfirmationDialog(position: Int) {
-        AlertDialog.Builder(requireContext())
-            .setTitle("Ürün Sil")
-            .setMessage("Bu ürünü sepetten silmek ister misiniz?")
-            .setPositiveButton("Evet") { dialog, _ ->
-                deleteBasketItem(position)
-                dialog.dismiss()
-            }
-            .setNegativeButton("Hayır") { dialog, _ ->
-                dialog.dismiss()
-            }
-            .show()
+
+        val dialog = CustomDialogWithTwoButtonFragment.newInstance("Ürünü Sil", "Bu ürünü sepetten silmek ister misiniz ? ")
+
+        dialog.onYesClicked = {
+            deleteBasketItem(position)
+        }
+        dialog.onNoClicked = {
+
+        }
+
+        dialog.show(requireActivity().supportFragmentManager, "customDialog")
     }
 
     private fun deleteBasketItem(position: Int) {
@@ -137,10 +147,6 @@ class BasketPageFragment : BaseFragment<FragmentBasketBinding>() {
         getViewBinding()?.tvTotalAmount?.text = String.format("%.2f TL", totalAmount)
     }
 
-    private fun onBasketItemClicked(position: Int) {
-        val selectedProduct = basketItems[position]
-        showToast("Ürün tıklandı: ${selectedProduct.productName}")
-    }
 
     private fun openPaymentPage() {
         getViewBinding()?.btnBuy?.setOnClickListener {
@@ -171,8 +177,13 @@ class BasketPageFragment : BaseFragment<FragmentBasketBinding>() {
                     }
                 }
                 .addOnFailureListener { e ->
-                    showToast("Kullanıcı bilgileri alınırken hata oluştu: ${e.message}")
+                    val dialog = CustomDialogWithOneButtonFragment.newInstance("HATA", "${e.message}")
+
+                    dialog.onOkClicked = {}
+
+                    dialog.show(requireActivity().supportFragmentManager, "customDialog")
                 }
         }
     }
+
 }

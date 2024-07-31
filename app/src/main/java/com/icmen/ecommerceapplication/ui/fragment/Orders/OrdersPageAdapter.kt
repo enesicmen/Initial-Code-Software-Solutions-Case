@@ -38,7 +38,6 @@ class OrdersPageAdapter(
                 tvAddress.text = order.address
                 tvOrderDate.text = java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(order.orderDate)
 
-                // Setup horizontal RecyclerView for product images
                 rvImage.layoutManager = LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
                 rvImage.adapter = OrdersImageAdapter(order.products)
             }
