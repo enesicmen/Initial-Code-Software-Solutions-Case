@@ -14,6 +14,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 class PaymentPageFragment : BaseFragment<FragmentPaymentBinding>() {
 
     private var mTotalAmount: String = ""
+    private var mUserAddress: String = ""
     private lateinit var mProducts: Array<Product>
     private val paymentSDK = PaymentSDK()
 
@@ -60,6 +61,7 @@ class PaymentPageFragment : BaseFragment<FragmentPaymentBinding>() {
             val safeArgs = PaymentPageFragmentArgs.fromBundle(it)
             mTotalAmount = safeArgs.amount
             mProducts = safeArgs.products
+            mUserAddress = safeArgs.userAddress
         }
     }
 
@@ -78,7 +80,8 @@ class PaymentPageFragment : BaseFragment<FragmentPaymentBinding>() {
                 "products" to mProducts.toList(),
                 "totalAmount" to mTotalAmount,
                 "paymentId" to paymentId,
-                "orderDate" to System.currentTimeMillis()
+                "orderDate" to System.currentTimeMillis(),
+                "address" to mUserAddress
             )
 
             newOrderRef.set(orderData)

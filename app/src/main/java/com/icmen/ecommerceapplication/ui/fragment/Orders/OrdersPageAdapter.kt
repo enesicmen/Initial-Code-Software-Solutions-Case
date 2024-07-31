@@ -40,6 +40,7 @@ class OrdersPageAdapter(
         fun bind(item: Order) {
             binding.apply {
                 tvTotalAmount.text = item.totalAmount
+                tvAddress.text = item.address
                 tvOrderDate.text = java.text.SimpleDateFormat("dd/MM/yyyy HH:mm", java.util.Locale.getDefault()).format(item.orderDate)
             }
         }

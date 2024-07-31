@@ -1,7 +1,6 @@
 package com.icmen.ecommerceapplication.ui.fragment.orders
 
 import android.os.Bundle
-import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore

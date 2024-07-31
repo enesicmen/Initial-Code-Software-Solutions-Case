@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.icmen.ecommerceapplication.data.model.Product
+import com.icmen.ecommerceapplication.data.model.User
 import com.icmen.ecommerceapplication.databinding.FragmentBasketBinding
 import com.icmen.ecommerceapplication.ui.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -23,9 +24,14 @@ class BasketPageFragment : BaseFragment<FragmentBasketBinding>() {
     private val basketItems: MutableList<Product> = mutableListOf()
     private var totalAmount = 0.0
 
+    private var userAddress = ""
+
+    override fun setViewBinding(): FragmentBasketBinding =
+        FragmentBasketBinding.inflate(layoutInflater)
+
     override fun initView(savedInstanceState: Bundle?) {
-        firestore = FirebaseFirestore.getInstance()
         auth = FirebaseAuth.getInstance()
+        firestore = FirebaseFirestore.getInstance()
 
         getViewBinding()?.rvBasket?.layoutManager = LinearLayoutManager(requireContext())
         basketAdapter = BasketPageAdapter(basketItems, { position -> onBasketItemClicked(position) }) { position, newQuantity ->
@@ -40,10 +46,8 @@ class BasketPageFragment : BaseFragment<FragmentBasketBinding>() {
 
         getUserBasket()
         openPaymentPage()
+        getUserInfo()
     }
-
-    override fun setViewBinding(): FragmentBasketBinding =
-        FragmentBasketBinding.inflate(layoutInflater)
 
     @SuppressLint("NotifyDataSetChanged")
     private fun getUserBasket() {
@@ -143,14 +147,32 @@ class BasketPageFragment : BaseFragment<FragmentBasketBinding>() {
             if (basketItems.isNotEmpty()) {
                 val actionDetail = BasketPageFragmentDirections.actionBasketPageFragmentToPaymentPageFragment(
                     products = basketItems.toTypedArray(),
-                    amount = totalAmount.toString()
+                    amount = totalAmount.toString(),
+                    userAddress = userAddress
                 )
                 findNavController().navigate(actionDetail)
             } else {
                 Toast.makeText(context, "Sepetiniz boş", Toast.LENGTH_SHORT).show()
             }
         }
-
     }
 
+    private fun getUserInfo() {
+        val userId = auth.currentUser?.uid
+        userId?.let {
+            firestore.collection("users").document(it)
+                .get()
+                .addOnSuccessListener { document ->
+                    if (document != null) {
+                        val userModel = document.toObject(User::class.java)
+                        userModel?.let { user ->
+                            userAddress = user.address
+                        }
+                    }
+                }
+                .addOnFailureListener { e ->
+                    showToast("Kullanıcı bilgileri alınırken hata oluştu: ${e.message}")
+                }
+        }
+    }
 }

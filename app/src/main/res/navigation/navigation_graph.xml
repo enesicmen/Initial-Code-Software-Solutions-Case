@@ -50,6 +50,10 @@
             app:argType="string" />
 
         <argument
+            android:name="userAddress"
+            app:argType="string" />
+
+        <argument
             android:name="products"
             app:argType="com.icmen.ecommerceapplication.data.model.Product[]" />
 
