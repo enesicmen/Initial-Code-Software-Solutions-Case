@@ -61,38 +61,6 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:background="?attr/selectableItemBackground"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:padding="12dp">
-
-            <ImageView
-                android:id="@+id/iconAddresses"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/address_icon"
-                android:contentDescription="Adresler"
-                 />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textStyle="bold"
-                android:paddingStart="16dp"
-                android:text="Adresler"
-                android:textSize="17sp" />
-
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:contentDescription="Aç"
-                android:src="@drawable/arrow_icon" />
-        </LinearLayout>
-
-        <LinearLayout
             android:id="@+id/llEditProfile"
             android:layout_width="match_parent"
             android:layout_height="60dp"

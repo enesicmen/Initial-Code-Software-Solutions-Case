@@ -69,6 +69,7 @@
         <action
             android:id="@+id/action_profilePageFragment_to_ordersPageFragment"
             app:destination="@id/ordersPageFragment" />
+
     </fragment>
 
     <fragment
@@ -88,5 +89,6 @@
         android:name="com.icmen.ecommerceapplication.ui.fragment.orders.OrdersPageFragment"
         android:label="Orders Page"
         tools:layout="@layout/fragment_orders" />
+
 
 </navigation>

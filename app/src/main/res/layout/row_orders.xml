@@ -1,30 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cwProductDetail"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:layout_marginStart="10dp"
+    android:layout_marginEnd="10dp"
+    android:backgroundTint="@color/light_blue"
+    android:elevation="10dp"
+    android:layout_marginTop="15dp"
+    android:layout_marginBottom="10dp"
+    app:cardCornerRadius="10dp">
 
-    <LinearLayout
-        android:layout_width="match_parent"
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingStart="3dp"
+    android:paddingTop="5dp">
+
+
+    <TextView
+        android:id="@+id/tvTotalAmount"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:layout_marginStart="3dp"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="10.33" />
 
-        <TextView
-            android:id="@+id/totalAmountTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Toplam Tutar"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+    <TextView
+        android:id="@+id/tvOrderDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="3dp"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvTotalAmount"
+        tools:text="24/08/2023" />
 
-        <TextView
-            android:id="@+id/orderDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Zaman"
-            android:textSize="14sp" />
-
-    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

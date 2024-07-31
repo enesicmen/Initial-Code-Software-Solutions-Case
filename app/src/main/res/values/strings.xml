@@ -5,6 +5,7 @@
     <string name="registration_failed">Kayıt Başarısız</string>
     <string name="adding_to_firestore_failed">Firestore ekleme başarısız</string>
     <string name="email">E-Mail</string>
+    <string name="address">Adres</string>
     <string name="password">Şifre</string>
     <string name="register">Kayıt Ol</string>
     <string name="name">Ad</string>

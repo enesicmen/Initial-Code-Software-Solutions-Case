@@ -42,11 +42,17 @@
             android:hint="@string/email" />
 
         <EditText
-            android:id="@+id/etCity"
-            android:backgroundTint="@color/teal_700"
+            android:id="@+id/etAddress"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/city" />
+            android:layout_height="150dp"
+            android:hint="Adres"
+            android:gravity="top|start"
+            android:inputType="textMultiLine"
+            android:minLines="5"
+            android:padding="10dp"
+            android:textColor="@android:color/black"
+            android:textSize="16sp" />
+
 
         <EditText
             android:id="@+id/etPassword"

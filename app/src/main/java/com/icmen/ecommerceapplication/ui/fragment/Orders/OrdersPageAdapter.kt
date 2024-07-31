@@ -39,8 +39,8 @@ class OrdersPageAdapter(
         @SuppressLint("StringFormatMatches")
         fun bind(item: Order) {
             binding.apply {
-                totalAmountTextView.text = item.totalAmount
-                orderDate.text = java.text.SimpleDateFormat("dd/MM/yyyy HH:mm", java.util.Locale.getDefault()).format(item.orderDate)
+                tvTotalAmount.text = item.totalAmount
+                tvOrderDate.text = java.text.SimpleDateFormat("dd/MM/yyyy HH:mm", java.util.Locale.getDefault()).format(item.orderDate)
             }
         }
     }

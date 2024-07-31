@@ -39,17 +39,17 @@ class RegisterActivity : BaseActivity<ActivityRegisterBinding>() {
         getViewBinding()?.btnRegister?.setOnClickListener {
             val name = getViewBinding()?.etName?.text.toString()
             val surname = getViewBinding()?.etSurname?.text.toString()
-            val city = getViewBinding()?.etCity?.text.toString()
+            val address = getViewBinding()?.etAddress?.text.toString()
             val email = getViewBinding()?.etEmail?.text.toString()
             val password = getViewBinding()?.etPassword?.text.toString()
 
-            if (name.isEmpty() || surname.isEmpty() || city.isEmpty() || email.isEmpty() || password.isEmpty()) {
+            if (name.isEmpty() || surname.isEmpty() || address.isEmpty() || email.isEmpty() || password.isEmpty()) {
                 Toast.makeText(this, getString(R.string.please_fill_in_all_fields), Toast.LENGTH_SHORT).show()
             } else if (selectedImageUri == null) {
                 Toast.makeText(this, getString(R.string.please_select_image), Toast.LENGTH_SHORT).show()
             } else {
                 getViewBinding()?.fmProgress?.visibility = android.view.View.VISIBLE
-                registerUser(name, surname, email, city, password)
+                registerUser(name, surname, email, address, password)
             }
         }
         goToLoginPage()
@@ -63,13 +63,13 @@ class RegisterActivity : BaseActivity<ActivityRegisterBinding>() {
         }
     }
 
-    private fun registerUser(name: String, surname: String, email: String, city: String, password: String) {
+    private fun registerUser(name: String, surname: String, email: String, address: String, password: String) {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     val user: FirebaseUser? = auth.currentUser
                     user?.let {
-                        uploadProfileImage(it.uid, name, surname, email, city)
+                        uploadProfileImage(it.uid, name, surname, email, address)
                     }
                 } else {
                     getViewBinding()?.fmProgress?.visibility = android.view.View.GONE
@@ -79,12 +79,12 @@ class RegisterActivity : BaseActivity<ActivityRegisterBinding>() {
             }
     }
 
-    private fun uploadProfileImage(userId: String, name: String, surname: String, email: String, city: String) {
+    private fun uploadProfileImage(userId: String, name: String, surname: String, email: String, address: String) {
         val storageRef = storage.reference.child("images/profileImages/$userId.jpg")
         selectedImageUri?.let {
             storageRef.putFile(it).addOnSuccessListener {
                 storageRef.downloadUrl.addOnSuccessListener { uri ->
-                    saveUserInfo(userId, name, surname, email, city, uri.toString())
+                    saveUserInfo(userId, name, surname, email, address, uri.toString())
                 }
             }.addOnFailureListener { e ->
                 getViewBinding()?.fmProgress?.visibility = android.view.View.GONE
@@ -94,13 +94,13 @@ class RegisterActivity : BaseActivity<ActivityRegisterBinding>() {
         }
     }
 
-    private fun saveUserInfo(userId: String, name: String, surname: String, email: String, city: String, imageUrl: String?) {
+    private fun saveUserInfo(userId: String, name: String, surname: String, email: String, address: String, imageUrl: String?) {
         val userInfo = hashMapOf(
             "userId" to userId,
             "name" to name,
             "surname" to surname,
             "email" to email,
-            "city" to city,
+            "address" to address,
             "profileImageUrl" to imageUrl
         )
         db.collection("users").document(userId).set(userInfo)

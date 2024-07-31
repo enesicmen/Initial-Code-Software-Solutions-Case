@@ -140,12 +140,17 @@ class BasketPageFragment : BaseFragment<FragmentBasketBinding>() {
 
     private fun openPaymentPage() {
         getViewBinding()?.btnBuy?.setOnClickListener {
-            val actionDetail = BasketPageFragmentDirections.actionBasketPageFragmentToPaymentPageFragment(
-                products = basketItems.toTypedArray(),
-                amount = totalAmount.toString()
-            )
-            findNavController().navigate(actionDetail)
+            if (basketItems.isNotEmpty()) {
+                val actionDetail = BasketPageFragmentDirections.actionBasketPageFragmentToPaymentPageFragment(
+                    products = basketItems.toTypedArray(),
+                    amount = totalAmount.toString()
+                )
+                findNavController().navigate(actionDetail)
+            } else {
+                Toast.makeText(context, "Sepetiniz boş", Toast.LENGTH_SHORT).show()
+            }
         }
+
     }
 
 }

@@ -100,4 +100,5 @@ class ProfilePageFragment : BaseFragment<FragmentProfileBinding>(){
             findNavController().navigate(actionDetail)
         }
     }
+
 }
