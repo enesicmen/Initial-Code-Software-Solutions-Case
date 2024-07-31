@@ -1,9 +1,9 @@
 package com.icmen.ecommerceapplication.adapters
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.icmen.ecommerceapplication.data.model.Order
 import com.icmen.ecommerceapplication.databinding.RowOrdersBinding
@@ -16,19 +16,14 @@ class OrdersPageAdapter(
 
     class ViewHolder(
         private val binding: RowOrdersBinding,
-        private val onClicked: RecyclerItemClickListener,
-        private val mContext: Context
+        private val onClicked: RecyclerItemClickListener
     ) : RecyclerView.ViewHolder(binding.root) {
 
         companion object {
-            fun from(
-                viewGroup: ViewGroup,
-                onClicked: RecyclerItemClickListener
-            ): ViewHolder {
+            fun from(viewGroup: ViewGroup, onClicked: RecyclerItemClickListener): ViewHolder {
                 val layoutInflater = LayoutInflater.from(viewGroup.context)
-                val context = viewGroup.context
                 val binding = RowOrdersBinding.inflate(layoutInflater, viewGroup, false)
-                return ViewHolder(binding = binding, onClicked = onClicked, mContext = context)
+                return ViewHolder(binding, onClicked)
             }
         }
 
@@ -36,12 +31,16 @@ class OrdersPageAdapter(
             itemView.setOnClickListener { onClicked(adapterPosition) }
         }
 
-        @SuppressLint("StringFormatMatches")
-        fun bind(item: Order) {
+        @SuppressLint("SimpleDateFormat")
+        fun bind(order: Order) {
             binding.apply {
-                tvTotalAmount.text = item.totalAmount
-                tvAddress.text = item.address
-                tvOrderDate.text = java.text.SimpleDateFormat("dd/MM/yyyy HH:mm", java.util.Locale.getDefault()).format(item.orderDate)
+                tvTotalAmount.text = order.totalAmount.toString()
+                tvAddress.text = order.address
+                tvOrderDate.text = java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(order.orderDate)
+
+                // Setup horizontal RecyclerView for product images
+                rvImage.layoutManager = LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
+                rvImage.adapter = OrdersImageAdapter(order.products)
             }
         }
     }
@@ -50,9 +49,7 @@ class OrdersPageAdapter(
         return ViewHolder.from(parent, onClicked)
     }
 
-    override fun getItemCount(): Int {
-        return orders.size
-    }
+    override fun getItemCount(): Int = orders.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(orders[position])
