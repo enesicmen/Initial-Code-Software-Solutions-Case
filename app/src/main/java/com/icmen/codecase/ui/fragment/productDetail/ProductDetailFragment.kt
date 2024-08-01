@@ -8,7 +8,7 @@ import com.icmen.codecase.data.model.Product
 import com.icmen.codecase.databinding.FragmentProductDetailBinding
 import com.icmen.codecase.ui.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
-import androidx.fragment.app.viewModels
+import com.icmen.codecase.ui.fragment.custom.CustomDialogWithOneButtonFragment
 
 @AndroidEntryPoint
 class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding, ProductDetailViewModel>() {
@@ -37,6 +37,9 @@ class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding, Product
 
         getViewBinding()?.btnBasket?.setOnClickListener {
             getViewModel()?.addToBasket(mProduct, quantity)
+            val title = getString(R.string.success)
+            val message = getString(R.string.add_to_basket_success)
+            setOneButtonDialog(title,message)
         }
 
         observeBasketResponse()
@@ -82,5 +85,11 @@ class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding, Product
 
     private fun showToast(message: String) {
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun setOneButtonDialog(title: String, message: String){
+        val dialog = CustomDialogWithOneButtonFragment.newInstance(title, message)
+        dialog.onOkClicked = {}
+        dialog.show(requireActivity().supportFragmentManager, "customDialog")
     }
 }

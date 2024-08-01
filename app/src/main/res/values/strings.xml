@@ -1,6 +1,13 @@
 <resources>
     <!-- general -->
     <string name="app_name">case</string>
+    <string name="yes">Evet</string>
+    <string name="no">Hayır</string>
+    <string name="error">Hata</string>
+    <string name="title">Title</string>
+    <string name="message">Message</string>
+    <string name="ok">Tamam</string>
+    <string name="success">Başarılı</string>
 
     <!-- Register -->
     <string name="please_fill_in_all_fields">Lütfen tüm alanları doldurun</string>
@@ -31,9 +38,16 @@
     <string name="add_to_basket">Sepete Ekle</string>
     <string name="total_amount">Toplam Ücret</string>
     <string name="price">Price: %.2f %s</string>
+    <string name="delete_product">Ürünü Sil</string>
+    <string name="basket_is_empty">Sepetiniz boş</string>
+    <string name="are_you_sure_delete_product">Bu ürünü silmek istediğinize emin misiniz ? </string>
+    <string name="add_to_basket_success">Ürün sepete eklendi</string>
+    <string name="order_success">Sipariş başarıyla alındı.</string>
 
     <!-- Profile -->
     <string name="logout">Çıkış yap</string>
     <string name="update">Güncelle</string>
     <string name="profile_updated_successfully">Profile güncellemesi başarılı</string>
+
+
 </resources>

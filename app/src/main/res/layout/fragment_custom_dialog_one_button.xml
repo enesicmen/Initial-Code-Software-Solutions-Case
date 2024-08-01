@@ -1,37 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:layout_margin="20dp"
+    android:layout_marginStart="@dimen/ll_margin_start_20dp"
+    android:layout_marginEnd="@dimen/ll_margin_end_20dp"
     android:background="@drawable/rounded_dialog"
     android:orientation="vertical"
-    android:padding="20dp">
+    android:padding="@dimen/ll_padding_20dp">
 
     <TextView
         android:id="@+id/tvTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="@string/title"
         android:gravity="center"
-        android:text="Title"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:textSize="@dimen/tv_title_text_size_18sp"
+        android:layout_marginBottom="@dimen/tv_margin_bottom_10dp" />
 
     <TextView
         android:id="@+id/tvMessage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="@string/message"
         android:gravity="center"
-        android:text="test message"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textStyle="bold" />
+        android:textSize="@dimen/tv_message_text_size_16sp"
+        android:maxLines="10"
+        android:ellipsize="end"
+        android:layout_marginTop="@dimen/tv_margin_top_5dp"
+        android:layout_marginBottom="@dimen/tv_message_margin_bottom_10dp"
+        android:paddingLeft="@dimen/tv_message_padding_left_10dp"
+        android:paddingRight="@dimen/tv_message_padding_right_10dp" />
 
     <Button
         android:id="@+id/btnOk"
-        android:layout_gravity="center"
-        android:layout_marginTop="30dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="OK" />
+        android:text="@string/ok"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/btn_margin_top_30dp"
+        android:textAllCaps="false" />
 
 </LinearLayout>

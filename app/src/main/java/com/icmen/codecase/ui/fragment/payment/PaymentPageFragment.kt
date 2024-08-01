@@ -12,6 +12,7 @@ import com.icmen.codecase.data.model.Product
 import com.icmen.codecase.databinding.FragmentPaymentBinding
 import com.icmen.codecase.ui.base.BaseFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.icmen.codecase.ui.fragment.custom.CustomDialogWithOneButtonFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -96,9 +97,12 @@ class PaymentPageFragment : BaseFragment<FragmentPaymentBinding, PaymentPageView
     }
 
     private fun navigateToSuccessPage() {
+        var title = getString(R.string.success)
+        var message = getString(R.string.order_success)
         val navOptions = NavOptions.Builder()
             .setPopUpTo(R.id.paymentPageFragment, true)
             .build()
+        setOneButtonDialog(title,message)
         findNavController().navigate(R.id.action_paymentPageFragment_to_productsPageFragment, null, navOptions)
         updateBottomNavigationView()
     }
@@ -114,5 +118,11 @@ class PaymentPageFragment : BaseFragment<FragmentPaymentBinding, PaymentPageView
     private fun updateBottomNavigationView() {
         val bottomNavigationView = requireActivity().findViewById<BottomNavigationView>(R.id.bottom_navigation)
         bottomNavigationView?.selectedItemId = R.id.menu_item_home
+    }
+
+    private fun setOneButtonDialog(title: String, message: String){
+        val dialog = CustomDialogWithOneButtonFragment.newInstance(title, message)
+        dialog.onOkClicked = {}
+        dialog.show(requireActivity().supportFragmentManager, "customDialog")
     }
 }

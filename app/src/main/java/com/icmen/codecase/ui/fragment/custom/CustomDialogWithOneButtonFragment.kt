@@ -20,8 +20,11 @@ class CustomDialogWithOneButtonFragment : DialogFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        dialog?.window?.setBackgroundDrawable(ColorDrawable(android.graphics.Color.TRANSPARENT))
-        dialog?.window?.requestFeature(Window.FEATURE_NO_TITLE)
+
+        dialog?.window?.let {
+            it.setBackgroundDrawable(ColorDrawable(android.graphics.Color.TRANSPARENT))
+            it.requestFeature(Window.FEATURE_NO_TITLE)
+        }
 
         _binding = FragmentCustomDialogOneButtonBinding.inflate(inflater, container, false)
         return binding.root
@@ -30,18 +33,26 @@ class CustomDialogWithOneButtonFragment : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        arguments?.let {
-            val title = it.getString(ARG_TITLE)
-            val message = it.getString(ARG_MESSAGE)
+        arguments?.let { bundle ->
+            val title = bundle.getString(ARG_TITLE)
+            val message = bundle.getString(ARG_MESSAGE)
 
-            binding.tvTitle.text = title
-            binding.tvMessage.text = message
+            binding.let {
+                it.tvTitle.text = title
+                it.tvMessage.text = message
+            }
         }
 
         binding.btnOk.setOnClickListener {
             onOkClicked?.invoke()
             dismiss()
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        val width = (resources.displayMetrics.widthPixels * 0.85).toInt()
+        dialog?.window?.setLayout(width, ViewGroup.LayoutParams.WRAP_CONTENT)
     }
 
     override fun onDestroyView() {

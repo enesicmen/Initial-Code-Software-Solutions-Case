@@ -6,7 +6,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.View
-import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -14,6 +13,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.icmen.codecase.R
 import com.icmen.codecase.databinding.FragmentRegisterBinding
 import com.icmen.codecase.ui.base.BaseFragment
+import com.icmen.codecase.ui.fragment.custom.CustomDialogWithOneButtonFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -59,11 +59,11 @@ class RegisterPageFragment : BaseFragment<FragmentRegisterBinding, RegisterPageV
     private fun observeViewModel() {
         registerPageViewModel.registrationResult.observe(viewLifecycleOwner, Observer { result ->
             result.onSuccess { user ->
-                Toast.makeText(requireContext(), getString(R.string.registration_successful), Toast.LENGTH_SHORT).show()
                 updateUI(user)
             }
             result.onFailure { exception ->
-                Toast.makeText(requireContext(), exception.message, Toast.LENGTH_SHORT).show()
+                var title = getString(R.string.error)
+                exception.message?.let { setOneButtonDialog(title, it) }
             }
         })
 
@@ -86,5 +86,11 @@ class RegisterPageFragment : BaseFragment<FragmentRegisterBinding, RegisterPageV
 
     companion object {
         private const val REQUEST_CODE_IMAGE_PICK = 1001
+    }
+
+    private fun setOneButtonDialog(title: String, message: String){
+        val dialog = CustomDialogWithOneButtonFragment.newInstance(title, message)
+        dialog.onOkClicked = {}
+        dialog.show(requireActivity().supportFragmentManager, "customDialog")
     }
 }

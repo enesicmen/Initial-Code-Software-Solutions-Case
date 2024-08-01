@@ -26,7 +26,10 @@ class MainActivity : AppCompatActivity() {
             override fun handleOnBackPressed() {
                 if (navController.currentDestination?.id == R.id.productsPageFragment) {
                     finishAffinity()
-                } else {
+                }
+                else if(navController.currentDestination?.id == R.id.registerPageFragment){
+                    finishAffinity()
+                } else{
                     navController.popBackStack()
                     updateBottomNavigationView()
                 }

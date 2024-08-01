@@ -2,10 +2,10 @@ package com.icmen.codecase.ui.fragment.basket
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.icmen.codecase.R
 import com.icmen.codecase.data.model.Product
 import com.icmen.codecase.databinding.FragmentBasketBinding
 import com.icmen.codecase.ui.base.BaseFragment
@@ -60,20 +60,22 @@ class BasketPageFragment : BaseFragment<FragmentBasketBinding, BasketPageViewMod
 
         getViewModel()?.errorLiveData?.observe(viewLifecycleOwner, Observer { errorMessage ->
             errorMessage?.let {
-                val dialog = CustomDialogWithOneButtonFragment.newInstance("HATA", it)
-                dialog.onOkClicked = {}
-                dialog.show(requireActivity().supportFragmentManager, "customDialog")
+                val title = getString(R.string.error)
+                setOneButtonDialog(title,it)
             }
         })
     }
 
     private fun showDeleteConfirmationDialog(position: Int) {
-        val dialog = CustomDialogWithTwoButtonFragment.newInstance("Ürünü Sil", "Bu ürünü sepetten silmek ister misiniz ? ")
+        val title = getString(R.string.delete_product)
+        val message = getString(R.string.are_you_sure_delete_product)
+        val dialog = CustomDialogWithTwoButtonFragment.newInstance(title, message)
         dialog.onYesClicked = {
             getViewModel()?.deleteBasketItem(position)
         }
         dialog.onNoClicked = {}
         dialog.show(requireActivity().supportFragmentManager, "customDialog")
+
     }
 
     private fun openPaymentPage() {
@@ -88,8 +90,16 @@ class BasketPageFragment : BaseFragment<FragmentBasketBinding, BasketPageViewMod
                     findNavController().navigate(actionDetail)
                 }
             } else {
-                Toast.makeText(context, "Sepetiniz boş", Toast.LENGTH_SHORT).show()
+                val title = getString(R.string.error)
+                val message = getString(R.string.basket_is_empty)
+                setOneButtonDialog(title,message)
             }
         }
+    }
+
+    private fun setOneButtonDialog(title: String, message: String){
+        val dialog = CustomDialogWithOneButtonFragment.newInstance(title, message)
+        dialog.onOkClicked = {}
+        dialog.show(requireActivity().supportFragmentManager, "customDialog")
     }
 }
