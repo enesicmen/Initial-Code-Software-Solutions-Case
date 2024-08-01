@@ -134,7 +134,7 @@
 
     <fragment
         android:id="@+id/editPasswordPageFragment"
-        android:name="com.icmen.codecase.ui.fragment.editPassword.EditPasswordFragment"
+        android:name="com.icmen.codecase.ui.fragment.editPassword.EditPasswordPageFragment"
         android:label="Edit Password Page"
         tools:layout="@layout/fragment_edit_password" />
 

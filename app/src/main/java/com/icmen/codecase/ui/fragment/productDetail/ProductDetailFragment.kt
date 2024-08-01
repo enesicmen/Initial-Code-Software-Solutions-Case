@@ -7,25 +7,20 @@ import com.icmen.codecase.R
 import com.icmen.codecase.data.model.Product
 import com.icmen.codecase.databinding.FragmentProductDetailBinding
 import com.icmen.codecase.ui.base.BaseFragment
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
+import dagger.hilt.android.AndroidEntryPoint
+import androidx.fragment.app.viewModels
 
-class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding>() {
+@AndroidEntryPoint
+class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding, ProductDetailViewModel>() {
 
     private lateinit var mProduct: Product
-    private lateinit var firestore: FirebaseFirestore
-    private lateinit var auth: FirebaseAuth
     private var quantity: Int = 1
+
 
     override fun setViewBinding(): FragmentProductDetailBinding =
         FragmentProductDetailBinding.inflate(layoutInflater)
 
     override fun initView(savedInstanceState: Bundle?) {
-        firestore = FirebaseFirestore.getInstance()
-        auth = FirebaseAuth.getInstance()
-
-
-
         showProductDetails(mProduct)
 
         getViewBinding()?.btnDecrease?.setOnClickListener {
@@ -35,17 +30,19 @@ class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding>() {
             }
         }
 
-
         getViewBinding()?.btnIncrease?.setOnClickListener {
             quantity++
             updateQuantityText()
         }
 
-
         getViewBinding()?.btnBasket?.setOnClickListener {
-            addToBasket()
+            getViewModel()?.addToBasket(mProduct, quantity)
         }
+
+        observeBasketResponse()
     }
+
+    override fun setViewModelClass() = ProductDetailViewModel::class.java
 
     override fun readDataFromArguments() {
         super.readDataFromArguments()
@@ -77,47 +74,9 @@ class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding>() {
         getViewBinding()?.tvQuantity?.text = quantity.toString()
     }
 
-    private fun addToBasket() {
-        val userId = auth.currentUser?.uid
-        if (userId != null) {
-            val basketRef = firestore.collection("basket").document(userId).collection("products").document(mProduct.productId)
-
-            basketRef.get().addOnSuccessListener { document ->
-                if (document.exists()) {
-                    val currentQuantity = document.getLong("quantity") ?: 0
-                    basketRef.update("quantity", currentQuantity + quantity)
-                        .addOnSuccessListener {
-                            showToast("Sepete eklendi, mevcut adet: ${currentQuantity + quantity}")
-                        }
-                        .addOnFailureListener { e ->
-                            showToast("Sepete eklenirken hata oluştu: ${e.message}")
-                        }
-                } else {
-                    val productData = hashMapOf(
-                        "productName" to mProduct.productName,
-                        "price" to mProduct.price,
-                        "currency" to mProduct.currency,
-                        "quantity" to quantity,
-                        "productImage" to mProduct.productImage,
-                        "userId" to userId,
-                        "description" to mProduct.description,
-                        "listiningDate" to mProduct.listiningDate,
-                        "productColor" to mProduct.productColor,
-                        "productId" to mProduct.productId
-                    )
-                    basketRef.set(productData)
-                        .addOnSuccessListener {
-                            showToast("Ürün sepete eklendi: ${mProduct.productName}")
-                        }
-                        .addOnFailureListener { e ->
-                            showToast("Sepete eklenirken hata oluştu: ${e.message}")
-                        }
-                }
-            }.addOnFailureListener { e ->
-                showToast("Sepet kontrol edilirken hata oluştu: ${e.message}")
-            }
-        } else {
-            showToast("Önce giriş yapmalısınız.")
+    private fun observeBasketResponse() {
+        getViewModel()?.basketResponse?.observe(viewLifecycleOwner) { message ->
+            showToast(message)
         }
     }
 

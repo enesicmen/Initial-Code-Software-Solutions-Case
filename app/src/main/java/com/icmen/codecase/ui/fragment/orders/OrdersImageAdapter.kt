@@ -1,4 +1,4 @@
-package com.icmen.codecase.adapters
+package com.icmen.codecase.ui.fragment.orders
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

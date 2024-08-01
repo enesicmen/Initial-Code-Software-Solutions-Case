@@ -1,66 +1,40 @@
 package com.icmen.codecase.ui.fragment.orders
 
 import android.os.Bundle
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
 import com.icmen.codecase.data.model.Order
 import com.icmen.codecase.databinding.FragmentOrdersBinding
 import com.icmen.codecase.ui.base.BaseFragment
 import com.icmen.codecase.ui.common.RecyclerItemClickListener
-import android.widget.Toast
-import com.icmen.codecase.adapters.OrdersPageAdapter
+import dagger.hilt.android.AndroidEntryPoint
 
-class OrdersPageFragment : BaseFragment<FragmentOrdersBinding>(), RecyclerItemClickListener {
+@AndroidEntryPoint
+class OrdersPageFragment : BaseFragment<FragmentOrdersBinding, OrdersPageViewModel>(), RecyclerItemClickListener {
 
-    private lateinit var firestore: FirebaseFirestore
-    private lateinit var auth: FirebaseAuth
     private lateinit var orderAdapter: OrdersPageAdapter
     private val orderList: MutableList<Order> = mutableListOf()
 
-    override fun initView(savedInstanceState: Bundle?) {
-        firestore = FirebaseFirestore.getInstance()
-        auth = FirebaseAuth.getInstance()
-
-        getViewBinding()?.recyclerViewOrders?.layoutManager = LinearLayoutManager(requireContext())
-        orderAdapter = OrdersPageAdapter(orderList, this)
-        getViewBinding()?.recyclerViewOrders?.adapter = orderAdapter
-
-        fetchOrders()
-    }
+    override fun setViewModelClass() = OrdersPageViewModel::class.java
 
     override fun setViewBinding(): FragmentOrdersBinding =
         FragmentOrdersBinding.inflate(layoutInflater)
 
-    private fun fetchOrders() {
-        val userId = auth.currentUser?.uid
-        if (userId != null) {
-            firestore.collection("orders").document(userId).collection("userOrders")
-                .orderBy("orderDate")
-                .get()
-                .addOnSuccessListener { querySnapshot ->
-                    orderList.clear()
-                    for (document in querySnapshot.documents) {
-                        val order = document.toObject(Order::class.java)
-                        if (order != null) {
-                            orderList.add(order)
-                        }
-                    }
-                    orderAdapter.notifyDataSetChanged()
-                }
-                .addOnFailureListener { e ->
-                    showToast("Siparişler alınırken hata oluştu: ${e.message}")
-                }
-        } else {
-            showToast("Önce giriş yapmalısınız.")
+    override fun initView(savedInstanceState: Bundle?) {
+        orderAdapter = OrdersPageAdapter(orderList, this)
+        getViewBinding()?.recyclerViewOrders?.layoutManager = LinearLayoutManager(requireContext())
+        getViewBinding()?.recyclerViewOrders?.adapter = orderAdapter
+
+        observeOrders()
+        getViewModel()?.fetchOrders()
+    }
+
+    private fun observeOrders() {
+        getViewModel()?.orderList?.observe(viewLifecycleOwner) { orders ->
+            orderList.clear()
+            orderList.addAll(orders)
+            orderAdapter.notifyDataSetChanged()
         }
     }
-
-    private fun showToast(message: String) {
-        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
-    }
-
-    override fun invoke(position: Int) {
-
-    }
+    override fun invoke(position: Int) {}
 }

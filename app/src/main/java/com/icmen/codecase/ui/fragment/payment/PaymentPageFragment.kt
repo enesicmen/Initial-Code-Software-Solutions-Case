@@ -4,19 +4,23 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.Toast
 import com.icmen.PaymentSDK
-import com.icmen.codecase.data.model.Order
 import com.icmen.codecase.data.model.Product
 import com.icmen.codecase.databinding.FragmentPaymentBinding
 import com.icmen.codecase.ui.base.BaseFragment
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
+import dagger.hilt.android.AndroidEntryPoint
 
-class PaymentPageFragment : BaseFragment<FragmentPaymentBinding>() {
+@AndroidEntryPoint
+class PaymentPageFragment : BaseFragment<FragmentPaymentBinding, PaymentPageViewModel>() {
 
     private var mTotalAmount: String = ""
     private var mUserAddress: String = ""
     private lateinit var mProducts: Array<Product>
     private val paymentSDK = PaymentSDK()
+
+    override fun setViewModelClass() = PaymentPageViewModel::class.java
+
+    override fun setViewBinding(): FragmentPaymentBinding =
+        FragmentPaymentBinding.inflate(layoutInflater)
 
     override fun initView(savedInstanceState: Bundle?) {
         val payButton: Button? = getViewBinding()?.payButton
@@ -33,9 +37,16 @@ class PaymentPageFragment : BaseFragment<FragmentPaymentBinding>() {
                 paymentSDK.processPayment(amount, cardDetails, object : PaymentSDK.PaymentCallback {
                     override fun onSuccess(message: String, paymentId: String) {
                         showToast(message)
-                        saveOrderToFirebase(paymentId)
-                        clearBasket()
-                        navigateToSuccessPage()
+                        getViewModel()?.saveOrderToFirebase(paymentId, mProducts, mTotalAmount, mUserAddress)
+                        getViewModel()?.orderSaveStatus?.observe(viewLifecycleOwner) { isSuccess ->
+                            if (isSuccess) {
+                                showToast("Siparişiniz başarıyla kaydedildi.")
+                                clearBasket()
+                                navigateToSuccessPage()
+                            } else {
+                                showToast("Sipariş kaydedilirken hata oluştu.")
+                            }
+                        }
                     }
 
                     override fun onError(errorMessage: String) {
@@ -47,13 +58,6 @@ class PaymentPageFragment : BaseFragment<FragmentPaymentBinding>() {
             }
         }
     }
-
-    private fun showToast(message: String) {
-        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
-    }
-
-    override fun setViewBinding(): FragmentPaymentBinding =
-        FragmentPaymentBinding.inflate(layoutInflater)
 
     override fun readDataFromArguments() {
         super.readDataFromArguments()
@@ -69,53 +73,15 @@ class PaymentPageFragment : BaseFragment<FragmentPaymentBinding>() {
         getViewBinding()?.tvTotalAmount?.text = totalAmount
     }
 
-    private fun saveOrderToFirebase(paymentId: String) {
-        val userId = FirebaseAuth.getInstance().currentUser?.uid
-        if (userId != null) {
-            val ordersRef = FirebaseFirestore.getInstance().collection("orders").document(userId).collection("userOrders")
-
-            val newOrderRef = ordersRef.document()
-
-            val orderData = hashMapOf(
-                "products" to mProducts.toList(),
-                "totalAmount" to mTotalAmount,
-                "paymentId" to paymentId,
-                "orderDate" to System.currentTimeMillis(),
-                "address" to mUserAddress
-            )
-
-            newOrderRef.set(orderData)
-                .addOnSuccessListener {
-                    showToast("Siparişiniz başarıyla kaydedildi.")
-                }
-                .addOnFailureListener { e ->
-                    showToast("Sipariş kaydedilirken hata oluştu: ${e.message}")
-                }
-        } else {
-            showToast("Önce giriş yapmalısınız.")
-        }
+    private fun showToast(message: String) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 
     private fun clearBasket() {
-        val userId = FirebaseAuth.getInstance().currentUser?.uid
-        if (userId != null) {
-            val basketRef = FirebaseFirestore.getInstance().collection("basket").document(userId).collection("products")
-
-            basketRef.get().addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    for (document in task.result) {
-                        document.reference.delete()
-                    }
-                    showToast("Sepetiniz başarıyla silindi.")
-                } else {
-                    showToast("Sepet silinirken hata oluştu: ${task.exception?.message}")
-                }
-            }
-        }
+        getViewModel()?.clearBasket()
     }
 
     private fun navigateToSuccessPage() {
         // Başarılı ödeme sonrası yönlendirme işlemini gerçekleştirin
-
     }
 }

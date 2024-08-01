@@ -1,4 +1,4 @@
-package com.icmen.codecase.adapters
+package com.icmen.codecase.ui.fragment.orders
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater

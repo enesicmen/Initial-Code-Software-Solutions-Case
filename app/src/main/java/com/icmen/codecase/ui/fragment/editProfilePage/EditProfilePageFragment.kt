@@ -7,32 +7,22 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.widget.Toast
 import com.bumptech.glide.Glide
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.storage.FirebaseStorage
 import com.icmen.codecase.R
 import com.icmen.codecase.databinding.FragmentEditProfileBinding
 import com.icmen.codecase.ui.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class EditProfilePageFragment : BaseFragment<FragmentEditProfileBinding>() {
-
-    private lateinit var auth: FirebaseAuth
-    private lateinit var db: FirebaseFirestore
-    private lateinit var storage: FirebaseStorage
+class EditProfilePageFragment : BaseFragment<FragmentEditProfileBinding, EditProfilePageViewModel>() {
 
     private var selectedImageUri: Uri? = null
-    private var currentUserInfo: MutableMap<String, Any> = mutableMapOf()
 
     override fun setViewBinding(): FragmentEditProfileBinding =
         FragmentEditProfileBinding.inflate(layoutInflater)
 
-    override fun initView(savedInstanceState: Bundle?) {
-        auth = FirebaseAuth.getInstance()
-        db = FirebaseFirestore.getInstance()
-        storage = FirebaseStorage.getInstance()
+    override fun setViewModelClass() = EditProfilePageViewModel::class.java
 
+    override fun initView(savedInstanceState: Bundle?) {
         loadUserProfile()
 
         getViewBinding()?.profileImageView?.setOnClickListener {
@@ -46,6 +36,8 @@ class EditProfilePageFragment : BaseFragment<FragmentEditProfileBinding>() {
             val address = getViewBinding()?.etAddress?.text.toString()
 
             val updates = mutableMapOf<String, Any>()
+            val currentUserInfo = getViewModel()!!.getCurrentUserInfo()
+
             if (name != currentUserInfo["name"]) {
                 updates["name"] = name
             }
@@ -55,17 +47,20 @@ class EditProfilePageFragment : BaseFragment<FragmentEditProfileBinding>() {
             if (address != currentUserInfo["address"]) {
                 updates["address"] = address
             }
+
             if (selectedImageUri != null) {
-                uploadProfileImage { imageUrl ->
-                    updates["profileImageUrl"] = imageUrl
-                    if (updates.isNotEmpty()) {
-                        updateUserProfile(updates)
-                    }
-                }
+                getViewModel()?.uploadProfileImage(selectedImageUri!!,
+                    onSuccess = { imageUrl ->
+                        updates["profileImageUrl"] = imageUrl
+                        if (updates.isNotEmpty()) {
+                            updateUserProfile(updates)
+                        }
+                    },
+                    onError = { message ->
+                        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+                    })
             } else {
                 if (updates.isNotEmpty()) {
-                    updateUserProfile(updates)
-                } else {
                     updateUserProfile(updates)
                 }
             }
@@ -77,73 +72,38 @@ class EditProfilePageFragment : BaseFragment<FragmentEditProfileBinding>() {
         if (requestCode == REQUEST_CODE_IMAGE_PICK && resultCode == Activity.RESULT_OK && data != null) {
             selectedImageUri = data.data
             getViewBinding()?.profileImageView?.setImageURI(selectedImageUri)
-
         }
     }
 
     private fun loadUserProfile() {
-        val user = auth.currentUser
-        user?.let {
-            db.collection("users").document(it.uid).get()
-                .addOnSuccessListener { document ->
-                    if (document != null) {
-                        val name = document.getString("name")
-                        val surname = document.getString("surname")
-                        val address = document.getString("address")
-                        val profileImageUrl = document.getString("profileImageUrl")
+        getViewModel()?.loadUserProfile(
+            onProfileLoaded = { userInfo ->
+                getViewBinding()?.etName?.setText(userInfo["name"] as? String)
+                getViewBinding()?.etSurname?.setText(userInfo["surname"] as? String)
+                getViewBinding()?.etAddress?.setText(userInfo["address"] as? String)
 
-                        currentUserInfo["name"] = name ?: ""
-                        currentUserInfo["surname"] = surname ?: ""
-                        currentUserInfo["address"] = address ?: ""
-                        currentUserInfo["profileImageUrl"] = profileImageUrl ?: ""
-
-                        getViewBinding()?.etName?.setText(name)
-                        getViewBinding()?.etSurname?.setText(surname)
-                        getViewBinding()?.etAddress?.setText(address)
-                        if (!profileImageUrl.isNullOrEmpty()) {
-                            getViewBinding()?.profileImageView?.let { it1 ->
-                                Glide.with(this).load(profileImageUrl).into(
-                                    it1
-                                )
-                            }
-                        }
+                val profileImageUrl = userInfo["profileImageUrl"] as? String
+                if (!profileImageUrl.isNullOrEmpty()) {
+                    getViewBinding()?.profileImageView?.let { imageView ->
+                        Glide.with(this).load(profileImageUrl).into(imageView)
                     }
                 }
-                .addOnFailureListener { e ->
-                    Toast.makeText(requireContext(), "Failed to load profile: ${e.message}", Toast.LENGTH_SHORT).show()
-                }
-        }
-    }
-
-    private fun uploadProfileImage(onSuccess: (String) -> Unit) {
-        val user = auth.currentUser
-        user?.let {
-            val userId = it.uid
-            val storageRef = storage.reference.child("images/profileImages/$userId.jpg")
-            selectedImageUri?.let { uri ->
-                storageRef.putFile(uri).addOnSuccessListener {
-                    storageRef.downloadUrl.addOnSuccessListener { downloadUri ->
-                        onSuccess(downloadUri.toString())
-                    }
-                }.addOnFailureListener { e ->
-                    Toast.makeText(requireContext(), "Image upload failed: ${e.message}", Toast.LENGTH_SHORT).show()
-                }
+            },
+            onError = { message ->
+                Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
             }
-        }
+        )
     }
 
     private fun updateUserProfile(updates: Map<String, Any>) {
-        val user = auth.currentUser
-        user?.let {
-            val userId = it.uid
-            db.collection("users").document(userId).update(updates)
-                .addOnSuccessListener {
-                    Toast.makeText(requireContext(), getString(R.string.profile_updated_successfully), Toast.LENGTH_SHORT).show()
-                }
-                .addOnFailureListener { e ->
-                    Toast.makeText(requireContext(), "Failed to update profile: ${e.message}", Toast.LENGTH_SHORT).show()
-                }
-        }
+        getViewModel()?.updateUserProfile(updates,
+            onSuccess = {
+                Toast.makeText(requireContext(), getString(R.string.profile_updated_successfully), Toast.LENGTH_SHORT).show()
+            },
+            onError = { message ->
+                Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+            }
+        )
     }
 
     companion object {
