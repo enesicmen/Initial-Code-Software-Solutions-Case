@@ -37,7 +37,7 @@ class LoginPageFragment : BaseFragment<FragmentLoginBinding>() {
 
     private fun goToRegisterPage() {
         getViewBinding()?.tvRegister?.setOnClickListener {
-            val action = LoginPageFragmentDirections.actionLoginPageFragmentToProductsPageFragment()
+            val action = LoginPageFragmentDirections.actionLoginPageFragmentToRegisterPageFragment()
             findNavController().navigate(action)
         }
     }
@@ -48,7 +48,6 @@ class LoginPageFragment : BaseFragment<FragmentLoginBinding>() {
                 getViewBinding()?.fmProgress?.visibility = View.GONE
                 if (task.isSuccessful) {
                     Toast.makeText(requireContext(), getString(R.string.login_success), Toast.LENGTH_SHORT).show()
-                    // Ana sayfaya geçiş yap
                     val action = LoginPageFragmentDirections.actionLoginPageFragmentToProductsPageFragment()
                     findNavController().navigate(action)
                 } else {

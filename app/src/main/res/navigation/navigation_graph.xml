@@ -50,6 +50,10 @@
             android:id="@+id/action_loginPageFragment_to_productsPageFragment"
             app:destination="@id/productsPageFragment" />
 
+        <action
+            android:id="@+id/action_loginPageFragment_to_registerPageFragment"
+            app:destination="@id/registerPageFragment" />
+
     </fragment>
 
     <fragment
