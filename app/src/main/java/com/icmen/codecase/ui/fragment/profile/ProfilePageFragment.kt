@@ -1,6 +1,5 @@
 package com.icmen.codecase.ui.fragment.profile
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -28,10 +27,6 @@ class ProfilePageFragment : BaseFragment<FragmentProfileBinding>(){
         val progressBar = getViewBinding()?.progressBar
 
         progressBar?.visibility = View.VISIBLE
-
-        getViewBinding()?.btnLogout?.setOnClickListener {
-            logout()
-        }
 
         val imageView: CircleImageView = getViewBinding()?.ivProfile ?: return
         if (userId != null) {
@@ -70,17 +65,6 @@ class ProfilePageFragment : BaseFragment<FragmentProfileBinding>(){
 
     override fun setViewBinding(): FragmentProfileBinding =
         FragmentProfileBinding.inflate(layoutInflater)
-
-    private fun logout() {
-        /*
-        FirebaseAuth.getInstance().signOut()
-        val intent = Intent(requireActivity(), LoginActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
-        startActivity(intent)
-        requireActivity().finish()
-
-         */
-    }
 
     private fun openEditPasswordPage(){
         getViewBinding()?.llEditPassword?.setOnClickListener {

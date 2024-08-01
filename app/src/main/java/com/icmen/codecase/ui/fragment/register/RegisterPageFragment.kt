@@ -22,7 +22,6 @@ class RegisterPageFragment : BaseFragment<FragmentRegisterBinding>() {
     private lateinit var db: FirebaseFirestore
     private lateinit var storage: FirebaseStorage
     private var selectedImageUri: Uri? = null
-
     override fun setViewBinding(): FragmentRegisterBinding {
         return FragmentRegisterBinding.inflate(layoutInflater)
     }
@@ -118,13 +117,6 @@ class RegisterPageFragment : BaseFragment<FragmentRegisterBinding>() {
     }
 
     private fun updateUI(user: FirebaseUser?) {
-        /*
-        val intent = Intent(requireActivity(), MainActivity::class.java)
-        startActivity(intent)
-        requireActivity().finish()
-
-         */
-
         val login = RegisterPageFragmentDirections.actionRegisterPageFragmentToProductsPageFragment()
         findNavController().navigate(login)
     }

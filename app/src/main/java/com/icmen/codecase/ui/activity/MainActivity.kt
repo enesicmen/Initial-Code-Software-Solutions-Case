@@ -20,12 +20,24 @@ class MainActivity : AppCompatActivity() {
         setBottomNavigationAndNavigation()
     }
 
-    private fun setBottomNavigationAndNavigation(){
+    private fun setBottomNavigationAndNavigation() {
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
 
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
         bottomNavigationView.setupWithNavController(navController)
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.loginPageFragment, R.id.registerPageFragment -> {
+                    bottomNavigationView.visibility = View.GONE
+                }
+                else -> {
+                    bottomNavigationView.visibility = View.VISIBLE
+                }
+            }
+        }
+
         bottomNavigationView.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.menu_item_home -> {
@@ -43,11 +55,6 @@ class MainActivity : AppCompatActivity() {
                 else -> false
             }
         }
-
-    }
-
-    fun setBottomNavigationVisibility(isVisible: Boolean) {
-        val bottomNavigation = findViewById<BottomNavigationView>(R.id.bottom_navigation)
-        bottomNavigation.visibility = if (isVisible) View.VISIBLE else View.GONE
     }
 }
+
