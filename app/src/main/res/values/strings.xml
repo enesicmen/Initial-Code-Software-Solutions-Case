@@ -1,30 +1,39 @@
 <resources>
-    <string name="app_name">eCommerceApplication</string>
+    <!-- general -->
+    <string name="app_name">case</string>
+
+    <!-- Register -->
     <string name="please_fill_in_all_fields">Lütfen tüm alanları doldurun</string>
     <string name="registration_successful">Kayıt Başarılı</string>
     <string name="registration_failed">Kayıt Başarısız</string>
     <string name="adding_to_firestore_failed">Firestore ekleme başarısız</string>
-    <string name="email">E-Mail</string>
-    <string name="address">Adres</string>
-    <string name="password">Şifre</string>
     <string name="register">Kayıt Ol</string>
     <string name="name">Ad</string>
     <string name="surname">Soyad</string>
-    <string name="city">Yaşadığın Şehir</string>
     <string name="image_upload_failed">Resim yüklenemedi</string>
     <string name="please_select_image">Lütfen resim seçiniz</string>
+
+    <!-- Login -->
+    <string name="email">E-Mail</string>
+    <string name="address">Adres</string>
+    <string name="password">Şifre</string>
+    <string name="login">Giriş yap</string>
+    <string name="login_success">Giriş Başarılı</string>
+    <string name="login_failed">Giriş Başarısız</string>
+
+    <!-- Navigation -->
     <string name="profile">Profil</string>
     <string name="home">Anasayfa</string>
     <string name="basket">Sepet</string>
     <string name="splash">Splash</string>
-    <string name="login">Giriş yap</string>
-    <string name="login_success">Giriş Başarılı</string>
-    <string name="login_failed">Giriş Başarısız</string>
-    <string name="price">Price: %.2f %s</string>
-    <string name="logout">Çıkış yap</string>
+
+    <!-- Basket -->
     <string name="add_to_basket">Sepete Ekle</string>
-    <string name="delete">Sil</string>
     <string name="total_amount">Toplam Ücret</string>
+    <string name="price">Price: %.2f %s</string>
+
+    <!-- Profile -->
+    <string name="logout">Çıkış yap</string>
     <string name="update">Güncelle</string>
     <string name="profile_updated_successfully">Profile güncellemesi başarılı</string>
 </resources>

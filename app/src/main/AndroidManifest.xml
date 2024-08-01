@@ -19,7 +19,7 @@
         android:theme="@style/AppTheme"
         tools:targetApi="31">
         <activity
-            android:name=".ui.activity.SplashActivity"
+            android:name="com.icmen.codecase.ui.activity.MainActivity"
             android:exported="true"
             android:theme="@style/AppTheme">
             <intent-filter>
@@ -28,13 +28,6 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name=".ui.activity.MainActivity"
-            android:theme="@style/AppTheme">
-        </activity>
-
-        <activity android:name=".ui.activity.RegisterActivity" />
-        <activity android:name=".ui.activity.LoginActivity" />
     </application>
 
 </manifest>

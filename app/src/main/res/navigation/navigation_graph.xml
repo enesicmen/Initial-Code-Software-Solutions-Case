@@ -2,46 +2,95 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation_graph"
-    app:startDestination="@id/productsPageFragment">
+    app:startDestination="@id/splashPageFragment">
 
+    <fragment
+        android:id="@+id/splashPageFragment"
+        android:name="com.icmen.codecase.ui.fragment.splash.SplashPageFragment"
+        android:label="Splash Page"
+        tools:layout="@layout/fragment_splash">
+
+        <action
+            android:id="@+id/action_splashPageFragment_to_loginPageFragment"
+            app:destination="@id/loginPageFragment" />
+
+        <action
+            android:id="@+id/action_splashPageFragment_to_registerPageFragment"
+            app:destination="@id/registerPageFragment" />
+
+        <action
+            android:id="@+id/action_splashPageFragment_to_productsPageFragment"
+            app:destination="@id/productsPageFragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/registerPageFragment"
+        android:name="com.icmen.codecase.ui.fragment.register.RegisterPageFragment"
+        android:label="Register Page"
+        tools:layout="@layout/fragment_register">
+
+        <action
+            android:id="@+id/action_registerPageFragment_to_loginPageFragment"
+            app:destination="@id/loginPageFragment" />
+
+        <action
+            android:id="@+id/action_registerPageFragment_to_productsPageFragment"
+            app:destination="@id/productsPageFragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/loginPageFragment"
+        android:name="com.icmen.codecase.ui.fragment.login.LoginPageFragment"
+        android:label="Login Page"
+        tools:layout="@layout/fragment_login">
+
+        <action
+            android:id="@+id/action_loginPageFragment_to_productsPageFragment"
+            app:destination="@id/productsPageFragment" />
+
+    </fragment>
 
     <fragment
         android:id="@+id/productsPageFragment"
-        android:name="com.icmen.ecommerceapplication.ui.fragment.ProductsPageFragment"
+        android:name="com.icmen.codecase.ui.fragment.products.ProductsPageFragment"
         android:label="Products Page"
         tools:layout="@layout/fragment_products">
 
         <action
             android:id="@+id/action_productsPageFragment_to_productDetailPageFragment2"
             app:destination="@id/productDetailPageFragment" />
+
     </fragment>
 
     <fragment
         android:id="@+id/productDetailPageFragment"
-        android:name="com.icmen.ecommerceapplication.ui.fragment.ProductDetail.ProductDetailFragment"
+        android:name="com.icmen.codecase.ui.fragment.productDetail.ProductDetailFragment"
         android:label="Product Detail Page"
         tools:layout="@layout/fragment_product_detail" >
 
         <argument
             android:name="product"
-            app:argType="com.icmen.ecommerceapplication.data.model.Product" />
+            app:argType="com.icmen.codecase.data.model.Product" />
 
     </fragment>
 
-
     <fragment
         android:id="@+id/basketPageFragment"
-        android:name="com.icmen.ecommerceapplication.ui.fragment.Basket.BasketPageFragment"
+        android:name="com.icmen.codecase.ui.fragment.basket.BasketPageFragment"
         android:label="Basket Page"
         tools:layout="@layout/fragment_basket" >
+
         <action
             android:id="@+id/action_basketPageFragment_to_paymentPageFragment"
             app:destination="@id/paymentPageFragment" />
+
     </fragment>
 
     <fragment
         android:id="@+id/paymentPageFragment"
-        android:name="com.icmen.ecommerceapplication.ui.fragment.payment.PaymentPageFragment"
+        android:name="com.icmen.codecase.ui.fragment.payment.PaymentPageFragment"
         android:label="Payment Page"
         tools:layout="@layout/fragment_payment">
 
@@ -55,21 +104,24 @@
 
         <argument
             android:name="products"
-            app:argType="com.icmen.ecommerceapplication.data.model.Product[]" />
+            app:argType="com.icmen.codecase.data.model.Product[]" />
 
     </fragment>
 
     <fragment
         android:id="@+id/profilePageFragment"
-        android:name="com.icmen.ecommerceapplication.ui.fragment.Profile.ProfilePageFragment"
+        android:name="com.icmen.codecase.ui.fragment.profile.ProfilePageFragment"
         android:label="Profile Page"
         tools:layout="@layout/fragment_profile" >
+
         <action
             android:id="@+id/action_profilePageFragment_to_editPasswordPageFragment"
             app:destination="@id/editPasswordPageFragment" />
+
         <action
             android:id="@+id/action_profilePageFragment_to_editProfilePageFragment"
             app:destination="@id/editProfilePageFragment" />
+
         <action
             android:id="@+id/action_profilePageFragment_to_ordersPageFragment"
             app:destination="@id/ordersPageFragment" />
@@ -78,21 +130,20 @@
 
     <fragment
         android:id="@+id/editPasswordPageFragment"
-        android:name="com.icmen.ecommerceapplication.ui.fragment.EditPasswordFragment"
+        android:name="com.icmen.codecase.ui.fragment.editPassword.EditPasswordFragment"
         android:label="Edit Password Page"
         tools:layout="@layout/fragment_edit_password" />
 
     <fragment
         android:id="@+id/editProfilePageFragment"
-        android:name="com.icmen.ecommerceapplication.ui.fragment.EditProfilePageFragment"
+        android:name="com.icmen.codecase.ui.fragment.editProfilePage.EditProfilePageFragment"
         android:label="Edit Profile Page"
         tools:layout="@layout/fragment_edit_profile" />
 
     <fragment
         android:id="@+id/ordersPageFragment"
-        android:name="com.icmen.ecommerceapplication.ui.fragment.orders.OrdersPageFragment"
+        android:name="com.icmen.codecase.ui.fragment.orders.OrdersPageFragment"
         android:label="Orders Page"
         tools:layout="@layout/fragment_orders" />
-
 
 </navigation>
