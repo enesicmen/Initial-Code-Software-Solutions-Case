@@ -110,6 +110,10 @@
             android:name="products"
             app:argType="com.icmen.codecase.data.model.Product[]" />
 
+        <action
+            android:id="@+id/action_paymentPageFragment_to_productsPageFragment"
+            app:destination="@id/productsPageFragment" />
+
     </fragment>
 
     <fragment

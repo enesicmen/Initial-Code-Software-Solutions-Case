@@ -2,6 +2,7 @@ package com.icmen.codecase.ui.fragment.products
 
 import android.os.Bundle
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
@@ -26,6 +27,13 @@ class ProductsPageFragment : BaseFragment<FragmentProductsBinding, ProductsPageV
     override fun initView(savedInstanceState: Bundle?) {
         initProductsAdapter()
         observeViewModel()
+
+        // Geri tuşuna basıldığında uygulamadan çıkışı sağlama
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                requireActivity().finishAffinity() // Uygulamayı kapat
+            }
+        })
     }
 
     private fun initProductsAdapter() {

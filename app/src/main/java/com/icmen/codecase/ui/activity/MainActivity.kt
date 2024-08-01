@@ -1,6 +1,8 @@
 package com.icmen.codecase.ui.activity
+
 import android.os.Bundle
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -13,18 +15,30 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var navController: NavController
+    private lateinit var bottomNavigationView: BottomNavigationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setBottomNavigationAndNavigation()
+
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (navController.currentDestination?.id == R.id.productsPageFragment) {
+                    finishAffinity()
+                } else {
+                    navController.popBackStack()
+                    updateBottomNavigationView()
+                }
+            }
+        })
     }
 
     private fun setBottomNavigationAndNavigation() {
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
 
-        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
+        bottomNavigationView = findViewById(R.id.bottom_navigation)
         bottomNavigationView.setupWithNavController(navController)
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
@@ -41,20 +55,33 @@ class MainActivity : AppCompatActivity() {
         bottomNavigationView.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.menu_item_home -> {
-                    navController.navigate(R.id.productsPageFragment)
+                    navigateToDestination(R.id.productsPageFragment)
                     true
                 }
                 R.id.menu_item_basket -> {
-                    navController.navigate(R.id.basketPageFragment)
+                    navigateToDestination(R.id.basketPageFragment)
                     true
                 }
                 R.id.menu_item_profile -> {
-                    navController.navigate(R.id.profilePageFragment)
+                    navigateToDestination(R.id.profilePageFragment)
                     true
                 }
                 else -> false
             }
         }
     }
-}
 
+    private fun navigateToDestination(destinationId: Int) {
+        if (navController.currentDestination?.id != destinationId) {
+            navController.navigate(destinationId)
+        }
+    }
+
+    private fun updateBottomNavigationView() {
+        when (navController.currentDestination?.id) {
+            R.id.productsPageFragment -> bottomNavigationView.selectedItemId = R.id.menu_item_home
+            R.id.basketPageFragment -> bottomNavigationView.selectedItemId = R.id.menu_item_basket
+            R.id.profilePageFragment -> bottomNavigationView.selectedItemId = R.id.menu_item_profile
+        }
+    }
+}

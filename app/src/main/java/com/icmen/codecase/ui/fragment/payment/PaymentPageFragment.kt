@@ -3,10 +3,15 @@ package com.icmen.codecase.ui.fragment.payment
 import android.os.Bundle
 import android.widget.Button
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
+import androidx.navigation.NavOptions
+import androidx.navigation.fragment.findNavController
 import com.icmen.PaymentSDK
+import com.icmen.codecase.R
 import com.icmen.codecase.data.model.Product
 import com.icmen.codecase.databinding.FragmentPaymentBinding
 import com.icmen.codecase.ui.base.BaseFragment
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -57,6 +62,15 @@ class PaymentPageFragment : BaseFragment<FragmentPaymentBinding, PaymentPageView
                 showToast("Lütfen tüm alanları doğru bir şekilde doldurun.")
             }
         }
+
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    navigateToProductsPageAndClearBackStack()
+                }
+            }
+        )
     }
 
     override fun readDataFromArguments() {
@@ -82,6 +96,23 @@ class PaymentPageFragment : BaseFragment<FragmentPaymentBinding, PaymentPageView
     }
 
     private fun navigateToSuccessPage() {
-        // Başarılı ödeme sonrası yönlendirme işlemini gerçekleştirin
+        val navOptions = NavOptions.Builder()
+            .setPopUpTo(R.id.paymentPageFragment, true)
+            .build()
+        findNavController().navigate(R.id.action_paymentPageFragment_to_productsPageFragment, null, navOptions)
+        updateBottomNavigationView()
+    }
+
+    private fun navigateToProductsPageAndClearBackStack() {
+        val navOptions = NavOptions.Builder()
+            .setPopUpTo(R.id.paymentPageFragment, true)
+            .build()
+        findNavController().navigate(R.id.productsPageFragment, null, navOptions)
+        updateBottomNavigationView()
+    }
+
+    private fun updateBottomNavigationView() {
+        val bottomNavigationView = requireActivity().findViewById<BottomNavigationView>(R.id.bottom_navigation)
+        bottomNavigationView?.selectedItemId = R.id.menu_item_home
     }
 }

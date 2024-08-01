@@ -1,4 +1,4 @@
-package com.icmen.codecase.ui.dialog
+package com.icmen.codecase.ui.fragment.custom
 
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -32,10 +32,10 @@ class CustomDialogWithOneButtonFragment : DialogFragment() {
 
         arguments?.let {
             val title = it.getString(ARG_TITLE)
-            val message1 = it.getString(ARG_MESSAGE1)
+            val message = it.getString(ARG_MESSAGE)
 
             binding.tvTitle.text = title
-            binding.tvMessage.text = message1
+            binding.tvMessage.text = message
         }
 
         binding.btnOk.setOnClickListener {
@@ -51,13 +51,13 @@ class CustomDialogWithOneButtonFragment : DialogFragment() {
 
     companion object {
         private const val ARG_TITLE = "title"
-        private const val ARG_MESSAGE1 = "message1"
+        private const val ARG_MESSAGE = "message"
 
-        fun newInstance(title: String, message1: String): CustomDialogWithOneButtonFragment {
+        fun newInstance(title: String, message: String): CustomDialogWithOneButtonFragment {
             val fragment = CustomDialogWithOneButtonFragment()
             val args = Bundle().apply {
                 putString(ARG_TITLE, title)
-                putString(ARG_MESSAGE1, message1)
+                putString(ARG_MESSAGE, message)
             }
             fragment.arguments = args
             return fragment

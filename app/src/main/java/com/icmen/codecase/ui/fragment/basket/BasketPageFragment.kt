@@ -3,15 +3,14 @@ package com.icmen.codecase.ui.fragment.basket
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.icmen.codecase.data.model.Product
 import com.icmen.codecase.databinding.FragmentBasketBinding
 import com.icmen.codecase.ui.base.BaseFragment
-import com.icmen.codecase.ui.dialog.CustomDialogWithOneButtonFragment
-import com.icmen.codecase.ui.dialog.CustomDialogWithTwoButtonFragment
+import com.icmen.codecase.ui.fragment.custom.CustomDialogWithOneButtonFragment
+import com.icmen.codecase.ui.fragment.custom.CustomDialogWithTwoButtonFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

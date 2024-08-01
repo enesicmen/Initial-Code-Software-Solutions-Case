@@ -68,7 +68,7 @@ class RegisterPageFragment : BaseFragment<FragmentRegisterBinding, RegisterPageV
         })
 
         registerPageViewModel.progressVisibility.observe(viewLifecycleOwner, Observer { isVisible ->
-            getViewBinding()?.fmProgress?.visibility = if (isVisible) View.VISIBLE else View.GONE
+            getViewBinding()?.progressBar?.visibility = if (isVisible) View.VISIBLE else View.GONE
         })
     }
 

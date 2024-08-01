@@ -3,10 +3,8 @@ package com.icmen.codecase.ui.fragment.login
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import com.icmen.codecase.R
 import com.icmen.codecase.databinding.FragmentLoginBinding
 import com.icmen.codecase.ui.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -34,7 +32,6 @@ class LoginPageFragment : BaseFragment<FragmentLoginBinding, LoginPageViewModel>
     private fun observeViewModel() {
         getViewModel()?.loginResult?.observe(viewLifecycleOwner, Observer { result ->
             result.onSuccess {
-                Toast.makeText(requireContext(), getString(R.string.login_success), Toast.LENGTH_SHORT).show()
                 val action = LoginPageFragmentDirections.actionLoginPageFragmentToProductsPageFragment()
                 findNavController().navigate(action)
             }
