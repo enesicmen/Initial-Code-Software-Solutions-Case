@@ -31,29 +31,26 @@ class PaymentPageFragment : BaseFragment<FragmentPaymentBinding, PaymentPageView
         FragmentPaymentBinding.inflate(layoutInflater)
 
     override fun initView(savedInstanceState: Bundle?) {
-        val payButton: Button? = getViewBinding()?.payButton
-
         setTotalAmount(mTotalAmount)
-        payButton?.setOnClickListener {
+        getViewBinding()?.btnPay?.setOnClickListener {
             val amount = mTotalAmount.toDouble()
-            val cardNumber = getViewBinding()?.cardNumber?.text.toString()
-            val expiryDate = getViewBinding()?.expiryDate?.text.toString()
-            val cvv = getViewBinding()?.cvv?.text.toString()
+            val cardNumber = getViewBinding()?.etCardNumber?.text.toString()
+            val expiryDate = getViewBinding()?.etExpiryDate?.text.toString()
+            val cvv = getViewBinding()?.etCvv?.text.toString()
 
             if (amount > 0 && cardNumber.isNotEmpty() && expiryDate.isNotEmpty() && cvv.isNotEmpty()) {
                 val cardDetails = PaymentSDK.CardDetails(cardNumber, expiryDate, cvv)
                 paymentSDK.processPayment(amount, cardDetails, object : PaymentSDK.PaymentCallback {
                     override fun onSuccess(message: String, paymentId: String) {
-                        showToast(message)
                         getViewModel()?.saveOrderToFirebase(paymentId, mProducts, mTotalAmount, mUserAddress)
                     }
 
                     override fun onError(errorMessage: String) {
-                        showToast(errorMessage)
+                        val title = getString(R.string.error)
+                        setOneButtonDialog(title,errorMessage)
                     }
                 })
             } else {
-                showToast("Lütfen tüm alanları doğru bir şekilde doldurun.")
             }
         }
 
@@ -87,20 +84,18 @@ class PaymentPageFragment : BaseFragment<FragmentPaymentBinding, PaymentPageView
                 }
                 is Resource.Success -> {
                     getViewBinding()?.progressBar?.visibility = View.GONE
-                    showToast("Siparişiniz başarıyla kaydedildi.")
                     clearBasket()
                     navigateToSuccessPage()
                 }
                 is Resource.Error -> {
                     getViewBinding()?.progressBar?.visibility = View.GONE
-                    showToast(resource.error ?: "Sipariş kaydedilirken hata oluştu.")
                 }
             }
         }
     }
 
     private fun setTotalAmount(totalAmount: String) {
-        getViewBinding()?.tvTotalAmount?.text = totalAmount
+        //getViewBinding()?.tvTotalAmount?.text = totalAmount
     }
 
     private fun showToast(message: String) {

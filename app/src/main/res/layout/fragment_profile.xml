@@ -41,8 +41,7 @@
                 android:id="@+id/iconOrders"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:src="@drawable/order_icon"
-                android:contentDescription="Siparişler" />
+                android:src="@drawable/order_icon" />
 
             <TextView
                 android:layout_width="0dp"
@@ -50,21 +49,20 @@
                 android:layout_weight="1"
                 android:textStyle="bold"
                 android:paddingStart="16dp"
-                android:text="Siparişler"
+                android:text="@string/orders"
                 android:textSize="17sp" />
 
             <ImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:contentDescription="Aç"
                 android:src="@drawable/arrow_icon" />
+
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/llEditProfile"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:background="?attr/selectableItemBackground"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:padding="12dp">
@@ -73,9 +71,7 @@
                 android:id="@+id/iconEditProfile"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:src="@drawable/edit_profile_icon"
-                android:contentDescription="Profili Düzenle"
-                 />
+                android:src="@drawable/edit_profile_icon"/>
 
             <TextView
                 android:layout_width="0dp"
@@ -83,21 +79,20 @@
                 android:layout_weight="1"
                 android:paddingStart="16dp"
                 android:textStyle="bold"
-                android:text="Profili Düzenle"
+                android:text="@string/edit_profile"
                 android:textSize="17sp" />
 
             <ImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:contentDescription="Aç"
                 android:src="@drawable/arrow_icon" />
+
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/llEditPassword"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:background="?attr/selectableItemBackground"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:padding="12dp">
@@ -106,8 +101,7 @@
                 android:id="@+id/iconChangePassword"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:src="@drawable/edit_password_icon"
-                android:contentDescription="Şifreyi Değiştir" />
+                android:src="@drawable/edit_password_icon"/>
 
             <TextView
                 android:layout_width="0dp"
@@ -115,14 +109,14 @@
                 android:layout_weight="1"
                 android:textStyle="bold"
                 android:paddingStart="16dp"
-                android:text="Şifreyi Değiştir"
+                android:text="@string/change_password"
                 android:textSize="17sp" />
 
             <ImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:contentDescription="Aç"
                 android:src="@drawable/arrow_icon" />
+
         </LinearLayout>
 
     </LinearLayout>

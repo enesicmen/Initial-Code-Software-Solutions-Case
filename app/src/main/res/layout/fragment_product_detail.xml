@@ -73,7 +73,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tvDescription"
-                    tools:text="12.0$/kg" />
+                    tools:text="12 TL" />
 
                 <TextView
                     android:id="@+id/tvDescription"

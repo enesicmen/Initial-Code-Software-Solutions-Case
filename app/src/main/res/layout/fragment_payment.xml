@@ -9,51 +9,70 @@
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="497dp"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <EditText
-            android:id="@+id/card_number"
+            android:id="@+id/etCardNumber"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:digits="0123456789"
-            android:hint="Kart Numarası"
+            android:hint="@string/card_number"
             android:inputType="number"
-            android:maxLength="16" />
+            android:padding="12dp"
+            android:maxLength="19"
+            android:background="@drawable/rounded_edittext" />
 
-        <EditText
-            android:id="@+id/expiry_date"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:digits="0123456789/"
-            android:hint="Son Kullanma Tarihi (MM/YY)"
-            android:inputType="text"
-            android:maxLength="5" />
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp"
+            android:weightSum="2">
 
-        <EditText
-            android:id="@+id/cvv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:digits="0123456789"
-            android:hint="CVV"
-            android:inputType="number"
-            android:maxLength="3" />
+            <EditText
+                android:id="@+id/etExpiryDate"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="@string/expiration_date"
+                android:inputType="text"
+                android:padding="12dp"
+                android:background="@drawable/rounded_edittext"
+                android:layout_marginEnd="4dp" />
 
-        <TextView
-            android:id="@+id/tvTotalAmount"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Tutar"
-            android:inputType="numberDecimal" />
+            <EditText
+                android:id="@+id/etCvv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:maxLength="3"
+                android:hint="@string/cvv"
+                android:inputType="number"
+                android:padding="12dp"
+                android:background="@drawable/rounded_edittext"
+                android:layout_marginStart="4dp" />
+
+        </LinearLayout>
 
         <Button
-            android:id="@+id/pay_button"
+            android:id="@+id/btnPay"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Ödeme Yap" />
+            android:background="@drawable/rounded_button"
+            android:padding="12dp"
+            android:layout_marginTop="30dp"
+            android:text="@string/pay"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent" />
 
     </LinearLayout>
-
 
     <ProgressBar
         android:id="@+id/progressBar"

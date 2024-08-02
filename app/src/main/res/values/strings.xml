@@ -44,11 +44,15 @@
     <string name="add_to_basket_success">Ürün sepete eklendi</string>
     <string name="order_success">Sipariş başarıyla alındı.</string>
     <string name="product_color">Ürün rengi: %1$s</string>
+    <string name="total_amount_basket">Toplam Ücret:</string>
+    <string name="complete_your_purchase">Satın alma işlemini tamamla</string>
 
     <!-- Profile -->
     <string name="logout">Çıkış yap</string>
     <string name="update">Güncelle</string>
     <string name="profile_updated_successfully">Profile güncellemesi başarılı</string>
+    <string name="orders">Siparişler</string>
+    <string name="edit_profile">Siparişler</string>
 
     <!-- Products -->
     <string name="product_name">Ürün adı: %1$s</string>
@@ -64,5 +68,11 @@
     <string name="password_could_not_be_changed">Şifre değiştirilemedi:</string>
     <string name="current_password_is_incorrect">Mevcut şifre yanlış</string>
     <string name="must_be_at_least_six_characters_long">Şifre en az 6 karakter olmalıdır</string>
+
+    <!-- Payment -->
+    <string name="card_number">Kart numarası</string>
+    <string name="expiration_date">Son Kullanma Tarihi (MM/YY)</string>
+    <string name="cvv">CVV</string>
+    <string name="pay">Ödeme yap</string>
 
 </resources>

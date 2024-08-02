@@ -28,10 +28,10 @@
             android:layout_height="100dp"
             android:adjustViewBounds="true"
             android:layout_centerInParent="true"
-            tools:src="@drawable/e_commerce"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/e_commerce" />
 
         <TextView
             android:id="@+id/tvProductName"
@@ -127,7 +127,6 @@
                 android:layout_height="wrap_content"
                 android:text="+" />
         </LinearLayout>
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
