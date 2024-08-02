@@ -23,7 +23,7 @@
             android:background="@drawable/rounded_edittext"
             android:hint="@string/card_number"
             android:inputType="number"
-            android:maxLength="19"
+            android:maxLength="16"
             android:padding="12dp" />
 
         <LinearLayout
@@ -39,6 +39,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="4dp"
                 android:layout_weight="1"
+                android:maxLength="5"
                 android:background="@drawable/rounded_edittext"
                 android:hint="@string/expiration_date"
                 android:inputType="text"
