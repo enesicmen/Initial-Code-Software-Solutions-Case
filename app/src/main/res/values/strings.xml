@@ -37,17 +37,32 @@
     <!-- Basket -->
     <string name="add_to_basket">Sepete Ekle</string>
     <string name="total_amount">Toplam Ücret</string>
-    <string name="price">Price: %.2f %s</string>
+    <string name="price">Fiyat: %.2f %s</string>
     <string name="delete_product">Ürünü Sil</string>
     <string name="basket_is_empty">Sepetiniz boş</string>
     <string name="are_you_sure_delete_product">Bu ürünü silmek istediğinize emin misiniz ? </string>
     <string name="add_to_basket_success">Ürün sepete eklendi</string>
     <string name="order_success">Sipariş başarıyla alındı.</string>
+    <string name="product_color">Ürün rengi: %1$s</string>
 
     <!-- Profile -->
     <string name="logout">Çıkış yap</string>
     <string name="update">Güncelle</string>
     <string name="profile_updated_successfully">Profile güncellemesi başarılı</string>
 
+    <!-- Products -->
+    <string name="product_name">Ürün adı: %1$s</string>
+
+    <!-- Edit Password -->
+    <string name="current_password">Mevcut şifre</string>
+    <string name="new_password">Yeni şifre</string>
+    <string name="new_password_again">Yeni şifre tekrar</string>
+    <string name="change_password">Şifreyi değiştir</string>
+    <string name="change_password_success">Şifre değiştirme başarılı</string>
+    <string name="fill_in_all_fields">Tüm alanları doldurun</string>
+    <string name="new_passwords_do_not_match">Yeni şifreler eşleşmiyor</string>
+    <string name="password_could_not_be_changed">Şifre değiştirilemedi:</string>
+    <string name="current_password_is_incorrect">Mevcut şifre yanlış</string>
+    <string name="must_be_at_least_six_characters_long">Şifre en az 6 karakter olmalıdır</string>
 
 </resources>

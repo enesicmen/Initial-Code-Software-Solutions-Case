@@ -53,12 +53,37 @@ class EditPasswordPageFragment : BaseFragment<FragmentEditPasswordBinding, EditP
                 }
                 is Resource.Success -> {
                     getViewBinding()?.progressBar?.visibility = View.GONE
-                    Toast.makeText(requireContext(), "Şifre başarıyla değiştirildi", Toast.LENGTH_SHORT).show()
                     navigateToSuccessPage()
                 }
                 is Resource.Error -> {
                     getViewBinding()?.progressBar?.visibility = View.GONE
-                    Toast.makeText(requireContext(), resource.error ?: "Bilinmeyen bir hata oluştu", Toast.LENGTH_SHORT).show()
+                    when (resource.error) {
+                        "0" -> {
+                            var title = getString(R.string.error)
+                            var message = getString(R.string.fill_in_all_fields)
+                            setOneButtonDialog(title,message)
+                        }
+                        "1" -> {
+                            var title = getString(R.string.error)
+                            var message = getString(R.string.new_passwords_do_not_match)
+                            setOneButtonDialog(title,message)
+                        }
+                        "2" -> {
+                            var title = getString(R.string.error)
+                            var message = getString(R.string.password_could_not_be_changed)
+                            setOneButtonDialog(title,message)
+                        }
+                        "3" -> {
+                            var title = getString(R.string.error)
+                            var message = getString(R.string.current_password_is_incorrect)
+                            setOneButtonDialog(title,message)
+                        }
+                        "4" -> {
+                            var title = getString(R.string.error)
+                            var message = getString(R.string.must_be_at_least_six_characters_long)
+                            setOneButtonDialog(title,message)
+                        }
+                    }
                 }
             }
         }
@@ -68,7 +93,7 @@ class EditPasswordPageFragment : BaseFragment<FragmentEditPasswordBinding, EditP
 
     private fun navigateToSuccessPage() {
         val title = getString(R.string.success)
-        val message = getString(R.string.order_success)
+        val message = getString(R.string.change_password_success)
         val navOptions = NavOptions.Builder()
             .setPopUpTo(R.id.editPasswordPageFragment, true)
             .build()

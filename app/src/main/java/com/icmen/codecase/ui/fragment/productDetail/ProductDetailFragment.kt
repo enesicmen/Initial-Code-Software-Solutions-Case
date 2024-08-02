@@ -2,7 +2,6 @@ package com.icmen.codecase.ui.fragment.productDetail
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.icmen.codecase.R
 import com.icmen.codecase.data.Resource
@@ -83,23 +82,16 @@ class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding, Product
                 }
                 is Resource.Success -> {
                     getViewBinding()?.progressBar?.visibility = View.GONE
-                    showToast(resource.data ?: "Başarıyla eklendi")
                     val title = getString(R.string.success)
                     val message = getString(R.string.add_to_basket_success)
                     setOneButtonDialog(title, message)
                 }
                 is Resource.Error -> {
                     getViewBinding()?.progressBar?.visibility = View.GONE
-                    showToast(resource.error ?: "Bilinmeyen bir hata oluştu")
                 }
             }
         }
     }
-
-    private fun showToast(message: String) {
-        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
-    }
-
     private fun setOneButtonDialog(title: String, message: String) {
         val dialog = CustomDialogWithOneButtonFragment.newInstance(title, message)
         dialog.onOkClicked = {}

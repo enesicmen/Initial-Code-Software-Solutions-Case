@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_margin="8dp"
     android:orientation="vertical"
     android:padding="8dp"
@@ -29,6 +30,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textStyle="bold"
+            tools:text="Elbise"
             android:textSize="18sp"
             android:paddingTop="4dp"
             android:paddingBottom="2dp"
@@ -38,6 +40,7 @@
             android:id="@+id/tvProductDescription"
             android:layout_width="match_parent"
             android:layout_height="40dp"
+            tools:text="Elbise"
             android:textSize="14sp"
             android:paddingBottom="4dp"
             android:textColor="@android:color/darker_gray"
@@ -46,6 +49,7 @@
 
         <TextView
             android:id="@+id/tvProductPrice"
+            tools:text="19.33"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="16sp"

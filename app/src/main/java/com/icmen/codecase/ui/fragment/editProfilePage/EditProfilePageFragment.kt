@@ -6,13 +6,13 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.View
-import android.widget.Toast
 import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
 import com.icmen.codecase.R
 import com.icmen.codecase.data.Resource
 import com.icmen.codecase.databinding.FragmentEditProfileBinding
 import com.icmen.codecase.ui.base.BaseFragment
+import com.icmen.codecase.ui.fragment.custom.CustomDialogWithOneButtonFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -93,8 +93,11 @@ class EditProfilePageFragment : BaseFragment<FragmentEditProfileBinding, EditPro
                 }
                 is Resource.Error -> {
                     getViewBinding()?.progressBar?.visibility = View.GONE
-                    Toast.makeText(requireContext(), resource.error ?: "Bilinmeyen bir hata oluştu", Toast.LENGTH_SHORT).show()
-                }
+                    var title = getString(R.string.error)
+                    var message = resource.error
+                    if (message != null) {
+                        setOneButtonDialog(title,message)
+                    }                }
             }
         }
 
@@ -130,8 +133,11 @@ class EditProfilePageFragment : BaseFragment<FragmentEditProfileBinding, EditPro
                 }
                 is Resource.Error -> {
                     getViewBinding()?.progressBar?.visibility = View.GONE
-                    Toast.makeText(requireContext(), resource.error ?: "Bilinmeyen bir hata oluştu", Toast.LENGTH_SHORT).show()
-                }
+                    var title = getString(R.string.error)
+                    var message = resource.error
+                    if (message != null) {
+                        setOneButtonDialog(title,message)
+                    }                }
             }
         }
 
@@ -142,11 +148,18 @@ class EditProfilePageFragment : BaseFragment<FragmentEditProfileBinding, EditPro
                 }
                 is Resource.Success -> {
                     getViewBinding()?.progressBar?.visibility = View.GONE
-                    Toast.makeText(requireContext(), getString(R.string.profile_updated_successfully), Toast.LENGTH_SHORT).show()
+                    var title = getString(R.string.success)
+                    var message = getString(R.string.profile_updated_successfully)
+                    setOneButtonDialog(title,message)
                 }
                 is Resource.Error -> {
                     getViewBinding()?.progressBar?.visibility = View.GONE
-                    Toast.makeText(requireContext(), resource.error ?: "Bilinmeyen bir hata oluştu", Toast.LENGTH_SHORT).show()
+
+                    var title = getString(R.string.error)
+                    var message = resource.error
+                    if (message != null) {
+                        setOneButtonDialog(title,message)
+                    }
                 }
             }
         }
@@ -154,5 +167,11 @@ class EditProfilePageFragment : BaseFragment<FragmentEditProfileBinding, EditPro
 
     companion object {
         private const val REQUEST_CODE_IMAGE_PICK = 1001
+    }
+
+    private fun setOneButtonDialog(title: String, message: String) {
+        val dialog = CustomDialogWithOneButtonFragment.newInstance(title, message)
+        dialog.onOkClicked = {}
+        dialog.show(requireActivity().supportFragmentManager, "customDialog")
     }
 }

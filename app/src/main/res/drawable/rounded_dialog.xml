@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
     <solid android:color="@color/white"/>
-    <corners android:radius="@dimen/rounded_dialog_corners_radius_16dp"/>
+    <corners android:radius="16dp"/>
     <padding
-        android:left="@dimen/rounded_dialog_padding_left_16dp"
-        android:top="@dimen/rounded_dialog_padding_top_16dp"
-        android:right="@dimen/rounded_dialog_padding_right_16dp"
-        android:bottom="@dimen/rounded_dialog_padding_left_16dp"/>
+        android:left="16dp"
+        android:top="16dp"
+        android:right="16dp"
+        android:bottom="16dp"/>
 </shape>

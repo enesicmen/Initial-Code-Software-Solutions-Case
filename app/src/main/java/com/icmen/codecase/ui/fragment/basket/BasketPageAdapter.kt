@@ -54,11 +54,13 @@ class BasketPageAdapter(
             }
         }
 
-        @SuppressLint("StringFormatMatches")
+        @SuppressLint("StringFormatMatches", "StringFormatInvalid")
         fun bind(item: Product) {
             binding.apply {
                 tvProductName.text = item.productName
                 tvDescription.text = item.description
+                tvProductColor.text = mContext.getString(R.string.product_color, item.productColor)
+                tvListiningDate.text = item.listiningDate
                 tvPrice.text = mContext.getString(R.string.price, item.price, item.currency)
                 tvQuantityFor.text = item.quantity.toString()
                 Glide.with(mContext).load(item.productImage).into(ivImage)
@@ -73,4 +75,15 @@ class BasketPageAdapter(
         holder.bind(item = basketItems[position])
 
     override fun getItemCount(): Int = basketItems.size
+
+    fun addItemToTop(item: Product) {
+        basketItems.add(0, item)
+        notifyItemInserted(0)
+    }
+
+    fun updateItems(newItems: List<Product>) {
+        basketItems.clear()
+        basketItems.addAll(newItems)
+        notifyDataSetChanged()
+    }
 }

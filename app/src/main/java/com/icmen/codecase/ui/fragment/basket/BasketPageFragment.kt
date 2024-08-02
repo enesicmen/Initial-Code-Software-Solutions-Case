@@ -48,7 +48,7 @@ class BasketPageFragment : BaseFragment<FragmentBasketBinding, BasketPageViewMod
                 }
                 is Resource.Success -> {
                     getViewBinding()?.progressBar?.visibility = View.GONE
-                    setBasketItems(resource.data ?: emptyList())
+                    basketAdapter.updateItems(resource.data ?: emptyList())
                 }
                 is Resource.Error -> {
                     getViewBinding()?.progressBar?.visibility = View.GONE

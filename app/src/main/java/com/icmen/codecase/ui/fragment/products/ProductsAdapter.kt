@@ -41,7 +41,7 @@ class ProductsAdapter(
         @SuppressLint("StringFormatMatches")
         fun bind(item: Product) {
             binding.apply {
-                tvProductName.text = item.productName
+                tvProductName.text = mContext.getString(R.string.product_name, item.productName)
                 tvProductDescription.text = item.description
                 tvProductPrice.text = mContext.getString(R.string.price, item.price, item.currency)
                 Glide.with(mContext).load(item.productImage).into(ivProductImage)

@@ -3,7 +3,6 @@ package com.icmen.codecase.ui.fragment.orders
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.icmen.codecase.data.Resource
 import com.icmen.codecase.data.model.Order
@@ -15,7 +14,6 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class OrdersPageFragment : BaseFragment<FragmentOrdersBinding, OrdersPageViewModel>(), RecyclerItemClickListener {
 
-    private val viewModel: OrdersPageViewModel by viewModels()
     private lateinit var orderAdapter: OrdersPageAdapter
     private val orderList: MutableList<Order> = mutableListOf()
 
@@ -30,11 +28,11 @@ class OrdersPageFragment : BaseFragment<FragmentOrdersBinding, OrdersPageViewMod
         getViewBinding()?.recyclerViewOrders?.adapter = orderAdapter
 
         observeOrders()
-        viewModel.fetchOrders()
+        getViewModel()?.fetchOrders()
     }
 
     private fun observeOrders() {
-        viewModel.orderList.observe(viewLifecycleOwner) { resource ->
+        getViewModel()?.orderList?.observe(viewLifecycleOwner) { resource ->
             when (resource) {
                 is Resource.Loading -> {
                     getViewBinding()?.progressBar?.visibility = View.VISIBLE

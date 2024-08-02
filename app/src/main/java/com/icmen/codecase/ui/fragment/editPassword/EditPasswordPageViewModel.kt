@@ -1,6 +1,5 @@
 package com.icmen.codecase.ui.fragment.editPassword
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -20,11 +19,15 @@ class EditPasswordPageViewModel @Inject constructor(
 
     fun changePassword(currentPassword: String, newPassword: String, confirmNewPassword: String) {
         if (currentPassword.isEmpty() || newPassword.isEmpty() || confirmNewPassword.isEmpty()) {
-            _changePasswordLiveData.value = Resource.Error("Lütfen tüm alanları doldurun")
+            _changePasswordLiveData.value = Resource.Error("0")
+            return
+        }
+        if (newPassword.length < 6 || confirmNewPassword.length < 6) {
+            _changePasswordLiveData.value = Resource.Error("4")
             return
         }
         if (newPassword != confirmNewPassword) {
-            _changePasswordLiveData.value = Resource.Error("Yeni şifreler eşleşmiyor")
+            _changePasswordLiveData.value = Resource.Error("1")
             return
         }
 
@@ -39,12 +42,11 @@ class EditPasswordPageViewModel @Inject constructor(
                         if (updateTask.isSuccessful) {
                             _changePasswordLiveData.value = Resource.Success(null)
                         } else {
-                            _changePasswordLiveData.value = Resource.Error("Şifre değiştirilemedi: ${updateTask.exception?.message}")
-                            Log.e("EditPasswordViewModel", "Şifre değiştirilemedi: ${updateTask.exception?.message}")
+                            _changePasswordLiveData.value = Resource.Error("2 ${updateTask.exception?.message}")
                         }
                     }
                 } else {
-                    _changePasswordLiveData.value = Resource.Error("Mevcut şifre yanlış")
+                    _changePasswordLiveData.value = Resource.Error("3")
                 }
             }
         }
