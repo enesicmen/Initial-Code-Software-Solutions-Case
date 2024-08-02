@@ -66,16 +66,6 @@
             tools:text="Ürün rengi:" />
 
         <TextView
-            android:id="@+id/tvListiningDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="5dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/ivImage"
-            tools:text="2021-01-15" />
-
-        <TextView
             android:id="@+id/tvDescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
