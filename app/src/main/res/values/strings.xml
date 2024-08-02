@@ -17,8 +17,7 @@
     <string name="register">Kayıt Ol</string>
     <string name="name">Ad</string>
     <string name="surname">Soyad</string>
-    <string name="image_upload_failed">Resim yüklenemedi</string>
-    <string name="please_select_image">Lütfen resim seçiniz</string>
+    <string name="register_failed">Lütfen bilgileri kontrol ediniz.</string>
 
     <!-- Login -->
     <string name="email">E-Mail</string>
@@ -27,6 +26,8 @@
     <string name="login">Giriş yap</string>
     <string name="login_success">Giriş Başarılı</string>
     <string name="login_failed">Giriş Başarısız</string>
+    <string name="login_error">Eksik veya hatalı bilgi girdiniz</string>
+
 
     <!-- Navigation -->
     <string name="profile">Profil</string>
@@ -75,7 +76,10 @@
     <string name="cvv">CVV</string>
     <string name="pay">Ödeme yap</string>
 
-    <!-- Login -->
-    <string name="login_error">Eksik veya hatalı bilgi girdiniz</string>
+
+    <!-- Orders -->
+    <string name="order_price">Fiyat : %1$s %2$s</string>
+    <string name="order_date">Sipariş tarihi : %1$s</string>
+    <string name="order_address">Adres : %1$s</string>
 
 </resources>

@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.icmen.codecase.data.Resource
 import com.icmen.codecase.data.model.Order
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -25,7 +26,7 @@ class OrdersPageViewModel @Inject constructor(
             _orderList.value = Resource.Loading()
 
             firestore.collection("orders").document(userId).collection("userOrders")
-                .orderBy("orderDate")
+                .orderBy("orderDate", Query.Direction.DESCENDING)
                 .get()
                 .addOnSuccessListener { querySnapshot ->
                     val orders = querySnapshot.documents.mapNotNull { document ->

@@ -1,10 +1,12 @@
 package com.icmen.codecase.ui.fragment.orders
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.icmen.codecase.R
 import com.icmen.codecase.data.model.Order
 import com.icmen.codecase.databinding.RowOrdersBinding
 import com.icmen.codecase.ui.common.RecyclerItemClickListener
@@ -16,14 +18,16 @@ class OrdersPageAdapter(
 
     class ViewHolder(
         private val binding: RowOrdersBinding,
-        private val onClicked: RecyclerItemClickListener
+        private val onClicked: RecyclerItemClickListener,
+        private val mContext: Context
     ) : RecyclerView.ViewHolder(binding.root) {
 
         companion object {
             fun from(viewGroup: ViewGroup, onClicked: RecyclerItemClickListener): ViewHolder {
                 val layoutInflater = LayoutInflater.from(viewGroup.context)
+                val context = viewGroup.context
                 val binding = RowOrdersBinding.inflate(layoutInflater, viewGroup, false)
-                return ViewHolder(binding, onClicked)
+                return ViewHolder(binding, onClicked,context)
             }
         }
 
@@ -31,13 +35,13 @@ class OrdersPageAdapter(
             itemView.setOnClickListener { onClicked(adapterPosition) }
         }
 
-        @SuppressLint("SimpleDateFormat")
+        @SuppressLint("SimpleDateFormat", "StringFormatMatches")
         fun bind(order: Order) {
             binding.apply {
-                tvTotalAmount.text = order.totalAmount.toString()
-                tvAddress.text = order.address
-                tvOrderDate.text = java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(order.orderDate)
-
+                tvTotalAmount.text = mContext.getString(R.string.order_price, order.totalAmount,"TL")
+                tvAddress.text = mContext.getString(R.string.order_address, order.address)
+                var orderDate = java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(order.orderDate)
+                tvOrderDate.text = mContext.getString(R.string.order_date, orderDate)
                 rvImage.layoutManager = LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
                 rvImage.adapter = OrdersImageAdapter(order.products)
             }

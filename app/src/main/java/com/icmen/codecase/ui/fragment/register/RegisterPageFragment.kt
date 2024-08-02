@@ -51,8 +51,23 @@ class RegisterPageFragment : BaseFragment<FragmentRegisterBinding, RegisterPageV
                 }
                 is Resource.Error -> {
                     getViewBinding()?.progressBar?.visibility = View.GONE
-                    val title = getString(R.string.error)
-                    setOneButtonDialog(title, resource.error ?: "Registration failed")
+                    when (resource.error) {
+                        "0" -> {
+                            val title = getString(R.string.error)
+                            val message = getString(R.string.fill_in_all_fields)
+                            setOneButtonDialog(title,message)
+                        }
+                        "1" -> {
+                            val title = getString(R.string.error)
+                            val message = getString(R.string.must_be_at_least_six_characters_long)
+                            setOneButtonDialog(title,message)
+                        }
+                        "2" -> {
+                            val title = getString(R.string.error)
+                            val message = getString(R.string.register_failed)
+                            setOneButtonDialog(title,message)
+                        }
+                    }
                 }
             }
         })
@@ -73,11 +88,6 @@ class RegisterPageFragment : BaseFragment<FragmentRegisterBinding, RegisterPageV
             findNavController().navigate(login)
         }
     }
-
-    companion object {
-        private const val REQUEST_CODE_IMAGE_PICK = 1001
-    }
-
     private fun setOneButtonDialog(title: String, message: String) {
         val dialog = CustomDialogWithOneButtonFragment.newInstance(title, message)
         dialog.onOkClicked = {}

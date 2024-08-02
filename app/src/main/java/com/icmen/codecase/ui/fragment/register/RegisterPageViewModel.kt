@@ -24,12 +24,12 @@ class RegisterPageViewModel @Inject constructor(
 
     fun registerUser(name: String, surname: String, email: String, address: String, password: String) {
         if (name.isEmpty() || surname.isEmpty() || address.isEmpty() || email.isEmpty() || password.isEmpty()) {
-            _registrationResult.value = Resource.Error("Please fill in all fields")
+            _registrationResult.value = Resource.Error("0")
             return
         }
 
         if (password.length < 6) {
-            _registrationResult.value = Resource.Error("Password must be at least 6 characters long")
+            _registrationResult.value = Resource.Error("1")
             return
         }
 
@@ -45,7 +45,7 @@ class RegisterPageViewModel @Inject constructor(
                     }
                 } else {
                     _progressVisibility.value = false
-                    _registrationResult.value = Resource.Error(task.exception?.message ?: "Registration failed")
+                    _registrationResult.value = Resource.Error("2")//Registration failed"
                 }
             }
     }

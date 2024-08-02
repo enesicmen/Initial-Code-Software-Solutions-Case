@@ -50,6 +50,5 @@ class OrdersPageFragment : BaseFragment<FragmentOrdersBinding, OrdersPageViewMod
             }
         }
     }
-
     override fun invoke(position: Int) {}
 }
