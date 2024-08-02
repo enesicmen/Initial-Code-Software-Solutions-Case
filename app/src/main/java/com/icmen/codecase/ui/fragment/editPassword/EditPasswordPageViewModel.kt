@@ -1,9 +1,12 @@
 package com.icmen.codecase.ui.fragment.editPassword
 
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
+import com.icmen.codecase.data.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -12,30 +15,36 @@ class EditPasswordPageViewModel @Inject constructor(
     private val auth: FirebaseAuth
 ) : ViewModel() {
 
-    fun changePassword(currentPassword: String, newPassword: String, confirmNewPassword: String, onSuccess: () -> Unit, onError: (String) -> Unit) {
+    private val _changePasswordLiveData = MutableLiveData<Resource<Void>>()
+    val changePasswordLiveData: LiveData<Resource<Void>> = _changePasswordLiveData
+
+    fun changePassword(currentPassword: String, newPassword: String, confirmNewPassword: String) {
         if (currentPassword.isEmpty() || newPassword.isEmpty() || confirmNewPassword.isEmpty()) {
-            onError("Lütfen tüm alanları doldurun")
+            _changePasswordLiveData.value = Resource.Error("Lütfen tüm alanları doldurun")
             return
         }
         if (newPassword != confirmNewPassword) {
-            onError("Yeni şifreler eşleşmiyor")
+            _changePasswordLiveData.value = Resource.Error("Yeni şifreler eşleşmiyor")
             return
         }
+
         val user = auth.currentUser
         user?.let {
             val credential = EmailAuthProvider.getCredential(user.email!!, currentPassword)
+            _changePasswordLiveData.value = Resource.Loading()
+
             user.reauthenticate(credential).addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     user.updatePassword(newPassword).addOnCompleteListener { updateTask ->
                         if (updateTask.isSuccessful) {
-                            onSuccess()
+                            _changePasswordLiveData.value = Resource.Success(null)
                         } else {
-                            onError("Şifre değiştirilemedi: ${updateTask.exception?.message}")
+                            _changePasswordLiveData.value = Resource.Error("Şifre değiştirilemedi: ${updateTask.exception?.message}")
                             Log.e("EditPasswordViewModel", "Şifre değiştirilemedi: ${updateTask.exception?.message}")
                         }
                     }
                 } else {
-                    onError("Mevcut şifre yanlış")
+                    _changePasswordLiveData.value = Resource.Error("Mevcut şifre yanlış")
                 }
             }
         }

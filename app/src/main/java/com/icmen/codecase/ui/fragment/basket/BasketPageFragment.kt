@@ -6,6 +6,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.icmen.codecase.R
+import com.icmen.codecase.data.Resource
 import com.icmen.codecase.data.model.Product
 import com.icmen.codecase.databinding.FragmentBasketBinding
 import com.icmen.codecase.ui.base.BaseFragment
@@ -40,10 +41,20 @@ class BasketPageFragment : BaseFragment<FragmentBasketBinding, BasketPageViewMod
     }
 
     private fun observeViewModel() {
-        getViewModel()?.basketItemsLiveData?.observe(viewLifecycleOwner, Observer { items ->
-            basketItems.clear()
-            basketItems.addAll(items)
-            basketAdapter.notifyDataSetChanged()
+        getViewModel()?.basketItemsLiveData?.observe(viewLifecycleOwner, Observer { resource ->
+            when (resource) {
+                is Resource.Loading -> {
+                    getViewBinding()?.progressBar?.visibility = View.VISIBLE
+                }
+                is Resource.Success -> {
+                    getViewBinding()?.progressBar?.visibility = View.GONE
+                    setBasketItems(resource.data ?: emptyList())
+                }
+                is Resource.Error -> {
+                    getViewBinding()?.progressBar?.visibility = View.GONE
+                    setOneButtonDialog(getString(R.string.error), resource.error ?: "Unknown Error")
+                }
+            }
         })
 
         getViewModel()?.totalAmountLiveData?.observe(viewLifecycleOwner, Observer { totalAmount ->
@@ -61,9 +72,15 @@ class BasketPageFragment : BaseFragment<FragmentBasketBinding, BasketPageViewMod
         getViewModel()?.errorLiveData?.observe(viewLifecycleOwner, Observer { errorMessage ->
             errorMessage?.let {
                 val title = getString(R.string.error)
-                setOneButtonDialog(title,it)
+                setOneButtonDialog(title, it)
             }
         })
+    }
+
+    private fun setBasketItems(items: List<Product>) {
+        basketItems.clear()
+        basketItems.addAll(items)
+        basketAdapter.notifyDataSetChanged()
     }
 
     private fun showDeleteConfirmationDialog(position: Int) {
@@ -75,7 +92,6 @@ class BasketPageFragment : BaseFragment<FragmentBasketBinding, BasketPageViewMod
         }
         dialog.onNoClicked = {}
         dialog.show(requireActivity().supportFragmentManager, "customDialog")
-
     }
 
     private fun openPaymentPage() {
@@ -92,12 +108,12 @@ class BasketPageFragment : BaseFragment<FragmentBasketBinding, BasketPageViewMod
             } else {
                 val title = getString(R.string.error)
                 val message = getString(R.string.basket_is_empty)
-                setOneButtonDialog(title,message)
+                setOneButtonDialog(title, message)
             }
         }
     }
 
-    private fun setOneButtonDialog(title: String, message: String){
+    private fun setOneButtonDialog(title: String, message: String) {
         val dialog = CustomDialogWithOneButtonFragment.newInstance(title, message)
         dialog.onOkClicked = {}
         dialog.show(requireActivity().supportFragmentManager, "customDialog")

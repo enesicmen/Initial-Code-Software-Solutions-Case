@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.icmen.codecase.data.Resource
 import com.icmen.codecase.data.model.Product
 import com.icmen.codecase.data.model.User
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,8 +17,8 @@ class BasketPageViewModel @Inject constructor(
     private val firestore: FirebaseFirestore
 ) : ViewModel() {
 
-    private val _basketItemsLiveData = MutableLiveData<List<Product>>()
-    val basketItemsLiveData: LiveData<List<Product>> = _basketItemsLiveData
+    private val _basketItemsLiveData = MutableLiveData<Resource<List<Product>>>()
+    val basketItemsLiveData: LiveData<Resource<List<Product>>> = _basketItemsLiveData
 
     private val _totalAmountLiveData = MutableLiveData<Double>()
     val totalAmountLiveData: LiveData<Double> = _totalAmountLiveData
@@ -40,6 +41,7 @@ class BasketPageViewModel @Inject constructor(
         val userId = auth.currentUser?.uid
 
         if (userId != null) {
+            _basketItemsLiveData.value = Resource.Loading()
             _progressVisibility.value = true
 
             firestore.collection("basket")
@@ -52,12 +54,12 @@ class BasketPageViewModel @Inject constructor(
                             quantity = document.getLong("quantity")?.toInt() ?: 0
                         }
                     }
-                    _basketItemsLiveData.value = basketItems
+                    _basketItemsLiveData.value = Resource.Success(basketItems)
                     updateTotalAmount(basketItems)
                     _progressVisibility.value = false
                 }
                 .addOnFailureListener { e ->
-                    _errorLiveData.value = e.message
+                    _basketItemsLiveData.value = Resource.Error(e.message ?: "An error occurred")
                     _progressVisibility.value = false
                 }
         } else {
@@ -71,7 +73,7 @@ class BasketPageViewModel @Inject constructor(
     }
 
     fun updateBasketItemQuantity(position: Int, newQuantity: Int) {
-        val basketItems = _basketItemsLiveData.value?.toMutableList() ?: return
+        val basketItems = (_basketItemsLiveData.value as? Resource.Success)?.data?.toMutableList() ?: return
         val product = basketItems[position]
         product.quantity = newQuantity
 
@@ -84,12 +86,12 @@ class BasketPageViewModel @Inject constructor(
                 .update("quantity", newQuantity)
         }
 
-        _basketItemsLiveData.value = basketItems
+        _basketItemsLiveData.value = Resource.Success(basketItems)
         updateTotalAmount(basketItems)
     }
 
     fun deleteBasketItem(position: Int) {
-        val basketItems = _basketItemsLiveData.value?.toMutableList() ?: return
+        val basketItems = (_basketItemsLiveData.value as? Resource.Success)?.data?.toMutableList() ?: return
         val product = basketItems.removeAt(position)
 
         val userId = auth.currentUser?.uid
@@ -101,7 +103,7 @@ class BasketPageViewModel @Inject constructor(
                 .delete()
         }
 
-        _basketItemsLiveData.value = basketItems
+        _basketItemsLiveData.value = Resource.Success(basketItems)
         updateTotalAmount(basketItems)
     }
 

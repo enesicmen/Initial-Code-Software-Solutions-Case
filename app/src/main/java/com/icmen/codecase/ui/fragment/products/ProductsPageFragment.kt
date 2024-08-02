@@ -6,6 +6,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import com.icmen.codecase.data.Resource
 import com.icmen.codecase.data.model.Product
 import com.icmen.codecase.databinding.FragmentProductsBinding
 import com.icmen.codecase.ui.base.BaseFragment
@@ -28,10 +29,9 @@ class ProductsPageFragment : BaseFragment<FragmentProductsBinding, ProductsPageV
         initProductsAdapter()
         observeViewModel()
 
-        // Geri tuşuna basıldığında uygulamadan çıkışı sağlama
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                requireActivity().finishAffinity() // Uygulamayı kapat
+                requireActivity().finishAffinity()
             }
         })
     }
@@ -51,14 +51,25 @@ class ProductsPageFragment : BaseFragment<FragmentProductsBinding, ProductsPageV
     }
 
     private fun observeViewModel() {
-        productsPageViewModel.productsLiveData.observe(viewLifecycleOwner) { products ->
-            mProductList.clear()
-            mProductList.addAll(products)
-            mProductsAdapter.notifyDataSetChanged()
+        productsPageViewModel.productsLiveData.observe(viewLifecycleOwner) { resource ->
+            when (resource) {
+                is Resource.Loading -> {
+                    getViewBinding()?.progressBar?.visibility = View.VISIBLE
+                }
+                is Resource.Success -> {
+                    getViewBinding()?.progressBar?.visibility = View.GONE
+                    setProductList(resource.data ?: emptyList())
+                }
+                is Resource.Error -> {
+                    getViewBinding()?.progressBar?.visibility = View.GONE
+                }
+            }
         }
+    }
 
-        productsPageViewModel.loadingLiveData.observe(viewLifecycleOwner) { isLoading ->
-            getViewBinding()?.progressBar?.visibility = if (isLoading) View.VISIBLE else View.GONE
-        }
+    private fun setProductList(products: List<Product>) {
+        mProductList.clear()
+        mProductList.addAll(products)
+        mProductsAdapter.notifyDataSetChanged()
     }
 }

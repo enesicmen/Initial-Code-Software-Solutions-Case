@@ -5,9 +5,12 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.view.View
 import android.widget.Toast
+import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
 import com.icmen.codecase.R
+import com.icmen.codecase.data.Resource
 import com.icmen.codecase.databinding.FragmentEditProfileBinding
 import com.icmen.codecase.ui.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -15,6 +18,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class EditProfilePageFragment : BaseFragment<FragmentEditProfileBinding, EditProfilePageViewModel>() {
 
+    private val viewModel: EditProfilePageViewModel by viewModels()
     private var selectedImageUri: Uri? = null
 
     override fun setViewBinding(): FragmentEditProfileBinding =
@@ -23,7 +27,8 @@ class EditProfilePageFragment : BaseFragment<FragmentEditProfileBinding, EditPro
     override fun setViewModelClass() = EditProfilePageViewModel::class.java
 
     override fun initView(savedInstanceState: Bundle?) {
-        loadUserProfile()
+        observeViewModel()
+        viewModel.loadUserProfile()
 
         getViewBinding()?.profileImageView?.setOnClickListener {
             val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
@@ -36,7 +41,7 @@ class EditProfilePageFragment : BaseFragment<FragmentEditProfileBinding, EditPro
             val address = getViewBinding()?.etAddress?.text.toString()
 
             val updates = mutableMapOf<String, Any>()
-            val currentUserInfo = getViewModel()!!.getCurrentUserInfo()
+            val currentUserInfo = viewModel.getCurrentUserInfo()
 
             if (name != currentUserInfo["name"]) {
                 updates["name"] = name
@@ -49,19 +54,10 @@ class EditProfilePageFragment : BaseFragment<FragmentEditProfileBinding, EditPro
             }
 
             if (selectedImageUri != null) {
-                getViewModel()?.uploadProfileImage(selectedImageUri!!,
-                    onSuccess = { imageUrl ->
-                        updates["profileImageUrl"] = imageUrl
-                        if (updates.isNotEmpty()) {
-                            updateUserProfile(updates)
-                        }
-                    },
-                    onError = { message ->
-                        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
-                    })
+                viewModel.uploadProfileImage(selectedImageUri!!)
             } else {
                 if (updates.isNotEmpty()) {
-                    updateUserProfile(updates)
+                    viewModel.updateUserProfile(updates)
                 }
             }
         }
@@ -75,35 +71,85 @@ class EditProfilePageFragment : BaseFragment<FragmentEditProfileBinding, EditPro
         }
     }
 
-    private fun loadUserProfile() {
-        getViewModel()?.loadUserProfile(
-            onProfileLoaded = { userInfo ->
-                getViewBinding()?.etName?.setText(userInfo["name"] as? String)
-                getViewBinding()?.etSurname?.setText(userInfo["surname"] as? String)
-                getViewBinding()?.etAddress?.setText(userInfo["address"] as? String)
+    private fun observeViewModel() {
+        viewModel.userProfileLiveData.observe(viewLifecycleOwner) { resource ->
+            when (resource) {
+                is Resource.Loading -> {
+                    getViewBinding()?.progressBar?.visibility = View.VISIBLE
+                }
+                is Resource.Success -> {
+                    getViewBinding()?.progressBar?.visibility = View.GONE
+                    val userInfo = resource.data!!
+                    getViewBinding()?.etName?.setText(userInfo["name"] as? String)
+                    getViewBinding()?.etSurname?.setText(userInfo["surname"] as? String)
+                    getViewBinding()?.etAddress?.setText(userInfo["address"] as? String)
 
-                val profileImageUrl = userInfo["profileImageUrl"] as? String
-                if (!profileImageUrl.isNullOrEmpty()) {
-                    getViewBinding()?.profileImageView?.let { imageView ->
-                        Glide.with(this).load(profileImageUrl).into(imageView)
+                    val profileImageUrl = userInfo["profileImageUrl"] as? String
+                    if (!profileImageUrl.isNullOrEmpty()) {
+                        getViewBinding()?.profileImageView?.let { imageView ->
+                            Glide.with(this).load(profileImageUrl).into(imageView)
+                        }
                     }
                 }
-            },
-            onError = { message ->
-                Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+                is Resource.Error -> {
+                    getViewBinding()?.progressBar?.visibility = View.GONE
+                    Toast.makeText(requireContext(), resource.error ?: "Bilinmeyen bir hata oluştu", Toast.LENGTH_SHORT).show()
+                }
             }
-        )
-    }
+        }
 
-    private fun updateUserProfile(updates: Map<String, Any>) {
-        getViewModel()?.updateUserProfile(updates,
-            onSuccess = {
-                Toast.makeText(requireContext(), getString(R.string.profile_updated_successfully), Toast.LENGTH_SHORT).show()
-            },
-            onError = { message ->
-                Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+        viewModel.uploadImageLiveData.observe(viewLifecycleOwner) { resource ->
+            when (resource) {
+                is Resource.Loading -> {
+                    getViewBinding()?.progressBar?.visibility = View.VISIBLE
+                }
+                is Resource.Success -> {
+                    getViewBinding()?.progressBar?.visibility = View.GONE
+                    val imageUrl = resource.data!!
+                    val updates = mutableMapOf<String, Any>()
+                    updates["profileImageUrl"] = imageUrl
+
+                    val name = getViewBinding()?.etName?.text.toString()
+                    val surname = getViewBinding()?.etSurname?.text.toString()
+                    val address = getViewBinding()?.etAddress?.text.toString()
+
+                    val currentUserInfo = viewModel.getCurrentUserInfo()
+                    if (name != currentUserInfo["name"]) {
+                        updates["name"] = name
+                    }
+                    if (surname != currentUserInfo["surname"]) {
+                        updates["surname"] = surname
+                    }
+                    if (address != currentUserInfo["address"]) {
+                        updates["address"] = address
+                    }
+
+                    if (updates.isNotEmpty()) {
+                        viewModel.updateUserProfile(updates)
+                    }
+                }
+                is Resource.Error -> {
+                    getViewBinding()?.progressBar?.visibility = View.GONE
+                    Toast.makeText(requireContext(), resource.error ?: "Bilinmeyen bir hata oluştu", Toast.LENGTH_SHORT).show()
+                }
             }
-        )
+        }
+
+        viewModel.updateProfileLiveData.observe(viewLifecycleOwner) { resource ->
+            when (resource) {
+                is Resource.Loading -> {
+                    getViewBinding()?.progressBar?.visibility = View.VISIBLE
+                }
+                is Resource.Success -> {
+                    getViewBinding()?.progressBar?.visibility = View.GONE
+                    Toast.makeText(requireContext(), getString(R.string.profile_updated_successfully), Toast.LENGTH_SHORT).show()
+                }
+                is Resource.Error -> {
+                    getViewBinding()?.progressBar?.visibility = View.GONE
+                    Toast.makeText(requireContext(), resource.error ?: "Bilinmeyen bir hata oluştu", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
     }
 
     companion object {

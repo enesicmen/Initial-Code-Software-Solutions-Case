@@ -1,9 +1,11 @@
 package com.icmen.codecase.ui.fragment.productDetail
 
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.icmen.codecase.R
+import com.icmen.codecase.data.Resource
 import com.icmen.codecase.data.model.Product
 import com.icmen.codecase.databinding.FragmentProductDetailBinding
 import com.icmen.codecase.ui.base.BaseFragment
@@ -15,7 +17,6 @@ class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding, Product
 
     private lateinit var mProduct: Product
     private var quantity: Int = 1
-
 
     override fun setViewBinding(): FragmentProductDetailBinding =
         FragmentProductDetailBinding.inflate(layoutInflater)
@@ -37,9 +38,6 @@ class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding, Product
 
         getViewBinding()?.btnBasket?.setOnClickListener {
             getViewModel()?.addToBasket(mProduct, quantity)
-            val title = getString(R.string.success)
-            val message = getString(R.string.add_to_basket_success)
-            setOneButtonDialog(title,message)
         }
 
         observeBasketResponse()
@@ -78,8 +76,23 @@ class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding, Product
     }
 
     private fun observeBasketResponse() {
-        getViewModel()?.basketResponse?.observe(viewLifecycleOwner) { message ->
-            showToast(message)
+        getViewModel()?.basketResponse?.observe(viewLifecycleOwner) { resource ->
+            when (resource) {
+                is Resource.Loading -> {
+                    getViewBinding()?.progressBar?.visibility = View.VISIBLE
+                }
+                is Resource.Success -> {
+                    getViewBinding()?.progressBar?.visibility = View.GONE
+                    showToast(resource.data ?: "Başarıyla eklendi")
+                    val title = getString(R.string.success)
+                    val message = getString(R.string.add_to_basket_success)
+                    setOneButtonDialog(title, message)
+                }
+                is Resource.Error -> {
+                    getViewBinding()?.progressBar?.visibility = View.GONE
+                    showToast(resource.error ?: "Bilinmeyen bir hata oluştu")
+                }
+            }
         }
     }
 
@@ -87,7 +100,7 @@ class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding, Product
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 
-    private fun setOneButtonDialog(title: String, message: String){
+    private fun setOneButtonDialog(title: String, message: String) {
         val dialog = CustomDialogWithOneButtonFragment.newInstance(title, message)
         dialog.onOkClicked = {}
         dialog.show(requireActivity().supportFragmentManager, "customDialog")

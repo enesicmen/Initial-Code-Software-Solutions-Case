@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.icmen.codecase.data.Resource
 import com.icmen.codecase.data.model.Product
 
 class ProductDetailViewModel : ViewModel() {
@@ -12,12 +13,14 @@ class ProductDetailViewModel : ViewModel() {
     private val firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
 
-    private val _basketResponse = MutableLiveData<String>()
-    val basketResponse: LiveData<String> get() = _basketResponse
+    private val _basketResponse = MutableLiveData<Resource<String>>()
+    val basketResponse: LiveData<Resource<String>> get() = _basketResponse
 
     fun addToBasket(product: Product, quantity: Int) {
         val userId = auth.currentUser?.uid
         if (userId != null) {
+            _basketResponse.value = Resource.Loading()
+
             val basketRef = firestore.collection("basket").document(userId).collection("products").document(product.productId)
 
             basketRef.get().addOnSuccessListener { document ->
@@ -25,10 +28,10 @@ class ProductDetailViewModel : ViewModel() {
                     val currentQuantity = document.getLong("quantity") ?: 0
                     basketRef.update("quantity", currentQuantity + quantity)
                         .addOnSuccessListener {
-                            _basketResponse.value = "Sepete eklendi, mevcut adet: ${currentQuantity + quantity}"
+                            _basketResponse.value = Resource.Success("Sepete eklendi, mevcut adet: ${currentQuantity + quantity}")
                         }
                         .addOnFailureListener { e ->
-                            _basketResponse.value = "Sepete eklenirken hata oluştu: ${e.message}"
+                            _basketResponse.value = Resource.Error("Sepete eklenirken hata oluştu: ${e.message}")
                         }
                 } else {
                     val productData = hashMapOf(
@@ -45,17 +48,17 @@ class ProductDetailViewModel : ViewModel() {
                     )
                     basketRef.set(productData)
                         .addOnSuccessListener {
-                            _basketResponse.value = "Ürün sepete eklendi: ${product.productName}"
+                            _basketResponse.value = Resource.Success("Ürün sepete eklendi: ${product.productName}")
                         }
                         .addOnFailureListener { e ->
-                            _basketResponse.value = "Sepete eklenirken hata oluştu: ${e.message}"
+                            _basketResponse.value = Resource.Error("Sepete eklenirken hata oluştu: ${e.message}")
                         }
                 }
             }.addOnFailureListener { e ->
-                _basketResponse.value = "Sepet kontrol edilirken hata oluştu: ${e.message}"
+                _basketResponse.value = Resource.Error("Sepet kontrol edilirken hata oluştu: ${e.message}")
             }
         } else {
-            _basketResponse.value = "Önce giriş yapmalısınız."
+            _basketResponse.value = Resource.Error("Önce giriş yapmalısınız.")
         }
     }
 }

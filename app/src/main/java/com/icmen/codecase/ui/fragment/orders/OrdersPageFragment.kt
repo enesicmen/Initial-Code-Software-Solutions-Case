@@ -1,8 +1,11 @@
 package com.icmen.codecase.ui.fragment.orders
 
 import android.os.Bundle
+import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.icmen.codecase.data.Resource
 import com.icmen.codecase.data.model.Order
 import com.icmen.codecase.databinding.FragmentOrdersBinding
 import com.icmen.codecase.ui.base.BaseFragment
@@ -12,6 +15,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class OrdersPageFragment : BaseFragment<FragmentOrdersBinding, OrdersPageViewModel>(), RecyclerItemClickListener {
 
+    private val viewModel: OrdersPageViewModel by viewModels()
     private lateinit var orderAdapter: OrdersPageAdapter
     private val orderList: MutableList<Order> = mutableListOf()
 
@@ -26,15 +30,28 @@ class OrdersPageFragment : BaseFragment<FragmentOrdersBinding, OrdersPageViewMod
         getViewBinding()?.recyclerViewOrders?.adapter = orderAdapter
 
         observeOrders()
-        getViewModel()?.fetchOrders()
+        viewModel.fetchOrders()
     }
 
     private fun observeOrders() {
-        getViewModel()?.orderList?.observe(viewLifecycleOwner) { orders ->
-            orderList.clear()
-            orderList.addAll(orders)
-            orderAdapter.notifyDataSetChanged()
+        viewModel.orderList.observe(viewLifecycleOwner) { resource ->
+            when (resource) {
+                is Resource.Loading -> {
+                    getViewBinding()?.progressBar?.visibility = View.VISIBLE
+                }
+                is Resource.Success -> {
+                    getViewBinding()?.progressBar?.visibility = View.GONE
+                    orderList.clear()
+                    orderList.addAll(resource.data ?: emptyList())
+                    orderAdapter.notifyDataSetChanged()
+                }
+                is Resource.Error -> {
+                    getViewBinding()?.progressBar?.visibility = View.GONE
+                    Toast.makeText(requireContext(), resource.error ?: "Failed to fetch orders", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
     }
+
     override fun invoke(position: Int) {}
 }

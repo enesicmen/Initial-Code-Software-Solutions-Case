@@ -1,6 +1,7 @@
 package com.icmen.codecase.ui.fragment.payment
 
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
@@ -8,6 +9,7 @@ import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import com.icmen.PaymentSDK
 import com.icmen.codecase.R
+import com.icmen.codecase.data.Resource
 import com.icmen.codecase.data.model.Product
 import com.icmen.codecase.databinding.FragmentPaymentBinding
 import com.icmen.codecase.ui.base.BaseFragment
@@ -44,15 +46,6 @@ class PaymentPageFragment : BaseFragment<FragmentPaymentBinding, PaymentPageView
                     override fun onSuccess(message: String, paymentId: String) {
                         showToast(message)
                         getViewModel()?.saveOrderToFirebase(paymentId, mProducts, mTotalAmount, mUserAddress)
-                        getViewModel()?.orderSaveStatus?.observe(viewLifecycleOwner) { isSuccess ->
-                            if (isSuccess) {
-                                showToast("Siparişiniz başarıyla kaydedildi.")
-                                clearBasket()
-                                navigateToSuccessPage()
-                            } else {
-                                showToast("Sipariş kaydedilirken hata oluştu.")
-                            }
-                        }
                     }
 
                     override fun onError(errorMessage: String) {
@@ -63,6 +56,8 @@ class PaymentPageFragment : BaseFragment<FragmentPaymentBinding, PaymentPageView
                 showToast("Lütfen tüm alanları doğru bir şekilde doldurun.")
             }
         }
+
+        observeOrderSaveStatus()
 
         requireActivity().onBackPressedDispatcher.addCallback(
             viewLifecycleOwner,
@@ -84,6 +79,26 @@ class PaymentPageFragment : BaseFragment<FragmentPaymentBinding, PaymentPageView
         }
     }
 
+    private fun observeOrderSaveStatus() {
+        getViewModel()?.orderSaveStatus?.observe(viewLifecycleOwner) { resource ->
+            when (resource) {
+                is Resource.Loading -> {
+                    getViewBinding()?.progressBar?.visibility = View.VISIBLE
+                }
+                is Resource.Success -> {
+                    getViewBinding()?.progressBar?.visibility = View.GONE
+                    showToast("Siparişiniz başarıyla kaydedildi.")
+                    clearBasket()
+                    navigateToSuccessPage()
+                }
+                is Resource.Error -> {
+                    getViewBinding()?.progressBar?.visibility = View.GONE
+                    showToast(resource.error ?: "Sipariş kaydedilirken hata oluştu.")
+                }
+            }
+        }
+    }
+
     private fun setTotalAmount(totalAmount: String) {
         getViewBinding()?.tvTotalAmount?.text = totalAmount
     }
@@ -97,12 +112,12 @@ class PaymentPageFragment : BaseFragment<FragmentPaymentBinding, PaymentPageView
     }
 
     private fun navigateToSuccessPage() {
-        var title = getString(R.string.success)
-        var message = getString(R.string.order_success)
+        val title = getString(R.string.success)
+        val message = getString(R.string.order_success)
         val navOptions = NavOptions.Builder()
             .setPopUpTo(R.id.paymentPageFragment, true)
             .build()
-        setOneButtonDialog(title,message)
+        setOneButtonDialog(title, message)
         findNavController().navigate(R.id.action_paymentPageFragment_to_productsPageFragment, null, navOptions)
         updateBottomNavigationView()
     }
@@ -120,7 +135,7 @@ class PaymentPageFragment : BaseFragment<FragmentPaymentBinding, PaymentPageView
         bottomNavigationView?.selectedItemId = R.id.menu_item_home
     }
 
-    private fun setOneButtonDialog(title: String, message: String){
+    private fun setOneButtonDialog(title: String, message: String) {
         val dialog = CustomDialogWithOneButtonFragment.newInstance(title, message)
         dialog.onOkClicked = {}
         dialog.show(requireActivity().supportFragmentManager, "customDialog")

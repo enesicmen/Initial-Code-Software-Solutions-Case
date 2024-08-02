@@ -8,6 +8,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
+import com.icmen.codecase.data.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -18,24 +19,25 @@ class RegisterPageViewModel @Inject constructor(
     private val storage: FirebaseStorage
 ) : ViewModel() {
 
-    private val _registrationResult = MutableLiveData<Result<FirebaseUser>>()
-    val registrationResult: LiveData<Result<FirebaseUser>> = _registrationResult
+    private val _registrationResult = MutableLiveData<Resource<FirebaseUser>>()
+    val registrationResult: LiveData<Resource<FirebaseUser>> = _registrationResult
 
     private val _progressVisibility = MutableLiveData<Boolean>()
     val progressVisibility: LiveData<Boolean> = _progressVisibility
 
     fun registerUser(name: String, surname: String, email: String, address: String, password: String, selectedImageUri: Uri?) {
         if (name.isEmpty() || surname.isEmpty() || address.isEmpty() || email.isEmpty() || password.isEmpty()) {
-            _registrationResult.value = Result.failure(Exception("Please fill in all fields"))
+            _registrationResult.value = Resource.Error("Please fill in all fields")
             return
         }
 
         if (selectedImageUri == null) {
-            _registrationResult.value = Result.failure(Exception("Please select an image"))
+            _registrationResult.value = Resource.Error("Please select an image")
             return
         }
 
         _progressVisibility.value = true
+        _registrationResult.value = Resource.Loading()
 
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
@@ -46,7 +48,7 @@ class RegisterPageViewModel @Inject constructor(
                     }
                 } else {
                     _progressVisibility.value = false
-                    _registrationResult.value = Result.failure(task.exception ?: Exception("Registration failed"))
+                    _registrationResult.value = Resource.Error(task.exception?.message ?: "Registration failed")
                 }
             }
     }
@@ -60,7 +62,7 @@ class RegisterPageViewModel @Inject constructor(
                 }
             }.addOnFailureListener { e ->
                 _progressVisibility.value = false
-                _registrationResult.value = Result.failure(e)
+                _registrationResult.value = Resource.Error(e.message ?: "Image upload failed")
             }
     }
 
@@ -76,11 +78,11 @@ class RegisterPageViewModel @Inject constructor(
         db.collection("users").document(userId).set(userInfo)
             .addOnSuccessListener {
                 _progressVisibility.value = false
-                _registrationResult.value = Result.success(auth.currentUser!!)
+                _registrationResult.value = Resource.Success(auth.currentUser!!)
             }
             .addOnFailureListener { e ->
                 _progressVisibility.value = false
-                _registrationResult.value = Result.failure(e)
+                _registrationResult.value = Resource.Error(e.message ?: "Failed to save user info")
             }
     }
 }

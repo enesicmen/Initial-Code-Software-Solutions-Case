@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
                 if (navController.currentDestination?.id == R.id.productsPageFragment) {
                     finishAffinity()
                 }
-                else if(navController.currentDestination?.id == R.id.registerPageFragment){
+                else if(navController.currentDestination?.id == R.id.loginPageFragment){
                     finishAffinity()
                 } else{
                     navController.popBackStack()

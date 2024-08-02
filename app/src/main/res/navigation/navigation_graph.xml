@@ -140,7 +140,13 @@
         android:id="@+id/editPasswordPageFragment"
         android:name="com.icmen.codecase.ui.fragment.editPassword.EditPasswordPageFragment"
         android:label="Edit Password Page"
-        tools:layout="@layout/fragment_edit_password" />
+        tools:layout="@layout/fragment_edit_password" >
+
+        <action
+            android:id="@+id/action_editPasswordPageFragment_to_profilePageFragment"
+            app:destination="@id/profilePageFragment" />
+
+    </fragment>
 
     <fragment
         android:id="@+id/editProfilePageFragment"

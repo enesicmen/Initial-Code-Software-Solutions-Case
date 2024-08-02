@@ -11,6 +11,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseUser
 import com.icmen.codecase.R
+import com.icmen.codecase.data.Resource
 import com.icmen.codecase.databinding.FragmentRegisterBinding
 import com.icmen.codecase.ui.base.BaseFragment
 import com.icmen.codecase.ui.fragment.custom.CustomDialogWithOneButtonFragment
@@ -57,13 +58,20 @@ class RegisterPageFragment : BaseFragment<FragmentRegisterBinding, RegisterPageV
     }
 
     private fun observeViewModel() {
-        registerPageViewModel.registrationResult.observe(viewLifecycleOwner, Observer { result ->
-            result.onSuccess { user ->
-                updateUI(user)
-            }
-            result.onFailure { exception ->
-                var title = getString(R.string.error)
-                exception.message?.let { setOneButtonDialog(title, it) }
+        registerPageViewModel.registrationResult.observe(viewLifecycleOwner, Observer { resource ->
+            when (resource) {
+                is Resource.Loading -> {
+                    getViewBinding()?.progressBar?.visibility = View.VISIBLE
+                }
+                is Resource.Success -> {
+                    getViewBinding()?.progressBar?.visibility = View.GONE
+                    updateUI(resource.data)
+                }
+                is Resource.Error -> {
+                    getViewBinding()?.progressBar?.visibility = View.GONE
+                    val title = getString(R.string.error)
+                    setOneButtonDialog(title, resource.error ?: "Registration failed")
+                }
             }
         })
 
@@ -88,7 +96,7 @@ class RegisterPageFragment : BaseFragment<FragmentRegisterBinding, RegisterPageV
         private const val REQUEST_CODE_IMAGE_PICK = 1001
     }
 
-    private fun setOneButtonDialog(title: String, message: String){
+    private fun setOneButtonDialog(title: String, message: String) {
         val dialog = CustomDialogWithOneButtonFragment.newInstance(title, message)
         dialog.onOkClicked = {}
         dialog.show(requireActivity().supportFragmentManager, "customDialog")

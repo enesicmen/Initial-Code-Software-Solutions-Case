@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.FirebaseFirestore
+import com.icmen.codecase.data.Resource
 import com.icmen.codecase.data.model.Product
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -11,11 +12,8 @@ import javax.inject.Inject
 @HiltViewModel
 class ProductsPageViewModel @Inject constructor() : ViewModel() {
 
-    private val _productsLiveData = MutableLiveData<List<Product>>()
-    val productsLiveData: LiveData<List<Product>> = _productsLiveData
-
-    private val _loadingLiveData = MutableLiveData<Boolean>()
-    val loadingLiveData: LiveData<Boolean> = _loadingLiveData
+    private val _productsLiveData = MutableLiveData<Resource<List<Product>>>()
+    val productsLiveData: LiveData<Resource<List<Product>>> = _productsLiveData
 
     private val db: FirebaseFirestore = FirebaseFirestore.getInstance()
 
@@ -24,17 +22,15 @@ class ProductsPageViewModel @Inject constructor() : ViewModel() {
     }
 
     private fun fetchProducts() {
-        _loadingLiveData.value = true
+        _productsLiveData.value = Resource.Loading()
         db.collection("products")
             .get()
             .addOnSuccessListener { result ->
                 val products = result.map { document -> document.toObject(Product::class.java) }
-                _productsLiveData.value = products
-                _loadingLiveData.value = false
+                _productsLiveData.value = Resource.Success(products)
             }
             .addOnFailureListener { exception ->
-                _loadingLiveData.value = false
-                // Handle the error here, e.g., log it or update an error LiveData
+                _productsLiveData.value = Resource.Error(exception.message ?: "An error occurred")
             }
     }
 }

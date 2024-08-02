@@ -1,10 +1,13 @@
 package com.icmen.codecase.ui.fragment.editProfilePage
 
 import android.net.Uri
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
+import com.icmen.codecase.data.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -17,9 +20,20 @@ class EditProfilePageViewModel @Inject constructor(
 
     private var currentUserInfo: MutableMap<String, Any> = mutableMapOf()
 
-    fun loadUserProfile(onProfileLoaded: (Map<String, Any>) -> Unit, onError: (String) -> Unit) {
+    private val _userProfileLiveData = MutableLiveData<Resource<Map<String, Any>>>()
+    val userProfileLiveData: LiveData<Resource<Map<String, Any>>> = _userProfileLiveData
+
+    private val _uploadImageLiveData = MutableLiveData<Resource<String>>()
+    val uploadImageLiveData: LiveData<Resource<String>> = _uploadImageLiveData
+
+    private val _updateProfileLiveData = MutableLiveData<Resource<Void>>()
+    val updateProfileLiveData: LiveData<Resource<Void>> = _updateProfileLiveData
+
+    fun loadUserProfile() {
         val user = auth.currentUser
         user?.let {
+            _userProfileLiveData.value = Resource.Loading()
+
             db.collection("users").document(it.uid).get()
                 .addOnSuccessListener { document ->
                     if (document != null) {
@@ -33,42 +47,46 @@ class EditProfilePageViewModel @Inject constructor(
                         currentUserInfo["address"] = address
                         currentUserInfo["profileImageUrl"] = profileImageUrl
 
-                        onProfileLoaded(currentUserInfo)
+                        _userProfileLiveData.value = Resource.Success(currentUserInfo)
                     }
                 }
                 .addOnFailureListener { e ->
-                    onError("Failed to load profile: ${e.message}")
+                    _userProfileLiveData.value = Resource.Error("Failed to load profile: ${e.message}")
                 }
         }
     }
 
-    fun uploadProfileImage(selectedImageUri: Uri, onSuccess: (String) -> Unit, onError: (String) -> Unit) {
+    fun uploadProfileImage(selectedImageUri: Uri) {
         val user = auth.currentUser
         user?.let {
+            _uploadImageLiveData.value = Resource.Loading()
+
             val userId = it.uid
             val storageRef = storage.reference.child("images/profileImages/$userId.jpg")
             storageRef.putFile(selectedImageUri).addOnSuccessListener {
                 storageRef.downloadUrl.addOnSuccessListener { downloadUri ->
-                    onSuccess(downloadUri.toString())
+                    _uploadImageLiveData.value = Resource.Success(downloadUri.toString())
                 }.addOnFailureListener { e ->
-                    onError("Image upload failed: ${e.message}")
+                    _uploadImageLiveData.value = Resource.Error("Image upload failed: ${e.message}")
                 }
             }.addOnFailureListener { e ->
-                onError("Image upload failed: ${e.message}")
+                _uploadImageLiveData.value = Resource.Error("Image upload failed: ${e.message}")
             }
         }
     }
 
-    fun updateUserProfile(updates: Map<String, Any>, onSuccess: () -> Unit, onError: (String) -> Unit) {
+    fun updateUserProfile(updates: Map<String, Any>) {
         val user = auth.currentUser
         user?.let {
+            _updateProfileLiveData.value = Resource.Loading()
+
             val userId = it.uid
             db.collection("users").document(userId).update(updates)
                 .addOnSuccessListener {
-                    onSuccess()
+                    _updateProfileLiveData.value = Resource.Success(null)
                 }
                 .addOnFailureListener { e ->
-                    onError("Failed to update profile: ${e.message}")
+                    _updateProfileLiveData.value = Resource.Error("Failed to update profile: ${e.message}")
                 }
         }
     }
