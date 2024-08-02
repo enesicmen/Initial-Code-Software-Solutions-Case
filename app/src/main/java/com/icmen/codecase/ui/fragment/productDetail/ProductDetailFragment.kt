@@ -56,7 +56,7 @@ class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding, Product
         getViewBinding()?.apply {
             tvProductName.text = product.productName
             tvProductColor.text = product.productColor
-            tvListiningDate.text = product.listiningDate
+            tvListiningDate.text = product.listininDate
             tvDescription.text = product.description
             tvPrice.text = getString(R.string.price, product.price, product.currency)
 

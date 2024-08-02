@@ -9,10 +9,9 @@
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="497dp"
+        android:layout_marginTop="20dp"
         android:orientation="vertical"
         android:padding="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -21,41 +20,41 @@
             android:id="@+id/etCardNumber"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/rounded_edittext"
             android:hint="@string/card_number"
             android:inputType="number"
-            android:padding="12dp"
             android:maxLength="19"
-            android:background="@drawable/rounded_edittext" />
+            android:padding="12dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_marginTop="8dp"
+            android:orientation="horizontal"
             android:weightSum="2">
 
             <EditText
                 android:id="@+id/etExpiryDate"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
                 android:layout_weight="1"
+                android:background="@drawable/rounded_edittext"
                 android:hint="@string/expiration_date"
                 android:inputType="text"
-                android:padding="12dp"
-                android:background="@drawable/rounded_edittext"
-                android:layout_marginEnd="4dp" />
+                android:padding="12dp" />
 
             <EditText
                 android:id="@+id/etCvv"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
                 android:layout_weight="1"
-                android:maxLength="3"
+                android:background="@drawable/rounded_edittext"
                 android:hint="@string/cvv"
                 android:inputType="number"
-                android:padding="12dp"
-                android:background="@drawable/rounded_edittext"
-                android:layout_marginStart="4dp" />
+                android:maxLength="3"
+                android:padding="12dp" />
 
         </LinearLayout>
 
@@ -63,9 +62,9 @@
             android:id="@+id/btnPay"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
             android:background="@drawable/rounded_button"
             android:padding="12dp"
-            android:layout_marginTop="30dp"
             android:text="@string/pay"
             android:textAllCaps="false"
             android:textColor="@android:color/white"

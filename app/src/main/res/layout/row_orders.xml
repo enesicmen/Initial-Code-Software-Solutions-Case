@@ -34,19 +34,19 @@
     <TextView
         android:id="@+id/tvTotalAmount"
         android:layout_width="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/rvImage"
         android:layout_height="wrap_content"
-        android:layout_marginStart="3dp"
+        android:layout_marginStart="10dp"
         android:textColor="@color/black"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rvImage"
         tools:text="10.33" />
 
     <TextView
         android:id="@+id/tvOrderDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="3dp"
+        android:layout_marginStart="10dp"
         android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvTotalAmount"
@@ -56,7 +56,7 @@
         android:id="@+id/tvAddress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="3dp"
+        android:layout_marginStart="10dp"
         android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvOrderDate"

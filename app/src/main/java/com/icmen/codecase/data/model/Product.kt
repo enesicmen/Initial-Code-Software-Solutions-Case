@@ -13,6 +13,6 @@ data class Product(
     var productImage: String = "",
     var productName: String = "",
     var productType: String = "",
-    var listiningDate: String = "",
+    var listininDate: String = "",
     var quantity: Int = 0
 ) : Parcelable

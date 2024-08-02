@@ -152,7 +152,13 @@
         android:id="@+id/editProfilePageFragment"
         android:name="com.icmen.codecase.ui.fragment.editProfilePage.EditProfilePageFragment"
         android:label="Edit Profile Page"
-        tools:layout="@layout/fragment_edit_profile" />
+        tools:layout="@layout/fragment_edit_profile" >
+
+        <action
+            android:id="@+id/action_editProfilePageFragment_to_profilePageFragment"
+            app:destination="@id/profilePageFragment" />
+
+    </fragment>
 
     <fragment
         android:id="@+id/ordersPageFragment"

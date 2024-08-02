@@ -6,9 +6,11 @@ import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import com.icmen.codecase.R
 import com.icmen.codecase.data.Resource
 import com.icmen.codecase.databinding.FragmentLoginBinding
 import com.icmen.codecase.ui.base.BaseFragment
+import com.icmen.codecase.ui.fragment.custom.CustomDialogWithOneButtonFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -46,7 +48,18 @@ class LoginPageFragment : BaseFragment<FragmentLoginBinding, LoginPageViewModel>
                 }
                 is Resource.Error -> {
                     getViewBinding()?.fmProgress?.visibility = View.GONE
-                    Toast.makeText(requireContext(), resource.error ?: "Bilinmeyen bir hata oluştu", Toast.LENGTH_SHORT).show()
+                    when (resource.error) {
+                        "0" -> {
+                            var title = getString(R.string.error)
+                            var message = getString(R.string.fill_in_all_fields)
+                            setOneButtonDialog(title,message)
+                        }
+                        "1" -> {
+                            var title = getString(R.string.error)
+                            var message = getString(R.string.login_error)
+                            setOneButtonDialog(title,message)
+                        }
+                    }
                 }
             }
         })
@@ -57,5 +70,10 @@ class LoginPageFragment : BaseFragment<FragmentLoginBinding, LoginPageViewModel>
             val action = LoginPageFragmentDirections.actionLoginPageFragmentToRegisterPageFragment()
             findNavController().navigate(action)
         }
+    }
+    private fun setOneButtonDialog(title: String, message: String) {
+        val dialog = CustomDialogWithOneButtonFragment.newInstance(title, message)
+        dialog.onOkClicked = {}
+        dialog.show(requireActivity().supportFragmentManager, "customDialog")
     }
 }

@@ -52,7 +52,7 @@
     <string name="update">Güncelle</string>
     <string name="profile_updated_successfully">Profile güncellemesi başarılı</string>
     <string name="orders">Siparişler</string>
-    <string name="edit_profile">Siparişler</string>
+    <string name="edit_profile">Profili düzenle</string>
 
     <!-- Products -->
     <string name="product_name">Ürün adı: %1$s</string>
@@ -74,5 +74,8 @@
     <string name="expiration_date">Son Kullanma Tarihi (MM/YY)</string>
     <string name="cvv">CVV</string>
     <string name="pay">Ödeme yap</string>
+
+    <!-- Login -->
+    <string name="login_error">Eksik veya hatalı bilgi girdiniz</string>
 
 </resources>

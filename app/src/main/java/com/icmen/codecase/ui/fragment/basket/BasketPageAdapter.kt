@@ -60,7 +60,7 @@ class BasketPageAdapter(
                 tvProductName.text = item.productName
                 tvDescription.text = item.description
                 tvProductColor.text = mContext.getString(R.string.product_color, item.productColor)
-                tvListiningDate.text = item.listiningDate
+                tvListiningDate.text = item.listininDate
                 tvPrice.text = mContext.getString(R.string.price, item.price, item.currency)
                 tvQuantityFor.text = item.quantity.toString()
                 Glide.with(mContext).load(item.productImage).into(ivImage)

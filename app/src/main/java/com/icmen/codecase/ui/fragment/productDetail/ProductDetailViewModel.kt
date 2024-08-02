@@ -42,7 +42,7 @@ class ProductDetailViewModel : ViewModel() {
                         "productImage" to product.productImage,
                         "userId" to userId,
                         "description" to product.description,
-                        "listiningDate" to product.listiningDate,
+                        "listininDate" to product.listininDate,
                         "productColor" to product.productColor,
                         "productId" to product.productId
                     )

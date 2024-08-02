@@ -18,7 +18,7 @@ class LoginPageViewModel @Inject constructor(
 
     fun loginUser(email: String, password: String) {
         if (email.isEmpty() || password.isEmpty()) {
-            _loginResult.value = Resource.Error("Please fill in all fields")
+            _loginResult.value = Resource.Error("0")
             return
         }
 
@@ -29,7 +29,7 @@ class LoginPageViewModel @Inject constructor(
                 if (task.isSuccessful) {
                     _loginResult.value = Resource.Success(true)
                 } else {
-                    _loginResult.value = Resource.Error(task.exception?.message ?: "Login failed")
+                    _loginResult.value = Resource.Error( "1")
                 }
             }
     }

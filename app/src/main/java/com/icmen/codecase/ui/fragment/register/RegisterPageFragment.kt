@@ -1,10 +1,6 @@
 package com.icmen.codecase.ui.fragment.register
 
-import android.app.Activity
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -20,7 +16,6 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class RegisterPageFragment : BaseFragment<FragmentRegisterBinding, RegisterPageViewModel>() {
 
-    private var selectedImageUri: Uri? = null
     private val registerPageViewModel: RegisterPageViewModel by viewModels()
 
     override fun setViewBinding(): FragmentRegisterBinding {
@@ -30,11 +25,6 @@ class RegisterPageFragment : BaseFragment<FragmentRegisterBinding, RegisterPageV
     override fun setViewModelClass() = RegisterPageViewModel::class.java
 
     override fun initView(savedInstanceState: Bundle?) {
-        getViewBinding()?.profileImageView?.setOnClickListener {
-            val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-            startActivityForResult(intent, REQUEST_CODE_IMAGE_PICK)
-        }
-
         getViewBinding()?.btnRegister?.setOnClickListener {
             val name = getViewBinding()?.etName?.text.toString()
             val surname = getViewBinding()?.etSurname?.text.toString()
@@ -42,19 +32,11 @@ class RegisterPageFragment : BaseFragment<FragmentRegisterBinding, RegisterPageV
             val email = getViewBinding()?.etEmail?.text.toString()
             val password = getViewBinding()?.etPassword?.text.toString()
 
-            registerPageViewModel.registerUser(name, surname, email, address, password, selectedImageUri)
+            registerPageViewModel.registerUser(name, surname, email, address, password)
         }
 
         goToLoginPage()
         observeViewModel()
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_CODE_IMAGE_PICK && resultCode == Activity.RESULT_OK && data != null) {
-            selectedImageUri = data.data
-            getViewBinding()?.profileImageView?.setImageURI(selectedImageUri)
-        }
     }
 
     private fun observeViewModel() {
