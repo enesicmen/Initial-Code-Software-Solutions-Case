@@ -27,6 +27,8 @@ https://github.com/enesicmen/Initial-Code-Software-Solutions-Case
 ## Application flow
 
 - The user registers or logs in to the application. He enters the product details and adds the product to the cart. From there, 
-  he goes to the payment screen and enters his card information. After purchasing the product, the cart is cleared. He displays his past orders from the Profile tab.
+  he goes to the payment screen and enters his card information. If the user's basket is below 1000 TL, 
+  an error message is displayed (to show and simulate the Error situation). If the basket amount is below 1000 TL, the payment is successful. 
+  After purchasing the product, the basket is cleared. You can view your past orders in the Profile tab.
 
 
