@@ -12,7 +12,7 @@ import com.icmen.codecase.databinding.FragmentCustomDialogOneButtonBinding
 class CustomDialogWithOneButtonFragment : DialogFragment() {
 
     private var _binding: FragmentCustomDialogOneButtonBinding? = null
-    private val binding get() = _binding!!
+    private val binding get() = _binding
 
     var onOkClicked: (() -> Unit)? = null
 
@@ -20,30 +20,30 @@ class CustomDialogWithOneButtonFragment : DialogFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
-        dialog?.window?.let {
-            it.setBackgroundDrawable(ColorDrawable(android.graphics.Color.TRANSPARENT))
-            it.requestFeature(Window.FEATURE_NO_TITLE)
+        dialog?.window?.apply {
+            setBackgroundDrawable(ColorDrawable(android.graphics.Color.TRANSPARENT))
+            requestFeature(Window.FEATURE_NO_TITLE)
         }
 
         _binding = FragmentCustomDialogOneButtonBinding.inflate(inflater, container, false)
-        return binding.root
+        return binding?.root ?: View(context)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupDialog()
+        setupClickListeners()
+    }
 
+    private fun setupDialog() {
         arguments?.let { bundle ->
-            val title = bundle.getString(ARG_TITLE)
-            val message = bundle.getString(ARG_MESSAGE)
-
-            binding.let {
-                it.tvTitle.text = title
-                it.tvMessage.text = message
-            }
+            binding?.tvTitle?.text = bundle.getString(ARG_TITLE)
+            binding?.tvMessage?.text = bundle.getString(ARG_MESSAGE)
         }
+    }
 
-        binding.btnOk.setOnClickListener {
+    private fun setupClickListeners() {
+        binding?.btnOk?.setOnClickListener {
             onOkClicked?.invoke()
             dismiss()
         }
@@ -51,8 +51,7 @@ class CustomDialogWithOneButtonFragment : DialogFragment() {
 
     override fun onStart() {
         super.onStart()
-        val width = (resources.displayMetrics.widthPixels * 0.85).toInt()
-        dialog?.window?.setLayout(width, ViewGroup.LayoutParams.WRAP_CONTENT)
+        dialog?.window?.setLayout((resources.displayMetrics.widthPixels * 0.85).toInt(), ViewGroup.LayoutParams.WRAP_CONTENT)
     }
 
     override fun onDestroyView() {
@@ -65,13 +64,12 @@ class CustomDialogWithOneButtonFragment : DialogFragment() {
         private const val ARG_MESSAGE = "message"
 
         fun newInstance(title: String, message: String): CustomDialogWithOneButtonFragment {
-            val fragment = CustomDialogWithOneButtonFragment()
-            val args = Bundle().apply {
-                putString(ARG_TITLE, title)
-                putString(ARG_MESSAGE, message)
+            return CustomDialogWithOneButtonFragment().apply {
+                arguments = Bundle().apply {
+                    putString(ARG_TITLE, title)
+                    putString(ARG_MESSAGE, message)
+                }
             }
-            fragment.arguments = args
-            return fragment
         }
     }
 }

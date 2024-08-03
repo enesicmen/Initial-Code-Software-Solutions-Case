@@ -77,8 +77,7 @@ class BasketPageViewModel @Inject constructor(
         val product = basketItems[position]
         product.quantity = newQuantity
 
-        val userId = auth.currentUser?.uid
-        userId?.let {
+        auth.currentUser?.uid?.let {
             firestore.collection("basket")
                 .document(it)
                 .collection("products")

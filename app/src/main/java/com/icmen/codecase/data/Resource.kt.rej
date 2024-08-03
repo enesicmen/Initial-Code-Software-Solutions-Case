@@ -1,0 +1,8 @@
+diff a/app/src/main/java/com/icmen/codecase/data/Resource.kt b/app/src/main/java/com/icmen/codecase/data/Resource.kt	(rejected hunks)
+@@ -1,4 +1,6 @@
+ package com.icmen.codecase.data
++
++// TODO: buraya bi tane bosluk ekle, ekranin cok ustunde kalmis
+ sealed class Resource<T>(
+     val data: T? = null,
+     val error: String? = null

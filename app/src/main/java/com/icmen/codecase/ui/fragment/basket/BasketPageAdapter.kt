@@ -9,11 +9,9 @@ import com.bumptech.glide.Glide
 import com.icmen.codecase.R
 import com.icmen.codecase.data.model.Product
 import com.icmen.codecase.databinding.RowBasketBinding
-import com.icmen.codecase.ui.common.RecyclerItemClickListener
 
 class BasketPageAdapter(
     private val basketItems: MutableList<Product>,
-    private val onClicked: RecyclerItemClickListener,
     private val onQuantityChanged: (Int, Int) -> Unit
 ) : RecyclerView.Adapter<BasketPageAdapter.ViewHolder>() {
 

@@ -1,0 +1,17 @@
+diff a/app/src/main/java/com/icmen/codecase/ui/fragment/login/LoginPageViewModel.kt b/app/src/main/java/com/icmen/codecase/ui/fragment/login/LoginPageViewModel.kt	(rejected hunks)
+@@ -18,6 +18,7 @@ class LoginPageViewModel @Inject constructor(
+ 
+     fun loginUser(email: String, password: String) {
+         if (email.isEmpty() || password.isEmpty()) {
++            // todo: bu erroru constants'a tasi, AppCOnstants gibi ve ordan kullan
+             _loginResult.value = Resource.Error("0")
+             return
+         }
+@@ -29,6 +30,7 @@ class LoginPageViewModel @Inject constructor(
+                 if (task.isSuccessful) {
+                     _loginResult.value = Resource.Success(true)
+                 } else {
++                    // todo: bu erroru constants'a tasi, AppCOnstants gibi ve ordan kullan
+                     _loginResult.value = Resource.Error( "1")
+                 }
+             }

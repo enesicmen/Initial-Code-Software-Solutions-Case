@@ -1,0 +1,11 @@
+diff a/app/src/main/java/com/icmen/codecase/ui/fragment/orders/OrdersPageAdapter.kt b/app/src/main/java/com/icmen/codecase/ui/fragment/orders/OrdersPageAdapter.kt	(rejected hunks)
+@@ -40,7 +40,8 @@ class OrdersPageAdapter(
+             binding.apply {
+                 tvTotalAmount.text = mContext.getString(R.string.order_price, order.totalAmount,"TL")
+                 tvAddress.text = mContext.getString(R.string.order_address, order.address)
+-                var orderDate = java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(order.orderDate)
++                // todo: val kullan
++                var orderDate = java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(order.orderDate) //todo:  bunu da AppConstantsa tasi ve ordan kullan
+                 tvOrderDate.text = mContext.getString(R.string.order_date, orderDate)
+                 rvImage.layoutManager = LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
+                 rvImage.adapter = OrdersImageAdapter(order.products)

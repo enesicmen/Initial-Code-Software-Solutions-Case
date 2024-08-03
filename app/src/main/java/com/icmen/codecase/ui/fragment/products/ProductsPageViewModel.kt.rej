@@ -1,0 +1,9 @@
+diff a/app/src/main/java/com/icmen/codecase/ui/fragment/products/ProductsPageViewModel.kt b/app/src/main/java/com/icmen/codecase/ui/fragment/products/ProductsPageViewModel.kt	(rejected hunks)
+@@ -30,6 +30,7 @@ class ProductsPageViewModel @Inject constructor() : ViewModel() {
+                 _productsLiveData.value = Resource.Success(products)
+             }
+             .addOnFailureListener { exception ->
++                // todo: bunlari strings'e tasi yada constanst class'a tasi ve ordan kullan
+                 _productsLiveData.value = Resource.Error(exception.message ?: "An error occurred")
+             }
+     }

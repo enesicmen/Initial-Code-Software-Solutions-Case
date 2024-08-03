@@ -85,4 +85,7 @@
     <string name="order_address">Adres : %1$s</string>
     <string name="failed_to_fetch_orders">Siparişler getirilemedi</string>
 
+    <!-- Product Detail -->
+    <string name="product_added">Ürün sepete eklendi: %1$s</string>
+
 </resources>

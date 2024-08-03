@@ -1,4 +1,6 @@
 package com.icmen.codecase.data
+
+
 sealed class Resource<T>(
     val data: T? = null,
     val error: String? = null

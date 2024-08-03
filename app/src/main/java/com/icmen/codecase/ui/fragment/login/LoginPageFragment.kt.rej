@@ -1,0 +1,17 @@
+diff a/app/src/main/java/com/icmen/codecase/ui/fragment/login/LoginPageFragment.kt b/app/src/main/java/com/icmen/codecase/ui/fragment/login/LoginPageFragment.kt	(rejected hunks)
+@@ -48,12 +48,15 @@ class LoginPageFragment : BaseFragment<FragmentLoginBinding, LoginPageViewModel>
+                 is Resource.Error -> {
+                     getViewBinding()?.fmProgress?.visibility = View.GONE
+                     when (resource.error) {
++                        // todo: bu erroru constants'a tasi, AppCOnstants gibi ve ordan kullan
+                         "0" -> {
++                            // todo: val kullan yada varible olusturmayip direk methoda aprametre olarak ver
+                             var title = getString(R.string.error)
+                             var message = getString(R.string.fill_in_all_fields)
+                             setOneButtonDialog(title,message)
+                         }
+                         "1" -> {
++                            // todo: val kullan yada varible olusturmayip direk methoda aprametre olarak ver
+                             var title = getString(R.string.error)
+                             var message = getString(R.string.login_error)
+                             setOneButtonDialog(title,message)

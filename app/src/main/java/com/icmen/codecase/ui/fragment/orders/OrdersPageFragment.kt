@@ -25,9 +25,10 @@ class OrdersPageFragment : BaseFragment<FragmentOrdersBinding, OrdersPageViewMod
 
     override fun initView(savedInstanceState: Bundle?) {
         orderAdapter = OrdersPageAdapter(orderList, this)
-        getViewBinding()?.recyclerViewOrders?.layoutManager = LinearLayoutManager(requireContext())
-        getViewBinding()?.recyclerViewOrders?.adapter = orderAdapter
-
+        getViewBinding()?.recyclerViewOrders?.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = orderAdapter
+        }
         observeOrders()
         getViewModel()?.fetchOrders()
     }

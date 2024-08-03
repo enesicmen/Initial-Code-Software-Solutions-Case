@@ -1,0 +1,9 @@
+diff a/app/src/main/java/com/icmen/codecase/ui/fragment/splash/SplashPageViewModel.kt b/app/src/main/java/com/icmen/codecase/ui/fragment/splash/SplashPageViewModel.kt	(rejected hunks)
+@@ -22,6 +22,7 @@ class SplashPageViewModel @Inject constructor(
+         if (currentUser != null) {
+             _isUserAuthenticatedLiveData.value = Resource.Success(true)
+         } else {
++            // todo: bu erroru constants'a tasi, AppCOnstants gibi ve ordan kullan
+             _isUserAuthenticatedLiveData.value = Resource.Error("User not authenticated")
+         }
+     }

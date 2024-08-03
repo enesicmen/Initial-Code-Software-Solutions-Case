@@ -40,7 +40,7 @@ class OrdersPageAdapter(
             binding.apply {
                 tvTotalAmount.text = mContext.getString(R.string.order_price, order.totalAmount,"TL")
                 tvAddress.text = mContext.getString(R.string.order_address, order.address)
-                var orderDate = java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(order.orderDate)
+                val orderDate = java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(order.orderDate)
                 tvOrderDate.text = mContext.getString(R.string.order_date, orderDate)
                 rvImage.layoutManager = LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
                 rvImage.adapter = OrdersImageAdapter(order.products)

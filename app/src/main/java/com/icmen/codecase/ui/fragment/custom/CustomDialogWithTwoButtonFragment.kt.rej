@@ -1,0 +1,12 @@
+diff a/app/src/main/java/com/icmen/codecase/ui/fragment/custom/CustomDialogWithTwoButtonFragment.kt b/app/src/main/java/com/icmen/codecase/ui/fragment/custom/CustomDialogWithTwoButtonFragment.kt	(rejected hunks)
+@@ -10,8 +10,9 @@ import androidx.fragment.app.DialogFragment
+ import com.icmen.codecase.databinding.FragmentCustomDialogTwoButtonBinding
+ class CustomDialogWithTwoButtonFragment : DialogFragment() {
+ 
++    // todo: burda neden ike kere binding kullandin? ustelik ikisi de private?
+     private var _binding: FragmentCustomDialogTwoButtonBinding? = null
+-    private val binding get() = _binding!!
++    private val binding get() = _binding!! //todo: !! kullanmak iyi degil, bunu boyle kullanma, optional yapmanin bir manasi kalmamis
+     var onYesClicked: (() -> Unit)? = null
+     var onNoClicked: (() -> Unit)? = null
+     override fun onCreateView(

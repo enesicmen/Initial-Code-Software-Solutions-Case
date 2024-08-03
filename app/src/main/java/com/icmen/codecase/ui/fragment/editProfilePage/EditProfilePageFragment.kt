@@ -33,13 +33,13 @@ class EditProfilePageFragment : BaseFragment<FragmentEditProfileBinding, EditPro
             val updates = mutableMapOf<String, Any>()
             val currentUserInfo = getViewModel()?.getCurrentUserInfo()
 
-            if (name != currentUserInfo?.get("name") ?: "") {
+            if (name != (currentUserInfo?.get("name") ?: "")) {
                 updates["name"] = name
             }
-            if (surname != currentUserInfo?.get("surname") ?: "") {
+            if (surname != (currentUserInfo?.get("surname") ?: "")) {
                 updates["surname"] = surname
             }
-            if (address != currentUserInfo?.get("address") ?: "") {
+            if (address != (currentUserInfo?.get("address") ?: "")) {
                 updates["address"] = address
             }
 
@@ -67,16 +67,18 @@ class EditProfilePageFragment : BaseFragment<FragmentEditProfileBinding, EditPro
                     getViewBinding()?.progressBar?.visibility = View.VISIBLE
                 }
                 is Resource.Success -> {
-                    getViewBinding()?.progressBar?.visibility = View.GONE
-                    val userInfo = resource.data!!
-                    getViewBinding()?.etName?.setText(userInfo["name"] as? String)
-                    getViewBinding()?.etSurname?.setText(userInfo["surname"] as? String)
-                    getViewBinding()?.etAddress?.setText(userInfo["address"] as? String)
+                    getViewBinding()?.let { binding ->
+                        binding.progressBar.visibility = View.GONE
+                        val userInfo = resource.data!!
+                        binding.etName.setText(userInfo["name"] as? String)
+                        binding.etSurname.setText(userInfo["surname"] as? String)
+                        binding.etAddress.setText(userInfo["address"] as? String)
+                    }
                 }
                 is Resource.Error -> {
                     getViewBinding()?.progressBar?.visibility = View.GONE
-                    var title = getString(R.string.error)
-                    var message = resource.error
+                    val title = getString(R.string.error)
+                    val message = resource.error
                     if (message != null) {
                         setOneButtonDialog(title, message)
                     }
@@ -95,8 +97,8 @@ class EditProfilePageFragment : BaseFragment<FragmentEditProfileBinding, EditPro
                 }
                 is Resource.Error -> {
                     getViewBinding()?.progressBar?.visibility = View.GONE
-                    var title = getString(R.string.error)
-                    var message = resource.error
+                    val title = getString(R.string.error)
+                    val message = resource.error
                     if (message != null) {
                         setOneButtonDialog(title, message)
                     }
@@ -111,8 +113,8 @@ class EditProfilePageFragment : BaseFragment<FragmentEditProfileBinding, EditPro
     }
 
     private fun navigateToSuccessPage() {
-        var title = getString(R.string.success)
-        var message = getString(R.string.profile_updated_successfully)
+        val title = getString(R.string.success)
+        val message = getString(R.string.profile_updated_successfully)
         val navOptions = NavOptions.Builder()
             .setPopUpTo(R.id.editProfilePageFragment, true)
             .build()

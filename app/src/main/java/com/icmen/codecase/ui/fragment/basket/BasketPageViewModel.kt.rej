@@ -1,0 +1,17 @@
+diff a/app/src/main/java/com/icmen/codecase/ui/fragment/basket/BasketPageViewModel.kt b/app/src/main/java/com/icmen/codecase/ui/fragment/basket/BasketPageViewModel.kt	(rejected hunks)
+@@ -86,6 +86,15 @@ class BasketPageViewModel @Inject constructor(
+                 .update("quantity", newQuantity)
+         }
+ 
++        /*// todo: userId icin variable olusturmana gerek yok
++        auth.currentUser?.uid?.let {
++            firestore.collection("basket")
++                .document(it)
++                .collection("products")
++                .document(product.productId)
++                .update("quantity", newQuantity)
++        }*/
++
+         basketItems[position] = product
+         _basketItemsLiveData.value = Resource.Success(basketItems)
+         updateTotalAmount(basketItems)

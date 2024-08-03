@@ -1,0 +1,49 @@
+diff a/app/src/main/java/com/icmen/codecase/ui/fragment/editProfilePage/EditProfilePageFragment.kt b/app/src/main/java/com/icmen/codecase/ui/fragment/editProfilePage/EditProfilePageFragment.kt	(rejected hunks)
+@@ -33,12 +33,15 @@ class EditProfilePageFragment : BaseFragment<FragmentEditProfileBinding, EditPro
+             val updates = mutableMapOf<String, Any>()
+             val currentUserInfo = getViewModel()?.getCurrentUserInfo()
+ 
++            // todo: burayi duzelt, uyari veriyor, option + enter yapinca duzeltior
+             if (name != currentUserInfo?.get("name") ?: "") {
+                 updates["name"] = name
+             }
++            // todo: burayi duzelt, uyari veriyor, option + enter yapinca duzeltior
+             if (surname != currentUserInfo?.get("surname") ?: "") {
+                 updates["surname"] = surname
+             }
++            // todo: burayi duzelt, uyari veriyor, option + enter yapinca duzeltior
+             if (address != currentUserInfo?.get("address") ?: "") {
+                 updates["address"] = address
+             }
+@@ -62,6 +65,7 @@ class EditProfilePageFragment : BaseFragment<FragmentEditProfileBinding, EditPro
+     }
+     private fun observeViewModel() {
+         getViewModel()?.userProfileLiveData?.observe(viewLifecycleOwner) { resource ->
++            // todo: getViewBinding()? icin with yada apply kullan
+             when (resource) {
+                 is Resource.Loading -> {
+                     getViewBinding()?.progressBar?.visibility = View.VISIBLE
+@@ -75,6 +79,7 @@ class EditProfilePageFragment : BaseFragment<FragmentEditProfileBinding, EditPro
+                 }
+                 is Resource.Error -> {
+                     getViewBinding()?.progressBar?.visibility = View.GONE
++                    // todo: val kullan yada varible olusturmayip direk methoda aprametre olarak ver
+                     var title = getString(R.string.error)
+                     var message = resource.error
+                     if (message != null) {
+@@ -95,6 +100,7 @@ class EditProfilePageFragment : BaseFragment<FragmentEditProfileBinding, EditPro
+                 }
+                 is Resource.Error -> {
+                     getViewBinding()?.progressBar?.visibility = View.GONE
++                    // todo: val kullan yada varible olusturmayip direk methoda aprametre olarak ver
+                     var title = getString(R.string.error)
+                     var message = resource.error
+                     if (message != null) {
+@@ -111,6 +117,7 @@ class EditProfilePageFragment : BaseFragment<FragmentEditProfileBinding, EditPro
+     }
+ 
+     private fun navigateToSuccessPage() {
++        // todo: val kullan yada varible olusturmayip direk methoda aprametre olarak ver
+         var title = getString(R.string.success)
+         var message = getString(R.string.profile_updated_successfully)
+         val navOptions = NavOptions.Builder()

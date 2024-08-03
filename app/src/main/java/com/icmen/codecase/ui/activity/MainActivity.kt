@@ -27,14 +27,17 @@ class MainActivity : AppCompatActivity() {
     private fun onBackPressedDispatcher(){
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                if (navController.currentDestination?.id == R.id.productsPageFragment) {
-                    finishAffinity()
-                }
-                else if(navController.currentDestination?.id == R.id.loginPageFragment){
-                    finishAffinity()
-                } else{
-                    navController.popBackStack()
-                    updateBottomNavigationView()
+                when (navController.currentDestination?.id) {
+                    R.id.productsPageFragment -> {
+                        finishAffinity()
+                    }
+                    R.id.loginPageFragment -> {
+                        finishAffinity()
+                    }
+                    else -> {
+                        navController.popBackStack()
+                        updateBottomNavigationView()
+                    }
                 }
             }
         })

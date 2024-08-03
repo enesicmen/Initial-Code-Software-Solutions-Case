@@ -1,0 +1,9 @@
+diff a/app/src/main/java/com/icmen/codecase/ui/fragment/orders/OrdersPageFragment.kt b/app/src/main/java/com/icmen/codecase/ui/fragment/orders/OrdersPageFragment.kt	(rejected hunks)
+@@ -25,6 +25,7 @@ class OrdersPageFragment : BaseFragment<FragmentOrdersBinding, OrdersPageViewMod
+ 
+     override fun initView(savedInstanceState: Bundle?) {
+         orderAdapter = OrdersPageAdapter(orderList, this)
++        // todo: getViewBinding()?.recyclerViewOrders icin apply yada with kullan
+         getViewBinding()?.recyclerViewOrders?.layoutManager = LinearLayoutManager(requireContext())
+         getViewBinding()?.recyclerViewOrders?.adapter = orderAdapter
+ 

@@ -1,0 +1,21 @@
+diff a/app/src/main/java/com/icmen/codecase/ui/fragment/register/RegisterPageFragment.kt b/app/src/main/java/com/icmen/codecase/ui/fragment/register/RegisterPageFragment.kt	(rejected hunks)
+@@ -51,16 +51,19 @@ class RegisterPageFragment : BaseFragment<FragmentRegisterBinding, RegisterPageV
+                 is Resource.Error -> {
+                     getViewBinding()?.progressBar?.visibility = View.GONE
+                     when (resource.error) {
++                        // todo: bu kodlari constans bir class'a tasiyip ordan kullan
+                         "0" -> {
+                             val title = getString(R.string.error)
+                             val message = getString(R.string.fill_in_all_fields)
+                             setOneButtonDialog(title,message)
+                         }
++                        // todo: bu kodlari constans bir class'a tasiyip ordan kullan
+                         "1" -> {
+                             val title = getString(R.string.error)
+                             val message = getString(R.string.must_be_at_least_six_characters_long)
+                             setOneButtonDialog(title,message)
+                         }
++                        // todo: bu kodlari constans bir class'a tasiyip ordan kullan
+                         "2" -> {
+                             val title = getString(R.string.error)
+                             val message = getString(R.string.register_failed)

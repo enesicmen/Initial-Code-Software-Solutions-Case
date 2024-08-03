@@ -49,13 +49,13 @@ class LoginPageFragment : BaseFragment<FragmentLoginBinding, LoginPageViewModel>
                     getViewBinding()?.fmProgress?.visibility = View.GONE
                     when (resource.error) {
                         "0" -> {
-                            var title = getString(R.string.error)
-                            var message = getString(R.string.fill_in_all_fields)
+                            val title = getString(R.string.error)
+                            val message = getString(R.string.fill_in_all_fields)
                             setOneButtonDialog(title,message)
                         }
                         "1" -> {
-                            var title = getString(R.string.error)
-                            var message = getString(R.string.login_error)
+                            val title = getString(R.string.error)
+                            val message = getString(R.string.login_error)
                             setOneButtonDialog(title,message)
                         }
                     }
