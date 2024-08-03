@@ -75,11 +75,6 @@ class BasketPageAdapter(
 
     override fun getItemCount(): Int = basketItems.size
 
-    fun addItemToTop(item: Product) {
-        basketItems.add(0, item)
-        notifyItemInserted(0)
-    }
-
     fun updateItems(newItems: List<Product>) {
         basketItems.clear()
         basketItems.addAll(newItems)

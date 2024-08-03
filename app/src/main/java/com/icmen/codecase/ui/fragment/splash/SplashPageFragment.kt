@@ -2,7 +2,6 @@ package com.icmen.codecase.ui.fragment.splash
 
 import android.os.Bundle
 import android.view.View
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.icmen.codecase.data.Resource
 import com.icmen.codecase.databinding.FragmentSplashBinding
@@ -12,8 +11,6 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class SplashPageFragment : BaseFragment<FragmentSplashBinding, SplashPageViewModel>() {
 
-    private val splashPageViewModel: SplashPageViewModel by viewModels()
-
     override fun setViewModelClass() = SplashPageViewModel::class.java
 
     override fun setViewBinding(): FragmentSplashBinding =
@@ -21,11 +18,11 @@ class SplashPageFragment : BaseFragment<FragmentSplashBinding, SplashPageViewMod
 
     override fun initView(savedInstanceState: Bundle?) {
         observeViewModel()
-        splashPageViewModel.checkUserAuthentication()
+        getViewModel()?.checkUserAuthentication()
     }
 
     private fun observeViewModel() {
-        splashPageViewModel.isUserAuthenticatedLiveData.observe(viewLifecycleOwner) { resource ->
+        getViewModel()?.isUserAuthenticatedLiveData?.observe(viewLifecycleOwner) { resource ->
             when (resource) {
                 is Resource.Loading -> {
                     getViewBinding()?.progressBar?.visibility = View.VISIBLE

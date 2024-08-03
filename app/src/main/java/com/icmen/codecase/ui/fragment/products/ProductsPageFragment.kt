@@ -28,7 +28,10 @@ class ProductsPageFragment : BaseFragment<FragmentProductsBinding, ProductsPageV
     override fun initView(savedInstanceState: Bundle?) {
         initProductsAdapter()
         observeViewModel()
+        onBackPressedDispatcher()
+    }
 
+    private fun onBackPressedDispatcher(){
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 requireActivity().finishAffinity()

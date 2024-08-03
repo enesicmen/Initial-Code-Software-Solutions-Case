@@ -21,7 +21,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setBottomNavigationAndNavigation()
+        onBackPressedDispatcher()
+    }
 
+    private fun onBackPressedDispatcher(){
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 if (navController.currentDestination?.id == R.id.productsPageFragment) {
@@ -36,7 +39,6 @@ class MainActivity : AppCompatActivity() {
             }
         })
     }
-
     private fun setBottomNavigationAndNavigation() {
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
@@ -79,7 +81,6 @@ class MainActivity : AppCompatActivity() {
             navController.navigate(destinationId)
         }
     }
-
     private fun updateBottomNavigationView() {
         when (navController.currentDestination?.id) {
             R.id.productsPageFragment -> bottomNavigationView.selectedItemId = R.id.menu_item_home

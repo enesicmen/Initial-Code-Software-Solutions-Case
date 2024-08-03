@@ -22,24 +22,29 @@ class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding, Product
 
     override fun initView(savedInstanceState: Bundle?) {
         showProductDetails(mProduct)
-
+        setButtonDecrease()
+        setButtonIncrease()
+        setButtonBasket()
+        observeBasketResponse()
+    }
+    private fun setButtonDecrease(){
         getViewBinding()?.btnDecrease?.setOnClickListener {
             if (quantity > 1) {
                 quantity--
                 updateQuantityText()
             }
         }
-
+    }
+    private fun setButtonIncrease(){
         getViewBinding()?.btnIncrease?.setOnClickListener {
             quantity++
             updateQuantityText()
         }
-
+    }
+    private fun setButtonBasket(){
         getViewBinding()?.btnBasket?.setOnClickListener {
             getViewModel()?.addToBasket(mProduct, quantity)
         }
-
-        observeBasketResponse()
     }
 
     override fun setViewModelClass() = ProductDetailViewModel::class.java

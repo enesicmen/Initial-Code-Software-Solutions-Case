@@ -86,7 +86,7 @@ class BasketPageViewModel @Inject constructor(
                 .update("quantity", newQuantity)
         }
 
-        basketItems[position] = product // Ürünü mevcut pozisyonunda tutuyoruz
+        basketItems[position] = product
         _basketItemsLiveData.value = Resource.Success(basketItems)
         updateTotalAmount(basketItems)
     }

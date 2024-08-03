@@ -45,7 +45,7 @@ class RegisterPageViewModel @Inject constructor(
                     }
                 } else {
                     _progressVisibility.value = false
-                    _registrationResult.value = Resource.Error("2")//Registration failed"
+                    _registrationResult.value = Resource.Error("2")
                 }
             }
     }

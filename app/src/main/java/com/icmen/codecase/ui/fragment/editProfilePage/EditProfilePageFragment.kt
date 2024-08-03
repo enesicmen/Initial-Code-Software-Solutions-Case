@@ -3,7 +3,6 @@ package com.icmen.codecase.ui.fragment.editProfilePage
 import android.os.Bundle
 import android.view.View
 import androidx.activity.OnBackPressedCallback
-import androidx.fragment.app.viewModels
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -17,8 +16,6 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class EditProfilePageFragment : BaseFragment<FragmentEditProfileBinding, EditProfilePageViewModel>() {
 
-    private val viewModel: EditProfilePageViewModel by viewModels()
-
     override fun setViewBinding(): FragmentEditProfileBinding =
         FragmentEditProfileBinding.inflate(layoutInflater)
 
@@ -26,7 +23,7 @@ class EditProfilePageFragment : BaseFragment<FragmentEditProfileBinding, EditPro
 
     override fun initView(savedInstanceState: Bundle?) {
         observeViewModel()
-        viewModel.loadUserProfile()
+        getViewModel()?.loadUserProfile()
 
         getViewBinding()?.btnUpdate?.setOnClickListener {
             val name = getViewBinding()?.etName?.text.toString()
@@ -34,23 +31,26 @@ class EditProfilePageFragment : BaseFragment<FragmentEditProfileBinding, EditPro
             val address = getViewBinding()?.etAddress?.text.toString()
 
             val updates = mutableMapOf<String, Any>()
-            val currentUserInfo = viewModel.getCurrentUserInfo()
+            val currentUserInfo = getViewModel()?.getCurrentUserInfo()
 
-            if (name != currentUserInfo["name"]) {
+            if (name != currentUserInfo?.get("name") ?: "") {
                 updates["name"] = name
             }
-            if (surname != currentUserInfo["surname"]) {
+            if (surname != currentUserInfo?.get("surname") ?: "") {
                 updates["surname"] = surname
             }
-            if (address != currentUserInfo["address"]) {
+            if (address != currentUserInfo?.get("address") ?: "") {
                 updates["address"] = address
             }
 
             if (updates.isNotEmpty()) {
-                viewModel.updateUserProfile(updates)
+                getViewModel()?.updateUserProfile(updates)
             }
         }
+        onBackPressedDispatcher()
+    }
 
+    private fun onBackPressedDispatcher(){
         requireActivity().onBackPressedDispatcher.addCallback(
             viewLifecycleOwner,
             object : OnBackPressedCallback(true) {
@@ -60,9 +60,8 @@ class EditProfilePageFragment : BaseFragment<FragmentEditProfileBinding, EditPro
             }
         )
     }
-
     private fun observeViewModel() {
-        viewModel.userProfileLiveData.observe(viewLifecycleOwner) { resource ->
+        getViewModel()?.userProfileLiveData?.observe(viewLifecycleOwner) { resource ->
             when (resource) {
                 is Resource.Loading -> {
                     getViewBinding()?.progressBar?.visibility = View.VISIBLE
@@ -85,7 +84,7 @@ class EditProfilePageFragment : BaseFragment<FragmentEditProfileBinding, EditPro
             }
         }
 
-        viewModel.updateProfileLiveData.observe(viewLifecycleOwner) { resource ->
+        getViewModel()?.updateProfileLiveData?.observe(viewLifecycleOwner) { resource ->
             when (resource) {
                 is Resource.Loading -> {
                     getViewBinding()?.progressBar?.visibility = View.VISIBLE

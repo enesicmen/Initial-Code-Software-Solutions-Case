@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
@@ -33,15 +32,14 @@ class PaymentPageFragment : BaseFragment<FragmentPaymentBinding, PaymentPageView
 
     override fun initView(savedInstanceState: Bundle?) {
         setTotalAmount(mTotalAmount)
-        pay()
-
+        setPay()
         observeOrderSaveStatus()
         setCardNumber()
         setExpiryDate()
         onBackPressedDispatcher()
     }
 
-    private fun pay(){
+    private fun setPay(){
         getViewBinding()?.btnPay?.setOnClickListener {
             val amount = mTotalAmount.toDouble()
             val cardNumber = getViewBinding()?.etCardNumber?.text.toString()
@@ -107,10 +105,6 @@ class PaymentPageFragment : BaseFragment<FragmentPaymentBinding, PaymentPageView
 
     private fun setTotalAmount(totalAmount: String) {
         getViewBinding()?.tvTotalAmount?.text = getString(R.string.total_amount_payment,totalAmount + "TL")
-    }
-
-    private fun showToast(message: String) {
-        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 
     private fun clearBasket() {

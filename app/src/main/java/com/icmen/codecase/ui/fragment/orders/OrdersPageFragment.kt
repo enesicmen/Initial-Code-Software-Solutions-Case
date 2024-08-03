@@ -2,13 +2,14 @@ package com.icmen.codecase.ui.fragment.orders
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.icmen.codecase.R
 import com.icmen.codecase.data.Resource
 import com.icmen.codecase.data.model.Order
 import com.icmen.codecase.databinding.FragmentOrdersBinding
 import com.icmen.codecase.ui.base.BaseFragment
 import com.icmen.codecase.ui.common.RecyclerItemClickListener
+import com.icmen.codecase.ui.fragment.custom.CustomDialogWithOneButtonFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -45,10 +46,17 @@ class OrdersPageFragment : BaseFragment<FragmentOrdersBinding, OrdersPageViewMod
                 }
                 is Resource.Error -> {
                     getViewBinding()?.progressBar?.visibility = View.GONE
-                    Toast.makeText(requireContext(), resource.error ?: "Failed to fetch orders", Toast.LENGTH_SHORT).show()
+                    val title = getString(R.string.error)
+                    val message = getString(R.string.failed_to_fetch_orders)
+                    setOneButtonDialog(title,message)
                 }
             }
         }
+    }
+    private fun setOneButtonDialog(title: String, message: String) {
+        val dialog = CustomDialogWithOneButtonFragment.newInstance(title, message)
+        dialog.onOkClicked = {}
+        dialog.show(requireActivity().supportFragmentManager, "customDialog")
     }
     override fun invoke(position: Int) {}
 }

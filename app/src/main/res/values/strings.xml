@@ -1,4 +1,5 @@
 <resources>
+
     <!-- general -->
     <string name="app_name">case</string>
     <string name="yes">Evet</string>
@@ -82,5 +83,6 @@
     <string name="order_price">Fiyat : %1$s %2$s</string>
     <string name="order_date">Sipariş tarihi : %1$s</string>
     <string name="order_address">Adres : %1$s</string>
+    <string name="failed_to_fetch_orders">Siparişler getirilemedi</string>
 
 </resources>

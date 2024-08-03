@@ -2,8 +2,6 @@ package com.icmen.codecase.ui.fragment.login
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.icmen.codecase.R
@@ -16,7 +14,6 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class LoginPageFragment : BaseFragment<FragmentLoginBinding, LoginPageViewModel>() {
 
-    private val viewModel: LoginPageViewModel by viewModels()
 
     override fun setViewBinding(): FragmentLoginBinding {
         return FragmentLoginBinding.inflate(layoutInflater)
@@ -25,18 +22,20 @@ class LoginPageFragment : BaseFragment<FragmentLoginBinding, LoginPageViewModel>
     override fun setViewModelClass() = LoginPageViewModel::class.java
 
     override fun initView(savedInstanceState: Bundle?) {
-        getViewBinding()?.btnLogin?.setOnClickListener {
-            val email = getViewBinding()?.etEmail?.text.toString().trim()
-            val password = getViewBinding()?.etPassword?.text.toString().trim()
-            viewModel.loginUser(email, password)
-        }
-
+        setLoginButton()
         goToRegisterPage()
         observeViewModel()
     }
 
+    private fun setLoginButton(){
+        getViewBinding()?.btnLogin?.setOnClickListener {
+            val email = getViewBinding()?.etEmail?.text.toString().trim()
+            val password = getViewBinding()?.etPassword?.text.toString().trim()
+            getViewModel()?.loginUser(email, password)
+        }
+    }
     private fun observeViewModel() {
-        viewModel.loginResult.observe(viewLifecycleOwner, Observer { resource ->
+        getViewModel()?.loginResult?.observe(viewLifecycleOwner, Observer { resource ->
             when (resource) {
                 is Resource.Loading -> {
                     getViewBinding()?.fmProgress?.visibility = View.VISIBLE

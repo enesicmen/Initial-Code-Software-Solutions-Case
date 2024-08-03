@@ -39,7 +39,6 @@ class BasketPageFragment : BaseFragment<FragmentBasketBinding, BasketPageViewMod
         observeViewModel()
         openPaymentPage()
     }
-
     private fun observeViewModel() {
         getViewModel()?.basketItemsLiveData?.observe(viewLifecycleOwner, Observer { resource ->
             when (resource) {
@@ -76,13 +75,11 @@ class BasketPageFragment : BaseFragment<FragmentBasketBinding, BasketPageViewMod
             }
         })
     }
-
     private fun setBasketItems(items: List<Product>) {
         basketItems.clear()
         basketItems.addAll(items)
         basketAdapter.notifyDataSetChanged()
     }
-
     private fun showDeleteConfirmationDialog(position: Int) {
         val title = getString(R.string.delete_product)
         val message = getString(R.string.are_you_sure_delete_product)
@@ -93,7 +90,6 @@ class BasketPageFragment : BaseFragment<FragmentBasketBinding, BasketPageViewMod
         dialog.onNoClicked = {}
         dialog.show(requireActivity().supportFragmentManager, "customDialog")
     }
-
     private fun openPaymentPage() {
         getViewBinding()?.btnBuy?.setOnClickListener {
             if (basketItems.isNotEmpty()) {
@@ -112,7 +108,6 @@ class BasketPageFragment : BaseFragment<FragmentBasketBinding, BasketPageViewMod
             }
         }
     }
-
     private fun setOneButtonDialog(title: String, message: String) {
         val dialog = CustomDialogWithOneButtonFragment.newInstance(title, message)
         dialog.onOkClicked = {}

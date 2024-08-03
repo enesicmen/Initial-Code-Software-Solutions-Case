@@ -2,9 +2,7 @@ package com.icmen.codecase.ui.fragment.editPassword
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
-import androidx.fragment.app.viewModels
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -18,8 +16,6 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class EditPasswordPageFragment : BaseFragment<FragmentEditPasswordBinding, EditPasswordPageViewModel>() {
 
-    private val viewModel: EditPasswordPageViewModel by viewModels()
-
     override fun setViewBinding(): FragmentEditPasswordBinding =
         FragmentEditPasswordBinding.inflate(layoutInflater)
 
@@ -29,12 +25,12 @@ class EditPasswordPageFragment : BaseFragment<FragmentEditPasswordBinding, EditP
             val newPassword = getViewBinding()?.etNewPassword?.text.toString()
             val confirmNewPassword = getViewBinding()?.etConfirmNewPassword?.text.toString()
 
-            viewModel.changePassword(currentPassword, newPassword, confirmNewPassword)
+            getViewModel()?.changePassword(currentPassword, newPassword, confirmNewPassword)
         }
-
         observeViewModel()
-
-
+        onBackPressedDispatcher()
+    }
+    private fun onBackPressedDispatcher (){
         requireActivity().onBackPressedDispatcher.addCallback(
             viewLifecycleOwner,
             object : OnBackPressedCallback(true) {
@@ -44,9 +40,8 @@ class EditPasswordPageFragment : BaseFragment<FragmentEditPasswordBinding, EditP
             }
         )
     }
-
     private fun observeViewModel() {
-        viewModel.changePasswordLiveData.observe(viewLifecycleOwner) { resource ->
+        getViewModel()?.changePasswordLiveData?.observe(viewLifecycleOwner) { resource ->
             when (resource) {
                 is Resource.Loading -> {
                     getViewBinding()?.progressBar?.visibility = View.VISIBLE
