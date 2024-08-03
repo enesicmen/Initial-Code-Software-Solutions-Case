@@ -13,7 +13,6 @@ data class Product(
     var productImage: String = "",
     var productName: String = "",
     var productType: String = "",
-    //TODO: listininDate ne demek? yanliz yazmisin. typo duzeltilecek
     var listininDate: String = "",
     var quantity: Int = 0
 ) : Parcelable

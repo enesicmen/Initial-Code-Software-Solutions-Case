@@ -1,9 +1,0 @@
-diff a/app/src/main/java/com/icmen/codecase/ui/fragment/orders/OrdersPageViewModel.kt b/app/src/main/java/com/icmen/codecase/ui/fragment/orders/OrdersPageViewModel.kt	(rejected hunks)
-@@ -38,6 +38,7 @@ class OrdersPageViewModel @Inject constructor(
-                     _orderList.value = Resource.Error(e.message ?: "Failed to fetch orders")
-                 }
-         } else {
-+            // todo: bu mesajlari constants class'a tsi ve orda kullan, hatta strings'e tasi
-             _orderList.value = Resource.Error("User not authenticated")
-         }
-     }
