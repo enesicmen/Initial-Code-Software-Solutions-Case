@@ -31,4 +31,6 @@ https://github.com/enesicmen/Initial-Code-Software-Solutions-Case
   an error message is displayed (To show and simulate the error condition). If the basket amount is below 1000 TL, the payment is successful.
   After purchasing the product, the basket is cleared. You can see your past orders in the Profile tab.
 
+## Android version
+- Android Studio Jellyfish | 2023.3.1
 
