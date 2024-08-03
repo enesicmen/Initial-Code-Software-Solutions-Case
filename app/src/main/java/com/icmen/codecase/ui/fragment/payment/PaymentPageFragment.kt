@@ -1,6 +1,8 @@
 package com.icmen.codecase.ui.fragment.payment
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
@@ -31,6 +33,15 @@ class PaymentPageFragment : BaseFragment<FragmentPaymentBinding, PaymentPageView
 
     override fun initView(savedInstanceState: Bundle?) {
         setTotalAmount(mTotalAmount)
+        pay()
+
+        observeOrderSaveStatus()
+        setCardNumber()
+        setExpiryDate()
+        onBackPressedDispatcher()
+    }
+
+    private fun pay(){
         getViewBinding()?.btnPay?.setOnClickListener {
             val amount = mTotalAmount.toDouble()
             val cardNumber = getViewBinding()?.etCardNumber?.text.toString()
@@ -50,11 +61,13 @@ class PaymentPageFragment : BaseFragment<FragmentPaymentBinding, PaymentPageView
                     }
                 })
             } else {
+                val title = getString(R.string.error)
+                val message = getString(R.string.fill_in_all_fields)
+                setOneButtonDialog(title,message)
             }
         }
-
-        observeOrderSaveStatus()
-
+    }
+    private fun onBackPressedDispatcher(){
         requireActivity().onBackPressedDispatcher.addCallback(
             viewLifecycleOwner,
             object : OnBackPressedCallback(true) {
@@ -64,7 +77,6 @@ class PaymentPageFragment : BaseFragment<FragmentPaymentBinding, PaymentPageView
             }
         )
     }
-
     override fun readDataFromArguments() {
         super.readDataFromArguments()
         arguments?.let {
@@ -94,7 +106,7 @@ class PaymentPageFragment : BaseFragment<FragmentPaymentBinding, PaymentPageView
     }
 
     private fun setTotalAmount(totalAmount: String) {
-        //getViewBinding()?.tvTotalAmount?.text = totalAmount
+        getViewBinding()?.tvTotalAmount?.text = getString(R.string.total_amount_payment,totalAmount + "TL")
     }
 
     private fun showToast(message: String) {
@@ -133,5 +145,65 @@ class PaymentPageFragment : BaseFragment<FragmentPaymentBinding, PaymentPageView
         val dialog = CustomDialogWithOneButtonFragment.newInstance(title, message)
         dialog.onOkClicked = {}
         dialog.show(requireActivity().supportFragmentManager, "customDialog")
+    }
+
+    private fun setCardNumber(){
+        getViewBinding()?.etCardNumber?.addTextChangedListener(object : TextWatcher {
+            private var isFormatting: Boolean = false
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+            override fun afterTextChanged(s: Editable?) {
+                if (isFormatting) return
+
+                isFormatting = true
+
+                val cleanString = s.toString().replace(" ", "")
+                val formattedString = StringBuilder()
+
+                for (i in cleanString.indices) {
+                    if (i > 0 && i % 4 == 0) {
+                        formattedString.append(" ")
+                    }
+                    formattedString.append(cleanString[i])
+                }
+
+                getViewBinding()?.etCardNumber?.setText(formattedString.toString())
+                getViewBinding()?.etCardNumber?.setSelection(formattedString.length)
+                isFormatting = false
+            }
+        })
+    }
+
+    private fun setExpiryDate(){
+        getViewBinding()?.etExpiryDate?.addTextChangedListener(object : TextWatcher {
+            private var isFormatting: Boolean = false
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+            override fun afterTextChanged(s: Editable?) {
+                if (isFormatting) return
+
+                isFormatting = true
+
+                val cleanString = s.toString().replace("/", "")
+                val formattedString = StringBuilder()
+
+                for (i in cleanString.indices) {
+                    if (i == 2 && cleanString.length >= 2) {
+                        formattedString.append("/")
+                    }
+                    formattedString.append(cleanString[i])
+                }
+
+                getViewBinding()?.etExpiryDate?.setText(formattedString.toString())
+                getViewBinding()?.etExpiryDate?.setSelection(formattedString.length)
+                isFormatting = false
+            }
+        })
     }
 }

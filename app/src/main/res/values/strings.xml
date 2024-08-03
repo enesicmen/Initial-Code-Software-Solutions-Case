@@ -75,6 +75,7 @@
     <string name="expiration_date">Son Kullanma Tarihi (MM/YY)</string>
     <string name="cvv">CVV</string>
     <string name="pay">Ödeme yap</string>
+    <string name="total_amount_payment">Toplam Ücret : %1$s</string>
 
 
     <!-- Orders -->
