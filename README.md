@@ -32,5 +32,5 @@ https://github.com/enesicmen/Initial-Code-Software-Solutions-Case
   After purchasing the product, the basket is cleared. You can see your past orders in the Profile tab.
 
 ## Android version
-- Android Studio Jellyfish | 2023.3.1
+- Android Studio Koala v2024.1.1 Patch 1
 
