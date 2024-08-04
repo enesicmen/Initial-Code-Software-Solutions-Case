@@ -34,3 +34,9 @@ https://github.com/enesicmen/Initial-Code-Software-Solutions-Case
 ## Android version
 - Android Studio Koala v2024.1.1 Patch 1
 
+## Preview Video
+
+
+https://github.com/user-attachments/assets/549d4e23-31b5-4bd8-8c65-e2ff51e765be
+
+
